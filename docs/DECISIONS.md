@@ -16,6 +16,9 @@ Status labels: Locked, Approved, Proposed, Recommended, Unresolved. Recommendati
 | D11 | Clinics sign up themselves (clinic + clinic admin + terms acceptance in one step). Staff are only created by the clinic admin through invitations. Super admins are created only by an operator script, never through the web. | Approved (engineering) |
 | D12 | Documents: file type is decided from file content, not name; limit 15 MB; originals immutable with SHA-256; access only via 5-minute signed links created after a permission check and an audit entry. Storage keys are `clinic/patient/document.ext`. | Approved (engineering) |
 | D13 | Deployment is container-based (Dockerfile) so any host works; CI on GitHub Actions; backups with pg_dump before every migration plus the host's own point-in-time recovery; restores go into a new empty database. | Approved (engineering) |
+| D14 | Only users with the doctor role can be booked for appointments (existing database rule). Clinic admins who also treat patients need a separate doctor account for now. | Approved (engineering); founder may want admin-doctors later |
+| D15 | Duplicate patients are never merged automatically. Registration warns; merge needs the merge_patients permission and an explicit confirmation; the merged record is kept and its code still finds the patient. | Approved (engineering) |
+| D16 | Rescheduling cancels the old appointment ("Rescheduled") and books a new one linked to it, so history shows both. | Approved (engineering) |
 | D9 | Simulated calls are flagged and excluded from real dashboards by default. | Approved (engineering) |
 
 ## Conflicts found

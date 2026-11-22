@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   output: "standalone",
   // pg is a server-only dependency; keep it out of the bundler.
   serverExternalPackages: ["pg"],
+  // documents up to 15 MB are uploaded through server actions
+  experimental: { serverActions: { bodySizeLimit: "16mb" } },
   async headers() {
     return [
       {

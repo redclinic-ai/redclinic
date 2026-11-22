@@ -1,8 +1,11 @@
-import { Pool, type PoolClient } from "pg";
+import { Pool, types, type PoolClient } from "pg";
 import { databaseUrl } from "./env";
 
 // The application connects as a login role that is a member of rc_app (never the owner role),
 // so row-level security applies to every query.
+
+// DATE columns come back as "YYYY-MM-DD" strings: a JavaScript Date would shift them across timezones.
+types.setTypeParser(1082, (v) => v);
 
 let pool: Pool | undefined;
 
