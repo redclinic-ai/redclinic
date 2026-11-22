@@ -9,3 +9,5 @@ The master prompt names them as the source of truth for functionality and the De
 
 ## K3: Master prompt copy provided to the earlier chat was truncated at section 14
 Resolved: the complete final master prompt (`docs/MASTER_PROMPT.md`) was used.
+
+- K4: The Dental Pack in migration 005 is an engineering draft, not the founder's specification. Review with a dental professional before any real patient contact. Replace or version it (pack version 2) when the spec arrives.
