@@ -19,6 +19,9 @@ Status labels: Locked, Approved, Proposed, Recommended, Unresolved. Recommendati
 | D14 | Only users with the doctor role can be booked for appointments (existing database rule). Clinic admins who also treat patients need a separate doctor account for now. | Approved (engineering); founder may want admin-doctors later |
 | D15 | Duplicate patients are never merged automatically. Registration warns; merge needs the merge_patients permission and an explicit confirmation; the merged record is kept and its code still finds the patient. | Approved (engineering) |
 | D16 | Rescheduling cancels the old appointment ("Rescheduled") and books a new one linked to it, so history shows both. | Approved (engineering) |
+| D17 | NEPA has no user account. On calls the app sets only the clinic context; NEPA acts through narrow SECURITY DEFINER functions (book, confirm/cancel, find caller, busy times, register caller). Whether NEPA may act is decided by the permission engine in the application before calling them. | Approved (engineering) |
+| D18 | Until an LLM is selected, NEPA runs on a deterministic rule-based model, labelled simulated. Safety checks (emergency, medical advice, AI objection) run in code before any model, and must stay first when an LLM adapter is added. | Approved (engineering) |
+| D19 | Rescheduling by NEPA always goes to staff (NEPA collects the wish; a person picks the new slot), even if automatic is allowed. | Approved (engineering) |
 | D9 | Simulated calls are flagged and excluded from real dashboards by default. | Approved (engineering) |
 
 ## Conflicts found

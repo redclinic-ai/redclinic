@@ -31,7 +31,7 @@ export interface DbContext {
   isSuperAdmin: boolean;
 }
 
-async function inTransaction<T>(fn: (c: PoolClient) => Promise<T>, ctx?: DbContext): Promise<T> {
+async function inTransaction<T>(fn: (c: PoolClient) => Promise<T>, ctx?: DbContext, rollback = false): Promise<T> {
   const client = await getPool().connect();
   try {
     await client.query("BEGIN");
@@ -42,7 +42,7 @@ async function inTransaction<T>(fn: (c: PoolClient) => Promise<T>, ctx?: DbConte
       ctx?.isSuperAdmin ?? false,
     ]);
     const result = await fn(client);
-    await client.query("COMMIT");
+    await client.query(rollback ? "ROLLBACK" : "COMMIT");
     return result;
   } catch (err) {
     await client.query("ROLLBACK").catch(() => {});
@@ -63,4 +63,9 @@ export function withContext<T>(ctx: DbContext, fn: (c: PoolClient) => Promise<T>
  */
 export function withoutUser<T>(fn: (c: PoolClient) => Promise<T>): Promise<T> {
   return inTransaction(fn);
+}
+
+/** Like withContext, but every change is thrown away at the end (used by the NEPA Testing Simulator). */
+export function withContextDryRun<T>(ctx: DbContext, fn: (c: PoolClient) => Promise<T>): Promise<T> {
+  return inTransaction(fn, ctx, true);
 }

@@ -30,6 +30,8 @@ export function navFor(user: SignedInUser, caps: Set<string>): NavItem[] {
   if (caps.has("manage_attention") || caps.has("view_approvals")) items.push({ href: "/inbox", label: "Needs attention", icon: "inbox", primary: true });
   if (caps.has("view_calls")) items.push({ href: "/calls", label: "Calls", icon: "phone" });
   if (caps.has("view_patient_history")) items.push({ href: "/assistant", label: "Assistant", icon: "spark" });
+  if (caps.has("view_approvals") || caps.has("approve_actions")) items.push({ href: "/approvals", label: "Approvals", icon: "shield" });
+  if (caps.has("edit_workflow")) items.push({ href: "/nepa", label: "AI receptionist", icon: "phone" });
   if (caps.has("edit_workflow") || caps.has("manage_settings")) items.push({ href: "/workflows", label: "Workflows", icon: "flow" });
   if (caps.has("view_results")) items.push({ href: "/results", label: "Results", icon: "chart" });
   if (caps.has("manage_settings") || caps.has("manage_staff") || caps.has("manage_billing")) items.push({ href: "/settings", label: "Settings", icon: "gear" });

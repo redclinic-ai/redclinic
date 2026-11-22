@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-22 (night): Phase 4
+- Migration 012: global policies with versions/tests, NEPA agents, versioned configuration, approvals extensions, assistant interactions, NEPA database functions.
+- NEPA modules: permissions, config, policies, resolver, tools, approvals, engine, simulator. Screens: AI receptionist studio, agents, test, approvals, admin policies.
+- Found by tests: "Is this swelling an infection?" was not treated as a medical question; fixed.
+
 ## 2026-11-22 (night): Phase 3
 - Migration 011: call purpose and links (callback_of, appointment, workflow), appointment source call, attention de-duplication and auto-generation, Results v2 with every spec metric, clinic phone numbers table.
 - Screens: Today (with setup checklist), Needs attention, Results.
