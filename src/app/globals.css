@@ -1,0 +1,71 @@
+/* RedClinic design tokens. Red / charcoal brand, mobile first. */
+:root {
+  --red: #c8102e;
+  --red-dark: #a00d25;
+  --charcoal: #1f2328;
+  --text: #1f2328;
+  --muted: #5b6470;
+  --line: #d9dde3;
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --ok-bg: #e8f6ee;
+  --ok-text: #155d34;
+  --err-bg: #fdecee;
+  --err-text: #9b0d22;
+  --radius: 10px;
+  --space: 16px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font-family: var(--font); font-size: 16px; line-height: 1.5; color: var(--text); background: var(--bg); }
+h1 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 8px; }
+a { color: var(--red); }
+.muted { color: var(--muted); margin-top: 0; }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: calc(var(--space) * 1.5); }
+
+/* auth */
+.auth-shell { min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 32px 16px; gap: 20px; }
+.auth-card { width: 100%; max-width: 440px; }
+.auth-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1.2rem; color: var(--charcoal); }
+.logo-mark { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; background: var(--red); color: #fff; font-weight: 800; }
+.auth-links { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 20px 0 0; font-size: 0.95rem; }
+.auth-foot { color: var(--muted); font-size: 0.85rem; }
+
+/* forms */
+fieldset { border: 0; padding: 0; margin: 0 0 12px; }
+legend { font-weight: 600; margin-bottom: 8px; padding: 0; }
+.field { margin-bottom: 14px; }
+.field label { display: block; font-weight: 500; margin-bottom: 4px; }
+input[type="text"], input[type="email"], input[type="password"], input[type="tel"], select {
+  width: 100%; min-height: 48px; padding: 10px 12px; font: inherit; color: inherit;
+  border: 1px solid var(--line); border-radius: 8px; background: #fff;
+}
+input:focus-visible, select:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid rgba(200, 16, 46, 0.35); outline-offset: 1px; border-color: var(--red); }
+input[aria-invalid="true"] { border-color: var(--err-text); }
+.field-hint { color: var(--muted); font-size: 0.85rem; margin: 4px 0 0; }
+.field-error { color: var(--err-text); font-size: 0.9rem; margin: 4px 0 0; }
+.check { display: flex; gap: 10px; align-items: flex-start; margin: 12px 0 16px; }
+.check input { width: 22px; height: 22px; margin-top: 1px; accent-color: var(--red); }
+.terms { margin: 4px 0 0; font-size: 0.9rem; color: var(--muted); }
+.terms summary { cursor: pointer; color: var(--red); }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 18px; font: inherit; font-weight: 600; border-radius: 8px; border: 1px solid transparent; cursor: pointer; }
+.btn-primary { background: var(--red); color: #fff; }
+.btn-primary:hover { background: var(--red-dark); }
+.btn-primary:disabled { opacity: 0.7; cursor: wait; }
+.btn-ghost { background: transparent; color: var(--charcoal); border-color: var(--line); min-height: 40px; }
+.btn-block { width: 100%; }
+
+/* alerts */
+.alert { padding: 12px 14px; border-radius: 8px; margin-bottom: 16px; }
+.alert-error { background: var(--err-bg); color: var(--err-text); }
+.alert-success { background: var(--ok-bg); color: var(--ok-text); }
+
+/* app shell */
+.app-shell { min-height: 100dvh; }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: #fff; border-bottom: 1px solid var(--line); }
+.page { max-width: 960px; margin: 0 auto; padding: 24px 16px; }

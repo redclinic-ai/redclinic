@@ -1,6 +1,9 @@
 # KNOWN_ISSUES
 
-## K1: Package installs are blocked (blocker for the app scaffold)
+## K1: Package installs are blocked: RESOLVED 2026-11-22
+npm and pip installs now work in the build environment. The app is scaffolded. (Browser downloads for Playwright are still blocked; the system Chrome is used for browser checks.)
+
+### Original note
 The account network setting blocks npm and pip. Next.js, a Postgres driver and test tooling cannot be installed here. Work that needs no packages (SQL migrations, SQL tests, documents) continues.
 Needed from the founder: update the network settings to allow package installs, then start a new chat (the current chat may not pick up the change), or run this build in a Claude Code session on the machine with the GitHub repository.
 
@@ -13,3 +16,7 @@ Resolved: the complete final master prompt (`docs/MASTER_PROMPT.md`) was used.
 - K4: The Dental Pack in migration 005 is an engineering draft, not the founder's specification. Review with a dental professional before any real patient contact. Replace or version it (pack version 2) when the spec arrives.
 
 - K2 update: the V1 Product Specification has now been supplied (docs/PRODUCT_SPEC.md). The separate Dental Pack specification has not; the spec only says the pack includes RCT, braces and recall workflows. K4 still applies.
+
+- K5: Clinic signup terms wording (`src/lib/terms.ts`, version `2026-11-draft-1`) is an engineering draft written from the founder's data-access and training decisions (D6, D7). Needs the founder's legal review before real clinics sign up. The version string is stored with every acceptance, so changed wording can be tracked.
+- K6: No email provider is selected (D2). Password reset and staff invitation emails are simulated: printed to the server log, not sent. A real provider is needed before launch; add it behind `EmailAdapter` in `src/lib/email`.
+- K7: Login rate limiting is per email (5 failures in 15 minutes). Per-IP limits for signup and forgot-password are not built yet; add at the hosting edge or in the app before launch.

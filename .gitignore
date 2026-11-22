@@ -3,3 +3,6 @@
 !.env.example
 node_modules/
 *.log
+.next/
+next-env.d.ts
+*.tsbuildinfo

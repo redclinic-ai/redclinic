@@ -6,12 +6,14 @@ Status labels: Locked, Approved, Proposed, Recommended, Unresolved. Recommendati
 |---|---|---|
 | D1 | Product scope: docs/MASTER_PROMPT.md is the source of truth. Where the earlier build prompt differs (provider names, billing), the final master prompt wins. | Locked (founder) |
 | D2 | Providers: only Cartesia is selected. Speech-to-text, telephony, LLM, payments, email are not selected. Build adapters and simulations only. | Locked (founder) |
-| D3 | Application stack: TypeScript, Next.js, Supabase-compatible PostgreSQL, modular monolith. | Recommended. Not scaffolded: installs are blocked (K1). |
+| D3 | Application stack: TypeScript, Next.js, Supabase-compatible PostgreSQL, modular monolith. | Approved (engineering). Scaffolded on Next.js 16 (Next 15 carries open PostCSS advisories) and TypeScript 5 (Next does not support TypeScript 7 yet). |
 | D4 | Database access: plain SQL migrations, row-level security, per-transaction context settings. | Approved (engineering) |
 | D5 | No clinic revenue, visit value or treatment price fields anywhere. | Locked (founder) |
 | D6 | Super admin has full V1 data access through an audited access layer. No restricted mode in V1. | Locked (founder) |
 | D7 | V1 collects all data (recordings, transcripts, summaries, assistant logs). No training pipelines in V1. Signup terms and patient consent wording keep the training option open. | Locked (founder) |
 | D8 | Billing: internal subscription records and simulated events only. No gateway until approved. | Locked (founder) |
+| D10 | Authentication is built in-house: scrypt password hashing (Node standard library), random session tokens stored only as SHA-256 hashes, httpOnly SameSite=Lax cookie, 7-day sessions, 60-minute reset links, 7-day invitation links. Auth tables are reachable only through SECURITY DEFINER functions; the app role cannot read them. No paid auth provider. | Approved (engineering) |
+| D11 | Clinics sign up themselves (clinic + clinic admin + terms acceptance in one step). Staff are only created by the clinic admin through invitations. Super admins are created only by an operator script, never through the web. | Approved (engineering) |
 | D9 | Simulated calls are flagged and excluded from real dashboards by default. | Approved (engineering) |
 
 ## Conflicts found
