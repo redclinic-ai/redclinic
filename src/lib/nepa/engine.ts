@@ -72,6 +72,10 @@ const T = {
   complaint: { en: "I'm sorry to hear that. I've noted it and the clinic will call you back.", hi: "यह सुनकर खेद है। मैंने इसे दर्ज कर लिया है और क्लिनिक आपको कॉल करेगा।", kn: "ಕೇಳಿ ಬೇಸರವಾಯಿತು. ಇದನ್ನು ದಾಖಲಿಸಿದ್ದೇನೆ, ಕ್ಲಿನಿಕ್ ಕರೆ ಮಾಡುತ್ತದೆ." },
   notUnderstood: { en: "Sorry, could you say that again?", hi: "माफ़ कीजिए, क्या आप फिर से बता सकते हैं?", kn: "ಕ್ಷಮಿಸಿ, ಮತ್ತೊಮ್ಮೆ ಹೇಳುತ್ತೀರಾ?" },
   anythingElse: { en: "Is there anything else I can help with?", hi: "क्या मैं और कुछ मदद कर सकती हूँ?", kn: "ಇನ್ನೇನಾದರೂ ಸಹಾಯ ಬೇಕೇ?" },
+  confirmAsk: { en: "I'm calling about your appointment on {when}. Will you be able to come?", hi: "मैं {when} की आपकी अपॉइंटमेंट के बारे में कॉल कर रही हूँ। क्या आप आ पाएँगे?", kn: "{when} ರ ನಿಮ್ಮ ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಬಗ್ಗೆ ಕರೆ ಮಾಡುತ್ತಿದ್ದೇನೆ. ನೀವು ಬರಲು ಸಾಧ್ಯವೇ?" },
+  callbackOpen: { en: "We missed your call earlier, so I'm calling you back. How can I help?", hi: "हम आपकी कॉल नहीं उठा पाए थे, इसलिए मैं वापस कॉल कर रही हूँ। मैं क्या मदद करूँ?", kn: "ನಿಮ್ಮ ಕರೆಯನ್ನು ಸ್ವೀಕರಿಸಲಾಗಲಿಲ್ಲ, ಆದ್ದರಿಂದ ಮರಳಿ ಕರೆ ಮಾಡುತ್ತಿದ್ದೇನೆ. ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?" },
+  followupOpen: { en: "I'm calling to help you book your next visit. The earliest time is {when} with {doctor}. Shall I request it?", hi: "मैं आपकी अगली विज़िट बुक करने में मदद के लिए कॉल कर रही हूँ। सबसे पहला समय {when} है, {doctor} के साथ। क्या मैं अनुरोध करूँ?", kn: "ನಿಮ್ಮ ಮುಂದಿನ ಭೇಟಿ ಬುಕ್ ಮಾಡಲು ಕರೆ ಮಾಡುತ್ತಿದ್ದೇನೆ. ಮೊದಲ ಸಮಯ {when}, {doctor} ಅವರೊಂದಿಗೆ. ಕೇಳಲೇ?" },
+  wontCome: { en: "No problem. I'll let the clinic know, and they will call you to find another time.", hi: "कोई बात नहीं। मैं क्लिनिक को बता दूँगी, वे दूसरा समय तय करने के लिए कॉल करेंगे।", kn: "ಪರವಾಗಿಲ್ಲ. ಕ್ಲಿನಿಕ್‌ಗೆ ತಿಳಿಸುತ್ತೇನೆ, ಬೇರೆ ಸಮಯಕ್ಕಾಗಿ ಅವರು ಕರೆ ಮಾಡುತ್ತಾರೆ." },
   bye: { en: "Thank you for calling {clinic}. Goodbye.", hi: "{clinic} को कॉल करने के लिए धन्यवाद। नमस्ते।", kn: "{clinic} ಗೆ ಕರೆ ಮಾಡಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದ. ವಂದನೆಗಳು." },
   noSay: { en: "No problem.", hi: "कोई बात नहीं।", kn: "ಪರವಾಗಿಲ್ಲ." },
 } satisfies Record<string, Msg>;
@@ -110,9 +114,24 @@ export class RuleBasedModel implements ConversationModel {
     if (callerSays === null) {
       s.lang = allowed(lang0);
       if (s.callerPhone && !s.patient) s.patient = await findCaller(t, s.callerPhone);
+      const disclose = say(T.disclose, s.lang, vars);
+      // outgoing calls say why they are calling
+      if (s.intent === "confirmation") {
+        if (s.patient?.nextAt) return reply(`${disclose} ${say(T.confirmAsk, s.lang, { when: fmtWhen(s.patient.nextAt, tz, s.lang) })}`);
+        s.intent = null;
+      }
+      if (s.intent === "callback") { s.intent = null; return reply(`${disclose} ${say(T.callbackOpen, s.lang)}`); }
+      if (s.intent && ["recall", "follow_up", "no_show_followup"].includes(s.intent)) {
+        const slot = (await this.firstSlot(t))[0];
+        s.intent = "booking";
+        if (slot) {
+          s.awaiting = { kind: "book_confirm", slot: { doctorId: slot.doctorId, doctorName: slot.doctorName, start: slot.start.toISOString() }, reason: "Follow-up visit" };
+          return reply(`${disclose} ${say(T.followupOpen, s.lang, { when: fmtWhen(slot.start, tz, s.lang), doctor: slot.doctorName })}`);
+        }
+      }
       const custom = r.agentConfig?.scripts.greeting || r.clinicConfig.greeting[s.lang];
       const conflict = r.conflicts.some((c) => c.field.startsWith("greeting") || c.field === "scripts.greeting");
-      return reply(`${say(T.disclose, s.lang, vars)} ${custom && !conflict ? custom : say(T.howHelp, s.lang)}`);
+      return reply(`${disclose} ${custom && !conflict ? custom : say(T.howHelp, s.lang)}`);
     }
 
     s.turns.push({ speaker: "caller", text: callerSays, lang: detectLang(callerSays, s.lang), atMs: s.turns.length * 4000 });
@@ -191,6 +210,11 @@ export class RuleBasedModel implements ConversationModel {
       s.actions.push({ tool: "confirm_appointment", outcome: out });
       s.outcome = out.status === "done" ? "confirmed" : "action_failed";
       return reply(out.status === "done" ? say(T.confirmed, s.lang, { when: fmtWhen(s.patient.nextAt!, tz, s.lang) }) : say(T.failed, s.lang));
+    }
+    if (s.intent === "confirmation" && s.patient?.nextAppointmentId && RX.deny.test(text)) {
+      s.outcome = "request_sent";
+      await handToStaff(t, "reschedule_request", "Patient can't come to their appointment and needs another time.", 2, patientId);
+      return reply(`${say(T.wontCome, s.lang)} ${say(T.anythingElse, s.lang)}`);
     }
     if (RX.complaint.test(text)) {
       s.intent = "complaint"; s.outcome = "handed_to_staff";

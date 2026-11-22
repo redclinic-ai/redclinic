@@ -288,3 +288,15 @@ SELECT rct.check('all tables with clinic_id have RLS enabled',
 
 -- ---------- report ----------
 -- (counted by scripts/test-db.sh from the RESULT notices)
+
+-- ---------- calls are only readable with view_calls (regression: migration 013) ----------
+BEGIN;
+SELECT rct.as_user(NULL, rct.id('ca'));
+INSERT INTO calls (clinic_id, direction, status, started_at) VALUES (rct.id('ca'), 'inbound', 'completed', now());
+SELECT rct.as_user(rct.id('aa'), rct.id('ca'));
+SELECT rct.check('clinic admin sees calls', rct.count('SELECT count(*) FROM calls') >= 1);
+RESET ROLE;
+DELETE FROM staff_capabilities WHERE user_id = rct.id('ra') AND capability = 'view_calls';
+SELECT rct.as_user(rct.id('ra'), rct.id('ca'));
+SELECT rct.check('staff without view_calls cannot read calls', rct.count('SELECT count(*) FROM calls') = 0);
+ROLLBACK;

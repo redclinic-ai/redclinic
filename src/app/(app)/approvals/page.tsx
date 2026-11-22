@@ -2,7 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session-cookie";
 import { requirePageCap } from "@/lib/nav";
 import { listApprovals } from "@/lib/nepa/approvals";
-import { Badge, Empty, Flash, fmtDateTime, PageHeader } from "@/components/ui";
+import { Badge, Empty, Flash, fmtDateTime, PageHeader, Simulated } from "@/components/ui";
 import { ActionForm, Submit } from "@/components/action-form";
 import { Input } from "@/components/form";
 import { decideAction } from "./actions";
@@ -26,7 +26,7 @@ export default async function ApprovalsPage({ searchParams }: { searchParams: Pr
         <ul className="list">
           {r.value.map((a) => (
             <li key={a.id} id={a.id} className="list-item">
-              <div className="att-head"><strong>{a.actionLabel}</strong> {a.mode === "suggest" && <Badge status="draft" label="Suggestion" />} <Badge status={a.status} /> <span className="muted small">{fmtDateTime(a.createdAt)}</span></div>
+              <div className="att-head"><strong>{a.actionLabel}</strong> {a.mode === "suggest" && <Badge status="draft" label="Suggestion" />} {a.isTest && <Simulated />} <Badge status={a.status} /> <span className="muted small">{fmtDateTime(a.createdAt)}</span></div>
               <p className="att-why">{a.summary}</p>
               {a.patientId && <p className="small"><Link href={`/patients/${a.patientId}`}>{a.patientName}</Link>{a.callId && <> · <Link href={`/calls/${a.callId}`}>Open call</Link></>}</p>}
               {a.status !== "pending" && <p className="muted small">{a.decidedBy ? `${a.status === "rejected" ? "Rejected" : "Approved"} by ${a.decidedBy} ${fmtDateTime(a.decidedAt)}` : ""}{a.note ? ` · ${a.note}` : ""}{a.failure ? ` · Failed: ${a.failure}` : ""}</p>}

@@ -11,6 +11,11 @@ Three environments: development, staging, production. Each has its own database 
 | `STORAGE_DIR` | documents | server | Private folder for local storage, outside the web root |
 | `STORAGE_SIGNING_SECRET` | documents | server only | Random, 32+ characters; signs download links |
 | `APP_VERSION` | health | server | Set by the deploy pipeline (git commit) |
+| `TELEPHONY_WEBHOOK_SECRET` | telephony webhook | server only | HMAC secret shared with the telephony provider |
+| `ALLOW_SIMULATED_TELEPHONY` | telephony webhook | server | `1` only on staging, to accept simulated events in a production build |
+| `CRON_SECRET` | `/api/cron/dialer` | server only | Bearer token the scheduler sends |
+| `CARTESIA_VERIFIED` | voice adapter | server | `1` only after a successful connection test |
+| `CARTESIA_MODEL`, `CARTESIA_API_VERSION` | voice adapter | server | Optional overrides |
 | `APP_BASE_URL` | auth emails | server | Public address used in reset and invitation links |
 | `CARTESIA_API_KEY` | voice adapter | server only | Added when the voice phase is ready |
 

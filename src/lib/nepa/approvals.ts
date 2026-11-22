@@ -8,7 +8,7 @@ import { ACTIONS, type Action } from "./permissions";
 
 export interface Approval {
   id: string; action: Action; actionLabel: string; mode: string; status: string; summary: string | null; details: Record<string, any>;
-  requestedBy: string; patientId: string | null; patientName: string | null; callId: string | null; createdAt: Date;
+  requestedBy: string; isTest: boolean; patientId: string | null; patientName: string | null; callId: string | null; createdAt: Date;
   decidedBy: string | null; decidedAt: Date | null; failure: string | null; result: Record<string, any> | null; note: string | null;
 }
 
@@ -16,13 +16,13 @@ export async function listApprovals(actor: SignedInUser, view: "pending" | "deci
   return act(actor, async (c) => {
     if (!(await can(c, "view_approvals")) && !(await can(c, "approve_actions"))) throw new UserError("You don't have access to approvals.");
     const r = await c.query(
-      `SELECT a.*, p.name AS patient_name, u.display_name AS decided_name FROM approvals a
-       LEFT JOIN patients p ON p.id = a.patient_id LEFT JOIN users u ON u.id = a.decided_by
+      `SELECT a.*, p.name AS patient_name, u.display_name AS decided_name, coalesce(cl.is_simulated, false) AS is_test FROM approvals a
+       LEFT JOIN patients p ON p.id = a.patient_id LEFT JOIN users u ON u.id = a.decided_by LEFT JOIN calls cl ON cl.id = a.call_id
        WHERE ${view === "pending" ? "a.status = 'pending'" : "a.status <> 'pending'"}
        ORDER BY ${view === "pending" ? "a.created_at" : "coalesce(a.decided_at, a.created_at) DESC"} LIMIT 200`);
     return r.rows.map((x): Approval => ({
       id: x.id, action: x.action_type, actionLabel: ACTIONS[x.action_type as Action]?.label ?? x.action_type, mode: x.mode, status: x.status,
-      summary: x.summary, details: x.details, requestedBy: x.requested_by, patientId: x.patient_id, patientName: x.patient_name, callId: x.call_id,
+      summary: x.summary, details: x.details, requestedBy: x.requested_by, isTest: x.is_test, patientId: x.patient_id, patientName: x.patient_name, callId: x.call_id,
       createdAt: x.created_at, decidedBy: x.decided_name, decidedAt: x.decided_at, failure: x.failure_detail, result: x.result, note: x.decision_note,
     }));
   });

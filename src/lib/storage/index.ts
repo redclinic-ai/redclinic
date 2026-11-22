@@ -17,7 +17,7 @@ export interface StorageAdapter {
   signedUrl(key: string, ttlSeconds: number, downloadName: string, contentType: string): string;
 }
 
-const KEY_RE = /^[0-9a-f-]{36}\/[0-9a-f-]{36}\/[0-9a-f-]{36}\.(pdf|jpg|png)$/;
+const KEY_RE = /^[0-9a-f-]{36}\/[0-9a-f-]{36}\/[0-9a-f-]{36}\.(pdf|jpg|png|wav)$/;
 
 export function isValidKey(key: string): boolean {
   return KEY_RE.test(key);

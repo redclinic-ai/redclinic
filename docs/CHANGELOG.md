@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-22 (night): Phase 5
+- Migration 013: call fields (agent, provider ids, recording, transcription attempts, test calls), telephony events, outbound queue, NEPA patient brief, approvals sync, active clinics; split calls write policy (security fix).
+- Calls service, provider adapters (incl. Cartesia), telephony webhook, cron dialler, assistant, phone setup. Screens: calls, call record, test call, assistant, phone number.
+- Found by tests/browser: NEPA could not read patients or approvals during dialling; switched-off agents left calls open; assistant questions were in the URL.
+
 ## 2026-11-22 (night): Phase 4
 - Migration 012: global policies with versions/tests, NEPA agents, versioned configuration, approvals extensions, assistant interactions, NEPA database functions.
 - NEPA modules: permissions, config, policies, resolver, tools, approvals, engine, simulator. Screens: AI receptionist studio, agents, test, approvals, admin policies.

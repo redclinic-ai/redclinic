@@ -14,6 +14,7 @@ export default defineConfig({
       APP_BASE_URL: "http://localhost:3000",
       STORAGE_DRIVER: "local",
       STORAGE_DIR: "/tmp/rc-vitest-storage",
+      TELEPHONY_WEBHOOK_SECRET: "test-webhook-secret",
       STORAGE_SIGNING_SECRET: "test-only-signing-secret-0123456789abcdef",
       // The app role, never the owner. Created by tests/global-setup.ts.
       DATABASE_URL: process.env.TEST_DATABASE_URL ?? "postgresql://rc_app_test:rc_app_test@127.0.0.1:5432/rc_vitest",

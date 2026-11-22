@@ -39,7 +39,7 @@ export default async function TestPage({ searchParams }: { searchParams: Promise
             <dt>Understood as</dt><dd>{run.value.intent ?? "—"}</dd>
             <dt>Outcome</dt><dd>{run.value.outcome ?? "—"}</dd>
             <dt>Actions</dt><dd>{run.value.actions.length ? run.value.actions.map((a) => `${a.tool}: ${a.outcome.status}`).join(", ") : "None"}</dd>
-            <dt>Versions used</dt><dd>Clinic v{run.value.versions.clinicConfig as number ?? "default"}, agent v{run.value.versions.agentConfig as number ?? "default"}, {Object.keys(run.value.versions.policies as object).length} RedClinic policies</dd>
+            <dt>Versions used</dt><dd>Clinic {run.value.versions.clinicConfig ? `v${run.value.versions.clinicConfig}` : "defaults"}, agent {run.value.versions.agentConfig ? `v${run.value.versions.agentConfig}` : "defaults"}, {Object.keys(run.value.versions.policies as object).length} RedClinic policies</dd>
           </dl>
           {run.value.conflicts.length > 0 && <div className="alert alert-error"><ul className="alert-links">{run.value.conflicts.map((c, i) => <li key={i}>{c.message} {c.resolution}</li>)}</ul></div>}
           <details className="more-fields"><summary>Show the full instructions NEPA follows</summary><pre className="instructions">{run.value.instructions}</pre></details>
