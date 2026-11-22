@@ -1,7 +1,7 @@
 -- Dental Pack auto-install and results counts. Needs the seed from 001 (schema rct).
 \set ON_ERROR_STOP on
 SELECT rct.check('dental clinic got the Dental Pack copied automatically',
-  (SELECT count(*) FROM clinic_workflows WHERE clinic_id = rct.id('ca')) >= 7);
+  (SELECT count(*) FROM clinic_workflows WHERE clinic_id = rct.id('ca')) >= 9);
 SELECT rct.check('copied workflows are not automatic by default',
   (SELECT count(*) FROM clinic_workflows WHERE clinic_id = rct.id('ca') AND automatic_enabled) = 0);
 SELECT rct.check('Dental Pack is marked draft until reviewed',
@@ -51,3 +51,6 @@ SELECT rct.as_user(rct.id('ra'), rct.id('ca'));
 SELECT rct.refused('receptionist without view_results cannot read results',
   $q$SELECT * FROM rc_results_counts(now()-interval '1 day', now())$q$);
 ROLLBACK;
+
+SELECT rct.check('RCT, braces and recall workflows exist in the pack',
+  (SELECT count(*) FROM workflow_templates WHERE key IN ('rct_visit_sequence','braces_adjustment_reminder','routine_recall')) = 3);

@@ -11,3 +11,5 @@ The master prompt names them as the source of truth for functionality and the De
 Resolved: the complete final master prompt (`docs/MASTER_PROMPT.md`) was used.
 
 - K4: The Dental Pack in migration 005 is an engineering draft, not the founder's specification. Review with a dental professional before any real patient contact. Replace or version it (pack version 2) when the spec arrives.
+
+- K2 update: the V1 Product Specification has now been supplied (docs/PRODUCT_SPEC.md). The separate Dental Pack specification has not; the spec only says the pack includes RCT, braces and recall workflows. K4 still applies.
