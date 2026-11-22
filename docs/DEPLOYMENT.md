@@ -1,6 +1,8 @@
 # DEPLOYMENT
 
-Not deployed. No hosting account, domain or pipeline is configured yet.
+Not deployed. No hosting account or domain yet (KNOWN_ISSUES K8). CI runs on GitHub Actions. The `Dockerfile` builds a production image that runs on any container host; set the variables in ENVIRONMENT_VARIABLES.md and mount a private volume at `STORAGE_DIR` while local storage is used.
+
+Backups: `scripts/backup-db.sh` (before every migration and daily). Restore: `scripts/restore-db.sh` into a new empty database, check it, then switch the app to it.
 
 Planned: separate development, staging and production environments. Migrations in `db/migrations` run in order by `scripts/migrate.sh`, reviewed before any production run, with a database backup taken first. Rollback: restore the backup taken before the migration; down-migrations are not used.
 

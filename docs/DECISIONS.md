@@ -14,6 +14,8 @@ Status labels: Locked, Approved, Proposed, Recommended, Unresolved. Recommendati
 | D8 | Billing: internal subscription records and simulated events only. No gateway until approved. | Locked (founder) |
 | D10 | Authentication is built in-house: scrypt password hashing (Node standard library), random session tokens stored only as SHA-256 hashes, httpOnly SameSite=Lax cookie, 7-day sessions, 60-minute reset links, 7-day invitation links. Auth tables are reachable only through SECURITY DEFINER functions; the app role cannot read them. No paid auth provider. | Approved (engineering) |
 | D11 | Clinics sign up themselves (clinic + clinic admin + terms acceptance in one step). Staff are only created by the clinic admin through invitations. Super admins are created only by an operator script, never through the web. | Approved (engineering) |
+| D12 | Documents: file type is decided from file content, not name; limit 15 MB; originals immutable with SHA-256; access only via 5-minute signed links created after a permission check and an audit entry. Storage keys are `clinic/patient/document.ext`. | Approved (engineering) |
+| D13 | Deployment is container-based (Dockerfile) so any host works; CI on GitHub Actions; backups with pg_dump before every migration plus the host's own point-in-time recovery; restores go into a new empty database. | Approved (engineering) |
 | D9 | Simulated calls are flagged and excluded from real dashboards by default. | Approved (engineering) |
 
 ## Conflicts found

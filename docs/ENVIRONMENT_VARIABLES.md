@@ -7,6 +7,10 @@ Three environments: development, staging, production. Each has its own database 
 | `DATABASE_URL` | application | server only | Connects as the non-superuser `rc_app` role |
 | `DATABASE_ADMIN_URL` | migrations | CI / operator only | Owner role. Never given to the running app |
 | `APP_ENV` | all | server | `development`, `staging` or `production` |
+| `STORAGE_DRIVER` | documents | server | `local` for now |
+| `STORAGE_DIR` | documents | server | Private folder for local storage, outside the web root |
+| `STORAGE_SIGNING_SECRET` | documents | server only | Random, 32+ characters; signs download links |
+| `APP_VERSION` | health | server | Set by the deploy pipeline (git commit) |
 | `APP_BASE_URL` | auth emails | server | Public address used in reset and invitation links |
 | `CARTESIA_API_KEY` | voice adapter | server only | Added when the voice phase is ready |
 

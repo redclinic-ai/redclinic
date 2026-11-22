@@ -38,3 +38,23 @@ export function linkToken(text: string): string {
   if (!m) throw new Error("no link in email");
   return m[1];
 }
+
+import { withContext } from "@/lib/db";
+import { contextOf, inviteStaff, setPasswordWithToken } from "@/lib/auth/service";
+import type { SimulatedEmailAdapter as Outbox } from "@/lib/email";
+
+export async function newPatient(admin: SignedInUser, name = "Asha Kumar"): Promise<string> {
+  return withContext(contextOf(admin), async (c) =>
+    (await c.query("INSERT INTO patients (clinic_id, name, phone) VALUES ($1,$2,'9800000000') RETURNING id", [admin.clinicId, name])).rows[0].id,
+  );
+}
+
+export async function addStaff(admin: SignedInUser, role: "doctor" | "receptionist" | "clinic_manager", outbox: Outbox) {
+  const email = uniqueEmail(role);
+  const r = await inviteStaff(admin, { displayName: `Test ${role}`, email, role });
+  if (!r.ok) throw new Error(r.error);
+  const msg = outbox.outbox.filter((m) => m.to === email).pop()!;
+  const set = await setPasswordWithToken(linkToken(msg.text), PASSWORD);
+  if (!set.ok) throw new Error(set.error);
+  return (await signIn(email)).user;
+}

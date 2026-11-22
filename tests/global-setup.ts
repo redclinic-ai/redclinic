@@ -14,7 +14,7 @@ export default function setup() {
   psql(ADMIN, `DROP DATABASE IF EXISTS ${DB} WITH (FORCE)`);
   psql(ADMIN, `CREATE DATABASE ${DB}`);
   const dbUrl = ADMIN.replace(/\/[^/]*$/, `/${DB}`);
-  execFileSync("bash", [path.resolve(__dirname, "../scripts/migrate.sh")], {
+  execFileSync("bash", [path.resolve(import.meta.dirname, "../scripts/migrate.sh")], {
     env: { ...process.env, DATABASE_ADMIN_URL: dbUrl },
     stdio: ["ignore", "ignore", "inherit"],
   });
