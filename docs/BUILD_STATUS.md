@@ -7,7 +7,7 @@ Last updated: 2026-11-22. Source of truth for what is actually built and tested.
 | Phase | Status |
 |---|---|
 | 0 Audit | Done (nothing existed; see ARCHITECTURE.md "Audit") |
-| 1 Foundation: database, tenancy, permissions | In progress: schema + tests (see below) |
+| 1 Foundation: database, tenancy, permissions | Schema and tests done (migrations 001-004, 87 SQL tests passing on PostgreSQL 16). No application code yet |
 | 1 Foundation: auth, storage, deploy, monitoring | Not started, blocked on app scaffold (KNOWN_ISSUES K1) |
 | 2 Clinic application | Not started |
 | 3 Product experience (Today, Needs Attention, Results) | Not started |
@@ -32,4 +32,6 @@ No integration is configured, verified or live.
 
 ## Test results
 
-See the latest entry in CHANGELOG.md. Only tests that were actually run are listed there.
+Database suite (`scripts/test-db.sh`, PostgreSQL 16.15, fresh database each run): 87 passed, 0 failed.
+Covers: tenant isolation for both clinics and the super admin, clinic kill switch, per-role capabilities and grant/revoke, deactivated users, permanent patient IDs and phone changes, consent status, double-booking prevention, cross-clinic reference rejection, documents, call transcripts (original text immutable, corrections separate), approvals, append-only audit log, workflow copies not changing master templates, idempotent payment events, no revenue-style columns, RLS enabled on every clinic table.
+Not tested: anything outside the database. No application, API, UI, auth, storage or integration exists yet. The simulated-call dashboards, Needs Attention generation and Results calculations have schema only.
