@@ -16,3 +16,15 @@ Planned: separate development, staging and production environments. Migrations i
 5. Founder account: `DATABASE_ADMIN_URL=... SUPER_ADMIN_EMAIL=... SUPER_ADMIN_NAME=... SUPER_ADMIN_PASSWORD=... npm run create-super-admin` (password 14+ characters).
 
 Tests: `npm test` (application, needs a local Postgres superuser to build `rc_vitest`) and `npm run test:db` (SQL suite).
+
+## Staging runbook (once a host is chosen)
+
+1. Create a managed PostgreSQL 16 database in India (with point-in-time recovery) and a private S3-compatible bucket.
+2. Run migrations from CI or a laptop: `DATABASE_ADMIN_URL=... npm run db:migrate`. Create the app login role (`IN ROLE rc_app`).
+3. Build and deploy the Docker image. Set every variable in ENVIRONMENT_VARIABLES.md; on staging also `ALLOW_SIMULATED_TELEPHONY=1` and `ALLOW_SIMULATED_PAYMENTS=1`.
+4. Schedule `POST /api/cron/dialer` every minute with `Authorization: Bearer $CRON_SECRET`.
+5. Point an uptime monitor at `/api/health`.
+6. Create the founder account: `npm run create-super-admin` (with `DATABASE_ADMIN_URL`).
+7. Optional demo data: `npm run seed-demo` (refuses to run when `APP_ENV=production`).
+8. Run `BASE_URL=https://staging... npm run smoke`. All checks must pass before production.
+9. Take a backup (`scripts/backup-db.sh`) and test a restore into a scratch database.

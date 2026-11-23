@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2026-11-23: Phase 8
+- Migrations 016 (rate limits) and 017 (RLS once per query, indexes). JIT off for app connections.
+- Security fixes: open redirect, test-call guard, sign-up/reset rate limits, no reset links in production logs, CSP and HSTS.
+- Accessibility scan (0 violations on 54 screens), performance work (all screens under 150 ms at clinic scale), load test.
+- Added demo seed script, browser smoke test (`npm run smoke`), favicon, QA_REPORT.md.
+
 ## 2026-11-23: Phase 7
 - Migration 015: plan prices and limits, subscription lifecycle fields, invoices, usage alerts, entitlements, trials, kill switch details, admin overview, feature switches; attention de-duplication covers items without a patient.
 - Billing service, payment webhook, admin service; screens: admin clinics, clinic detail, plans, audit log, system; clinic Plan & usage.

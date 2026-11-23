@@ -27,6 +27,7 @@ Status labels: Locked, Approved, Proposed, Recommended, Unresolved. Recommendati
 | D22 | Plans are seeded with the founder's planning figures (Starter ₹2,999 / 300 min incoming only; Growth ₹7,999 / 700 min; Scale ₹12,999 / 1,200 min; setup ₹9,999 waivable with 3 references; annual = 11 months; GST 18% on top) but stay in draft until the founder confirms launch pricing. Overage price is left empty until set. | Founder planning figures; launch pricing to be confirmed |
 | D23 | New clinics get a 14-day trial on Growth so they can try outgoing calls (founder: V1 must include incoming and outgoing). | Approved (engineering); founder may change |
 | D24 | Using more voice minutes than the plan never stops calls; it raises alerts and bills extra minutes at renewal (founder priced overage). A lapsed plan (expired/cancelled) pauses NEPA and sends calls to staff. | Approved (engineering) |
+| D25 | Row-level security policies call context functions inside scalar sub-selects, e.g. `(SELECT rc_clinic_id())`, so they run once per query. Enforced by a database test; the policy helpers already do it. App connections run with `jit=off` and a 15 s statement timeout. | Approved (engineering) |
 | D9 | Simulated calls are flagged and excluded from real dashboards by default. | Approved (engineering) |
 
 ## Conflicts found
