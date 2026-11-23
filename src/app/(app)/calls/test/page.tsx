@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth/session-cookie";
 import { requirePageCap } from "@/lib/nav";
 import { getCall } from "@/lib/calls/service";
+import { getTextToSpeech } from "@/lib/providers";
 import { PageHeader } from "@/components/ui";
 import { ActionForm, Submit } from "@/components/action-form";
 import { endTestCallAction, sayAction, startTestCallAction } from "../actions";
@@ -16,6 +17,7 @@ export default async function TestCallPage({ searchParams }: { searchParams: Pro
   if (call && (!r || !r.ok)) redirect("/calls/test");
   const c = r?.ok ? r.value : null;
   const live = c?.status === "in_progress";
+  const voice = !getTextToSpeech().info.simulated;
   return (
     <>
       <PageHeader title="Test call" back={{ href: "/calls", label: "Calls" }}
@@ -28,7 +30,11 @@ export default async function TestCallPage({ searchParams }: { searchParams: Pro
         </form>
       ) : (
         <section className="card">
-          <ol className="chat">{(c.transcript ?? []).map((t) => <li key={t.id} className={`bubble ${t.speaker}`}><span className="sr-only">{t.speaker === "nepa" ? "NEPA" : "You"}: </span>{t.original}</li>)}</ol>
+          <ol className="chat">{(c.transcript ?? []).map((t) => (
+            <li key={t.id} className={`bubble ${t.speaker}`}><span className="sr-only">{t.speaker === "nepa" ? "NEPA" : "You"}: </span>{t.original}
+              {voice && t.speaker === "nepa" && <audio className="listen" controls preload="none" src={`/api/tts/${t.id}`} aria-label="Listen to NEPA" />}</li>
+          ))}</ol>
+          {!voice && <p className="muted small">Voice playback appears here once the Cartesia voice is connected.</p>}
           {live ? (
             <>
               <ActionForm action={sayAction} className="say-bar" resetOnSuccess>

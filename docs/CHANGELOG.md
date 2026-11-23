@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-23: Phases 9 and 10
+- Cartesia adapter updated to the current API (Bearer auth, version 2026-08-14, Sonic 3.6, Indian locales); tests; `npm run check-cartesia`.
+- Test calls: "Listen" plays NEPA's lines in the agent's voice once Cartesia is verified (`/api/tts/[segmentId]`, transcript permission required).
+- PRODUCTION_CHECKLIST.md and HANDOVER.md.
+
 ## 2026-11-23: Phase 8
 - Migrations 016 (rate limits) and 017 (RLS once per query, indexes). JIT off for app connections.
 - Security fixes: open redirect, test-call guard, sign-up/reset rate limits, no reset links in production logs, CSP and HSTS.

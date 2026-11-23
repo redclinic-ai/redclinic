@@ -1,6 +1,6 @@
 # BUILD_STATUS
 
-Last updated: 2026-11-22. Source of truth for what is actually built and tested.
+Last updated: 2026-11-23. Source of truth for what is actually built and tested.
 
 ## Phase status
 
@@ -20,14 +20,14 @@ Last updated: 2026-11-22. Source of truth for what is actually built and tested.
 | 6 Dental Pack and workflow engine | Done and tested (migration 014). One structured workflow format. Core pack for every clinic type (confirmation 3 h before, no-show: call at once and ~5.5 h later then tell staff, 6-month recall, enquiry follow-up) using the founder's stated timing; Dental Pack v2 (post-procedure check-in, root canal next visit, braces adjustment) still a draft for dental review (K4). Packs install switched on but never automatic. Clinic copies: edit as new versions, history, restore, add own workflows, on/off, automatic (clinic admin only); master updates offered with "use RedClinic's version" or "keep mine", never applied silently. Engine: finds subjects per trigger, schedules steps, checks conditions when due (not confirmed / not rebooked / nothing booked), queues calls through the permission engine or tells staff, stops when the reason goes away or the workflow is switched off; runs with the dialler every minute. Specialty architecture: packs by clinic type plus "all" |
 | 7 Super Admin and billing | Done and tested with simulated payments (migration 015). Plans Starter/Growth/Scale seeded with the founder's planning figures, marked draft and editable (prices before GST, annual = 11 months, setup fee with waiver note). New clinics start a 14-day Growth trial. Subscription lifecycle: plan change issues an invoice with GST, payment confirmed only by a signed, duplicate-safe event; failure → 7-day grace → expired; renewal invoices extra minutes; cancel at period end. Limits: voice minutes (alerts at 80%/100%, calls continue), outgoing calls only on plans that include them, staff seats; lapsed plan pauses NEPA (calls go to staff). Admin: clinics list with counts, clinic detail (usage, kill switch, feature switches that take effect at once, NEPA number assignment, plan and simulated payment events, staff, recent calls), plans editor, audit log viewer, system/integration status. Every super-admin look at a clinic is audited and visible to that clinic. Clinic "Plan & usage" page |
 | 8 QA and staging | QA done (see QA_REPORT.md): 54 screens pass WCAG 2.1 AA (axe), security review with 5 fixes (open redirect, test-call guard, rate limits, no reset links in production logs, CSP/HSTS), performance at 5k patients/30k appointments/10k calls with every screen under 150 ms (RLS once-per-query rewrite, JIT off, indexes), load test, phone/tablet/laptop, standalone production package verified, browser smoke test in the repo. Staging deployment blocked: no hosting chosen (K8) |
-| 9 Approved integrations | Not started |
-| 10 Production | Not started |
+| 9 Approved integrations | Partly done. Only Cartesia is approved (founder's choice). Adapter updated to Cartesia's current API (version 2026-08-14, Bearer auth, Sonic 3.6, locales en-IN/hi-IN/kn-IN, 16 kHz WAV) with request-shape and failure tests; `npm run check-cartesia` connection test (English, Hindi, Kannada); "Listen" playback of NEPA's lines on test calls once verified. Live verification waits for the founder's Cartesia key. Telephony, speech-to-text, LLM, email, payments and monitoring wait for provider decisions (no adapter is written against an unchosen vendor) |
+| 10 Production | Prepared, not launched. PRODUCTION_CHECKLIST.md (go-live gates, rollback plan, first-week checks) and HANDOVER.md for a developer taking over. Launch needs: hosting (K8), the integrations above verified, legal review of terms/consent, dentist review of Dental Pack (K4), launch pricing, branch merged to main |
 
 ## Integration status (scale from master prompt section 23)
 
 | Integration | Status |
 |---|---|
-| Cartesia (voice generation) | Adapter implemented against the documented /tts/bytes API (WAV, 16 kHz). Not verified: no credentials. Used only when CARTESIA_API_KEY is set and CARTESIA_VERIFIED=1 after a connection test. |
+| Cartesia (voice generation) | Code ready for API version 2026-08-14 (Sonic 3.6; Cartesia lists Hindi and Kannada). Not verified: no key yet. Run `npm run check-cartesia`, listen to the three files, then set CARTESIA_VERIFIED=1 |
 | Speech-to-text | Interface and simulated adapter (mock tested, including failure and retry). Provider not selected |
 | Telephony | Webhook contract and simulated adapter (mock tested). Provider not selected |
 | LLM | Not selected. Rule-based conversation model and summaries run behind the model interface |

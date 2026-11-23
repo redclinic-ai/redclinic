@@ -15,7 +15,8 @@
     "db:migrate": "bash scripts/migrate.sh",
     "create-super-admin": "tsx scripts/create-super-admin.mts",
     "smoke": "node e2e/smoke.mjs",
-    "seed-demo": "tsx scripts/seed-demo.mts"
+    "seed-demo": "tsx scripts/seed-demo.mts",
+    "check-cartesia": "tsx scripts/check-cartesia.mts"
   },
   "dependencies": {
     "next": "^16.4.6",

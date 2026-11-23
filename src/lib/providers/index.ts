@@ -74,26 +74,42 @@ export class SimulatedTextToSpeech implements TextToSpeech {
 }
 
 /**
- * Cartesia text-to-speech (selected by the founder). Written to Cartesia's documented /tts/bytes endpoint.
- * NOT verified: no credentials yet. Enabled only when CARTESIA_API_KEY is set and CARTESIA_VERIFIED=1 after a
- * successful connection test, so it can never be used silently before it is checked.
+ * Cartesia text-to-speech (selected by the founder). Written to Cartesia's API version 2026-08-14 (POST /tts/bytes,
+ * Bearer auth, Sonic 3.6, regional locales hi-IN / kn-IN / en-IN, WAV 16 kHz).
+ * NOT verified: no credentials yet. Used only when CARTESIA_API_KEY is set AND CARTESIA_VERIFIED=1 (set after
+ * `npm run check-cartesia` succeeds), so it can never be used silently before it is checked.
  */
+export const CARTESIA_LOCALE: Record<string, string> = { en: "en-IN", hi: "hi-IN", kn: "kn-IN" };
 export class CartesiaTextToSpeech implements TextToSpeech {
-  constructor(private readonly apiKey: string, private readonly model = process.env.CARTESIA_MODEL ?? "sonic-2", private readonly version = process.env.CARTESIA_API_VERSION ?? "2025-04-16") {}
+  constructor(
+    private readonly apiKey: string,
+    private readonly model = process.env.CARTESIA_MODEL ?? "sonic-3.6",
+    private readonly version = process.env.CARTESIA_API_VERSION ?? "2026-08-14",
+    private readonly fetchImpl: typeof fetch = fetch,
+  ) {}
   readonly info: ProviderInfo = { kind: "text_to_speech", name: "Cartesia", simulated: false, state: process.env.CARTESIA_VERIFIED === "1" ? "connection_verified" : "credentials_configured", note: "Selected by founder." };
+  request(input: { text: string; voiceId: string; lang: string }) {
+    return {
+      url: "https://api.cartesia.ai/tts/bytes",
+      init: {
+        method: "POST",
+        headers: { Authorization: `Bearer ${this.apiKey}`, "Cartesia-Version": this.version, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model_id: this.model, transcript: input.text.slice(0, 2000), voice: { id: input.voiceId },
+          locale: CARTESIA_LOCALE[input.lang] ?? "en-IN",
+          output_format: { container: "wav", encoding: "pcm_s16le", sample_rate: 16000 },
+        }),
+      } satisfies RequestInit,
+    };
+  }
   async synthesize(input: { text: string; voiceId: string; lang: string }) {
-    const res = await fetch("https://api.cartesia.ai/tts/bytes", {
-      method: "POST",
-      headers: { "X-API-Key": this.apiKey, "Cartesia-Version": this.version, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model_id: this.model, transcript: input.text, language: input.lang,
-        voice: { mode: "id", id: input.voiceId },
-        output_format: { container: "wav", encoding: "pcm_s16le", sample_rate: 16000 },
-      }),
-      signal: AbortSignal.timeout(15_000),
-    });
-    if (!res.ok) throw new Error(`Cartesia error ${res.status}`);
-    return { audio: Buffer.from(await res.arrayBuffer()), format: "wav-pcm16-16khz-1ch" };
+    if (!input.voiceId) throw new Error("No Cartesia voice ID set for this agent");
+    const { url, init } = this.request(input);
+    const res = await this.fetchImpl(url, { ...init, signal: AbortSignal.timeout(15_000) });
+    if (!res.ok) throw new Error(`Cartesia error ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    const audio = Buffer.from(await res.arrayBuffer());
+    if (audio.subarray(0, 4).toString("latin1") !== "RIFF") throw new Error("Cartesia did not return WAV audio");
+    return { audio, format: "wav-pcm16-16khz-1ch" };
   }
 }
 

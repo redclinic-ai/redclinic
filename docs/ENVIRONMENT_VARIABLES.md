@@ -15,7 +15,8 @@ Three environments: development, staging, production. Each has its own database 
 | `ALLOW_SIMULATED_TELEPHONY` | telephony webhook | server | `1` only on staging, to accept simulated events in a production build |
 | `CRON_SECRET` | `/api/cron/dialer` | server only | Bearer token the scheduler sends |
 | `CARTESIA_VERIFIED` | voice adapter | server | `1` only after a successful connection test |
-| `CARTESIA_MODEL`, `CARTESIA_API_VERSION` | voice adapter | server | Optional overrides |
+| `CARTESIA_MODEL`, `CARTESIA_API_VERSION` | voice adapter | server | Optional overrides (defaults `sonic-3.6`, `2026-08-14`; pin e.g. `sonic-3.6-2026-08-27` for production) |
+| `CARTESIA_VOICE_ID` | check-cartesia script only | local | Voice to test with; each agent's voice is set in AI receptionist → Agents |
 | `BILLING_WEBHOOK_SECRET` | payment webhook | server only | HMAC secret for payment events |
 | `ALLOW_SIMULATED_PAYMENTS` | payment webhook | server | `1` only on staging |
 | `APP_BASE_URL` | auth emails | server | Public address used in reset and invitation links |
