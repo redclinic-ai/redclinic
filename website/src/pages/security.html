@@ -1,0 +1,79 @@
+<!--{"title":"Security and patient privacy | RedClinic","ogTitle":"How RedClinic protects your clinic's patient records","description":"How RedClinic keeps each clinic's patient records separate, controls staff access, asks before NEPA acts, handles medical documents and limits what the AI does.","path":"/security/","nav":"security"}-->
+<section class="page-head">
+  <div class="wrap">
+    <h1>Your patients trust you. Here's how we protect that.</h1>
+    <p class="lede">This page explains how RedClinic is designed to keep your clinic's records private, who can see what, and what NEPA will and won't do. RedClinic is in development, so we've said plainly where something is still being built.</p>
+  </div>
+</section>
+
+<section class="section flush-top">
+  <div class="wrap">
+    <div class="trust-rows">
+      <div class="trust-row">
+        <h2>Your records stay inside your clinic</h2>
+        <div>
+          <p>Every patient, appointment, call and document belongs to one clinic. The database itself refuses to show one clinic's records to another clinic's staff, so separation doesn't depend on a screen hiding a button.</p>
+          <p>We test this on every change: our automated tests check that staff of one clinic can't read or change another clinic's data.</p>
+        </div>
+      </div>
+      <div class="trust-row">
+        <h2>Staff see only what you allow</h2>
+        <div>
+          <p>The clinic owner creates every staff account and chooses what each person can do: view patient history, upload documents, approve bookings, change settings.</p>
+          <ul>
+            <li>Roles for clinic owner, doctor, receptionist and clinic manager, each with sensible defaults.</li>
+            <li>Permissions are checked on our servers, not just in the app.</li>
+            <li>Switch off an account and access stops immediately.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="trust-row">
+        <h2>NEPA asks before it acts</h2>
+        <div>
+          <p>Bookings, cancellations, reschedules and record changes wait for a staff member's approval unless the clinic owner has switched on automatic mode for that specific workflow. NEPA can never give itself more permissions.</p>
+          <p>Every approval, rejection and action is written to a log that can't be edited afterwards.</p>
+        </div>
+      </div>
+      <div class="trust-row">
+        <h2>Medical documents</h2>
+        <div>
+          <p>Only authorised staff can upload prescriptions, X-rays and reports. Files are kept in private storage, never on a public link. When someone opens a file, they get a link that expires within minutes, and the access is logged.</p>
+        </div>
+      </div>
+      <div class="trust-row">
+        <h2>What NEPA won't do</h2>
+        <div>
+          <ul>
+            <li>It won't diagnose, prescribe or recommend treatment.</li>
+            <li>It won't give medical advice on calls. Urgent symptoms go straight to staff.</li>
+            <li>It won't invent a transcript. If speech can't be transcribed, the call is marked that way and can be retried.</li>
+            <li>It won't answer from outside your records. Answers to staff come with a link to the source.</li>
+            <li>It won't call patients who have withdrawn consent.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="trust-row">
+        <h2>Patient consent</h2>
+        <div>
+          <p>Each patient's consent is recorded as given, withdrawn or not yet recorded, with the date, the staff member and the wording used. Default wording is in English and Hindi and you can edit it. If a patient withdraws, follow-up calls stop and the clinic owner is told.</p>
+        </div>
+      </div>
+      <div class="trust-row">
+        <h2>RedClinic's own access</h2>
+        <div>
+          <p>To run and support the service, RedClinic's team can access clinic data, including patient records and call transcripts. Every such access goes through a logged route. What RedClinic may do with clinic data is set out in the terms each clinic accepts at signup, and we'll walk you through them before you sign.</p>
+        </div>
+      </div>
+      <div class="trust-row">
+        <h2>What we don't claim</h2>
+        <div>
+          <p>RedClinic doesn't yet hold security certifications such as ISO 27001, and isn't yet integrated with India's Ayushman Bharat Digital Mission. When we achieve any certification or approval, we'll list it here with the details.</p>
+          <p>We're building RedClinic to meet India's Digital Personal Data Protection Act and its rules, and our terms and consent wording are being reviewed by lawyers before launch.</p>
+        </div>
+      </div>
+    </div>
+    <p class="callout more"><strong>Questions from your team or your IT person?</strong> Email <a href="mailto:{{site.email}}">{{site.email}}</a> and we'll answer in writing.</p>
+  </div>
+</section>
+
+{{> cta-band}}

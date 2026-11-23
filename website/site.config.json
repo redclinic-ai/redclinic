@@ -1,0 +1,14 @@
+{
+  "name": "RedClinic",
+  "tagline": "AI for Modern Clinics",
+  "origin": "https://redclinic.ai",
+  "phoneDisplay": "+91 99546 74179",
+  "phoneE164": "+919954674179",
+  "email": "hello@redclinic.ai",
+  "callbackPromise": "within one working day",
+  "demoLength": "20-minute",
+  "analytics": {
+    "consentBanner": false,
+    "endpoint": ""
+  }
+}

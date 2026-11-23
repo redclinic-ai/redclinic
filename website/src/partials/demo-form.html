@@ -1,0 +1,66 @@
+<div class="form-shell" data-form-shell>
+<form class="demo-form" data-demo-form action="/api/demo-requests" method="post" novalidate>
+  <div class="field">
+    <label for="f-name">Your name</label>
+    <input id="f-name" name="name" type="text" autocomplete="name" maxlength="80" required>
+    <p class="field-error" id="f-name-err" hidden></p>
+  </div>
+  <div class="field">
+    <label for="f-phone">Mobile number</label>
+    <div class="phone-input">
+      <span aria-hidden="true">+91</span>
+      <input id="f-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" placeholder="98765 43210" required aria-describedby="f-phone-hint">
+    </div>
+    <p class="field-hint" id="f-phone-hint">We'll call this number to fix a time.</p>
+    <p class="field-error" id="f-phone-err" hidden></p>
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label for="f-clinic">Clinic name</label>
+      <input id="f-clinic" name="clinic" type="text" autocomplete="organization" maxlength="120" required>
+      <p class="field-error" id="f-clinic-err" hidden></p>
+    </div>
+    <div class="field">
+      <label for="f-city">City</label>
+      <input id="f-city" name="city" type="text" autocomplete="address-level2" maxlength="60" required>
+      <p class="field-error" id="f-city-err" hidden></p>
+    </div>
+  </div>
+  <fieldset class="field choice">
+    <legend>Doctors at your clinic</legend>
+    <div class="chips">
+      <label><input type="radio" name="size" value="1" required><span>Just me</span></label>
+      <label><input type="radio" name="size" value="2-3"><span>2 to 3</span></label>
+      <label><input type="radio" name="size" value="4+"><span>4 or more</span></label>
+      <label><input type="radio" name="size" value="multi"><span>More than one location</span></label>
+    </div>
+    <p class="field-error" id="f-size-err" hidden></p>
+  </fieldset>
+  <fieldset class="field choice">
+    <legend>Best time to call you <span class="optional">(optional)</span></legend>
+    <div class="chips">
+      <label><input type="radio" name="call_time" value="morning"><span>Morning</span></label>
+      <label><input type="radio" name="call_time" value="afternoon"><span>Afternoon</span></label>
+      <label><input type="radio" name="call_time" value="evening"><span>Evening</span></label>
+    </div>
+  </fieldset>
+  <div class="hp" aria-hidden="true">
+    <label for="f-rc-hp">Leave this empty</label>
+    <input id="f-rc-hp" name="rc_hp" type="text" tabindex="-1" autocomplete="off">
+  </div>
+  <button class="btn btn-red btn-lg btn-block" type="submit" data-submit>Request my demo</button>
+  <p class="form-status" data-form-status role="alert" hidden></p>
+  <p class="form-note">We'll call you {{site.callbackPromise}} to fix a time. We use these details only to arrange your demo. <a href="/privacy/">Privacy notice</a></p>
+</form>
+<div class="form-done" data-form-done tabindex="-1" hidden>
+  <svg class="done-mark" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 22.5l6 6 12-13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <h3 data-done-title>Request received</h3>
+  <p>Your request is saved. Reference <strong data-done-ref></strong>.</p>
+  <ol class="next-steps">
+    <li><strong>We call you {{site.callbackPromise}}</strong> on <span data-done-phone></span> to agree a time that suits your clinic hours.</li>
+    <li><strong>The demo takes about 20 minutes</strong>, by phone or video. We show you NEPA handling sample calls and the screens your team would use.</li>
+    <li><strong>You decide afterwards.</strong> No payment details, no commitment.</li>
+  </ol>
+  <p class="done-alt">Prefer to talk now? Call <a href="tel:{{site.phoneE164}}">{{site.phoneDisplay}}</a> or email <a href="mailto:{{site.email}}">{{site.email}}</a>.</p>
+</div>
+</div>

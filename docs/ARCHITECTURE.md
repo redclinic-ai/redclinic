@@ -6,7 +6,7 @@ Inspected on 2026-11-22: the working environment for this session.
 
 - GitHub repository: none attached to this session. A new local git repository was created.
 - Frontend, backend, schema, auth, hosting, domain/DNS, integrations, secrets, UI assets, tests: none exist.
-- Existing assets outside the repo: the marketing website prototype (a single static HTML page, `redclinic-site.html`). It is marketing only and is not part of the application.
+- Marketing website: `website/` (added 2026-11-23). Static pages plus a small Node server for demo requests. Independent of the application: no shared code, tables or credentials. See website/README.md.
 - Tools available in the build environment: Node 22, Python 3.13 (Flask, Starlette, pydantic, pytest, PyJWT), PostgreSQL 16 client and server. Package installs (npm, pip) are blocked by the account network setting. See KNOWN_ISSUES K1.
 
 Result: this is a new build. There is nothing to preserve.

@@ -1,0 +1,5 @@
+dist/
+dist-preview/
+data/
+node_modules/
+*.log
