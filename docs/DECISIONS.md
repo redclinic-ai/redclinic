@@ -22,6 +22,8 @@ Status labels: Locked, Approved, Proposed, Recommended, Unresolved. Recommendati
 | D17 | NEPA has no user account. On calls the app sets only the clinic context; NEPA acts through narrow SECURITY DEFINER functions (book, confirm/cancel, find caller, busy times, register caller). Whether NEPA may act is decided by the permission engine in the application before calling them. | Approved (engineering) |
 | D18 | Until an LLM is selected, NEPA runs on a deterministic rule-based model, labelled simulated. Safety checks (emergency, medical advice, AI objection) run in code before any model, and must stay first when an LLM adapter is added. | Approved (engineering) |
 | D19 | Rescheduling by NEPA always goes to staff (NEPA collects the wish; a person picks the new slot), even if automatic is allowed. | Approved (engineering) |
+| D20 | Workflow timing follows the founder's stated decisions: confirmation call about 3 hours before (founder: 2–3 h); no-show recovery limited to two calls (at the appointment time and ~5.5 h later), then staff are told. WhatsApp first touches (location for confirmed patients) wait for V2. | Approved (founder decisions in planning) |
+| D21 | Packs install switched on (spec: "Dental Pack activates automatically") but never automatic, so every call they want to make needs staff approval until the clinic admin makes a workflow automatic. | Approved (engineering) |
 | D9 | Simulated calls are flagged and excluded from real dashboards by default. | Approved (engineering) |
 
 ## Conflicts found

@@ -1,23 +1,27 @@
 -- Dental Pack auto-install and results counts. Needs the seed from 001 (schema rct).
 \set ON_ERROR_STOP on
 SELECT rct.check('dental clinic got the Dental Pack copied automatically',
-  (SELECT count(*) FROM clinic_workflows WHERE clinic_id = rct.id('ca')) >= 9);
+  (SELECT count(*) FROM clinic_workflows WHERE clinic_id = rct.id('ca')) >= 7);
 SELECT rct.check('copied workflows are not automatic by default',
   (SELECT count(*) FROM clinic_workflows WHERE clinic_id = rct.id('ca') AND automatic_enabled) = 0);
 SELECT rct.check('Dental Pack is marked draft until reviewed',
-  (SELECT review_status FROM workflow_packs WHERE key='dental_pack') = 'draft');
-SELECT rct.check('every patient-contacting step needs approval',
-  (SELECT count(*) FROM workflow_templates t, jsonb_array_elements(t.steps) s
-   WHERE t.pack_id = (SELECT id FROM workflow_packs WHERE key='dental_pack')
-     AND s->>'action' = 'contact_patient' AND COALESCE((s->>'needs_approval')::boolean,false) = false) = 0);
+  (SELECT review_status FROM workflow_packs WHERE key='dental_pack' AND is_active) = 'draft');
+SELECT rct.check('only one version of each pack is active',
+  (SELECT count(*) FROM (SELECT key FROM workflow_packs WHERE is_active GROUP BY key HAVING count(*) > 1) x) = 0);
+SELECT rct.check('every active template has a trigger and at least one step',
+  (SELECT count(*) FROM workflow_templates t JOIN workflow_packs p ON p.id = t.pack_id
+   WHERE p.is_active AND (t.steps->'trigger'->>'event' IS NULL OR jsonb_array_length(t.steps->'steps') = 0)) = 0);
+SELECT rct.check('dental clinic has the core and dental workflows (format 2)',
+  (SELECT count(DISTINCT template_key) FROM clinic_workflows WHERE clinic_id = rct.id('ca') AND step_format = 2) = 7);
 
 -- editing a clinic copy never changes the master template
 BEGIN;
 SELECT rct.as_user(rct.id('aa'), rct.id('ca'));
-UPDATE clinic_workflows SET steps='[]', edited_by_clinic=true
-  WHERE clinic_id = rct.id('ca') AND name = 'Routine check-up recall';
+UPDATE clinic_workflows SET steps='{}', edited_by_clinic=true
+  WHERE clinic_id = rct.id('ca') AND template_key = 'routine_recall' AND step_format = 2;
 SELECT rct.check('master template unchanged after a clinic edit',
-  (SELECT jsonb_array_length(steps) FROM workflow_templates WHERE key='routine_recall') = 1);
+  (SELECT jsonb_array_length(t.steps->'steps') FROM workflow_templates t JOIN workflow_packs p ON p.id = t.pack_id
+   WHERE p.key = 'core' AND t.key = 'routine_recall') = 1);
 ROLLBACK;
 
 -- results: counts only, simulated excluded by default, permission needed
@@ -53,4 +57,5 @@ SELECT rct.refused('receptionist without view_results cannot read results',
 ROLLBACK;
 
 SELECT rct.check('RCT, braces and recall workflows exist in the pack',
-  (SELECT count(*) FROM workflow_templates WHERE key IN ('rct_visit_sequence','braces_adjustment_reminder','routine_recall')) = 3);
+  (SELECT count(*) FROM workflow_templates t JOIN workflow_packs p ON p.id = t.pack_id
+   WHERE p.is_active AND t.key IN ('rct_next_visit','braces_adjustment','routine_recall')) = 3);

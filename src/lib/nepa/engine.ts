@@ -75,6 +75,9 @@ const T = {
   confirmAsk: { en: "I'm calling about your appointment on {when}. Will you be able to come?", hi: "मैं {when} की आपकी अपॉइंटमेंट के बारे में कॉल कर रही हूँ। क्या आप आ पाएँगे?", kn: "{when} ರ ನಿಮ್ಮ ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಬಗ್ಗೆ ಕರೆ ಮಾಡುತ್ತಿದ್ದೇನೆ. ನೀವು ಬರಲು ಸಾಧ್ಯವೇ?" },
   callbackOpen: { en: "We missed your call earlier, so I'm calling you back. How can I help?", hi: "हम आपकी कॉल नहीं उठा पाए थे, इसलिए मैं वापस कॉल कर रही हूँ। मैं क्या मदद करूँ?", kn: "ನಿಮ್ಮ ಕರೆಯನ್ನು ಸ್ವೀಕರಿಸಲಾಗಲಿಲ್ಲ, ಆದ್ದರಿಂದ ಮರಳಿ ಕರೆ ಮಾಡುತ್ತಿದ್ದೇನೆ. ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?" },
   followupOpen: { en: "I'm calling to help you book your next visit. The earliest time is {when} with {doctor}. Shall I request it?", hi: "मैं आपकी अगली विज़िट बुक करने में मदद के लिए कॉल कर रही हूँ। सबसे पहला समय {when} है, {doctor} के साथ। क्या मैं अनुरोध करूँ?", kn: "ನಿಮ್ಮ ಮುಂದಿನ ಭೇಟಿ ಬುಕ್ ಮಾಡಲು ಕರೆ ಮಾಡುತ್ತಿದ್ದೇನೆ. ಮೊದಲ ಸಮಯ {when}, {doctor} ಅವರೊಂದಿಗೆ. ಕೇಳಲೇ?" },
+  checkinOpen: { en: "I'm calling to ask how you are feeling after your treatment. How are you?", hi: "मैं यह पूछने के लिए कॉल कर रही हूँ कि इलाज के बाद आप कैसा महसूस कर रहे हैं। आप कैसे हैं?", kn: "ಚಿಕಿತ್ಸೆಯ ನಂತರ ನೀವು ಹೇಗಿದ್ದೀರಿ ಎಂದು ಕೇಳಲು ಕರೆ ಮಾಡುತ್ತಿದ್ದೇನೆ. ಹೇಗಿದ್ದೀರಿ?" },
+  checkinProblem: { en: "I'm sorry to hear that. I've told the clinic and someone will call you soon. If it gets worse, or there is heavy bleeding or trouble breathing, call 108 or 112.", hi: "यह सुनकर दुख हुआ। मैंने क्लिनिक को बता दिया है, कोई जल्द ही आपको कॉल करेगा। अगर तकलीफ़ बढ़े, बहुत खून बहे या सांस लेने में दिक्कत हो, तो 108 या 112 पर कॉल करें।", kn: "ಕೇಳಿ ಬೇಸರವಾಯಿತು. ಕ್ಲಿನಿಕ್‌ಗೆ ತಿಳಿಸಿದ್ದೇನೆ, ಶೀಘ್ರದಲ್ಲೇ ಕರೆ ಮಾಡುತ್ತಾರೆ. ಹೆಚ್ಚಾದರೆ, ಹೆಚ್ಚು ರಕ್ತಸ್ರಾವ ಅಥವಾ ಉಸಿರಾಟದ ತೊಂದರೆ ಇದ್ದರೆ 108 ಅಥವಾ 112 ಗೆ ಕರೆ ಮಾಡಿ." },
+  checkinFine: { en: "Glad to hear it. If anything changes, please call the clinic. Take care.", hi: "यह सुनकर अच्छा लगा। कुछ भी बदले तो क्लिनिक को कॉल करें। अपना ध्यान रखें।", kn: "ಕೇಳಿ ಸಂತೋಷವಾಯಿತು. ಏನಾದರೂ ಬದಲಾದರೆ ಕ್ಲಿನಿಕ್‌ಗೆ ಕರೆ ಮಾಡಿ. ಕಾಳಜಿ ವಹಿಸಿ." },
   wontCome: { en: "No problem. I'll let the clinic know, and they will call you to find another time.", hi: "कोई बात नहीं। मैं क्लिनिक को बता दूँगी, वे दूसरा समय तय करने के लिए कॉल करेंगे।", kn: "ಪರವಾಗಿಲ್ಲ. ಕ್ಲಿನಿಕ್‌ಗೆ ತಿಳಿಸುತ್ತೇನೆ, ಬೇರೆ ಸಮಯಕ್ಕಾಗಿ ಅವರು ಕರೆ ಮಾಡುತ್ತಾರೆ." },
   bye: { en: "Thank you for calling {clinic}. Goodbye.", hi: "{clinic} को कॉल करने के लिए धन्यवाद। नमस्ते।", kn: "{clinic} ಗೆ ಕರೆ ಮಾಡಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದ. ವಂದನೆಗಳು." },
   noSay: { en: "No problem.", hi: "कोई बात नहीं।", kn: "ಪರವಾಗಿಲ್ಲ." },
@@ -121,6 +124,7 @@ export class RuleBasedModel implements ConversationModel {
         s.intent = null;
       }
       if (s.intent === "callback") { s.intent = null; return reply(`${disclose} ${say(T.callbackOpen, s.lang)}`); }
+      if (s.intent === "checkin") return reply(`${disclose} ${say(T.checkinOpen, s.lang)}`);
       if (s.intent && ["recall", "follow_up", "no_show_followup"].includes(s.intent)) {
         const slot = (await this.firstSlot(t))[0];
         s.intent = "booking";
@@ -161,6 +165,17 @@ export class RuleBasedModel implements ConversationModel {
       const slot = (await this.firstSlot(t))[0];
       if (slot) s.awaiting.slot = { doctorId: slot.doctorId, doctorName: slot.doctorName, start: slot.start.toISOString() };
       return reply(say(T.noMedical, s.lang));
+    }
+
+    // after-treatment check-in: any problem goes to staff, urgently
+    if (s.intent === "checkin" && !s.outcome) {
+      if (/\b(pain|hurts?|swell\w*|bleed\w*|fever|not (good|well|ok|okay|fine)|bad|worse|problem|numb\w*|pus)\b|दर्द|सूजन|खून|बुखार|ठीक नहीं|ನೋವು|ಊತ|ರಕ್ತ|ಜ್ವರ/i.test(text)) {
+        s.outcome = "handed_to_staff"; s.handedOff = true; s.ended = true;
+        await handToStaff(t, "call_handed_over", `After-treatment check-in: patient reports “${text.slice(0, 200)}”`, 1, patientId);
+        return reply(say(T.checkinProblem, s.lang));
+      }
+      s.outcome = "answered"; s.ended = true;
+      return reply(say(T.checkinFine, s.lang));
     }
 
     // 4. answers to NEPA's own questions

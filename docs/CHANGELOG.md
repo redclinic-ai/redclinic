@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2026-11-23: Phase 6
+- Migration 014: workflow format 2, Core pack v1, Dental Pack v2, clinic workflow versions, master-update offers, workflow runs, engine helper functions; after-treatment check-in conversation.
+- Workflow engine (runs with the dialler), workflow service, Workflows screens (list, editor, history, runs, new).
+
 ## 2026-11-22 (night): Phase 5
 - Migration 013: call fields (agent, provider ids, recording, transcription attempts, test calls), telephony events, outbound queue, NEPA patient brief, approvals sync, active clinics; split calls write policy (security fix).
 - Calls service, provider adapters (incl. Cartesia), telephony webhook, cron dialler, assistant, phone setup. Screens: calls, call record, test call, assistant, phone number.
