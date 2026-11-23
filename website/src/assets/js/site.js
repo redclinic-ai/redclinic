@@ -104,6 +104,27 @@
     select(tabs[0]);
   });
 
+  /* ---------- Pricing: billing period switch ---------- */
+  document.querySelectorAll('[data-billing]').forEach(function (root) {
+    var sw = root.querySelector('[data-billing-switch]');
+    if (!sw) return;
+    var btns = Array.prototype.slice.call(sw.querySelectorAll('[data-period]'));
+    sw.hidden = false;
+    function pick(btn, focus) {
+      btns.forEach(function (b) { var on = b === btn; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+      root.setAttribute('data-billing', btn.getAttribute('data-period'));
+      if (focus) btn.focus();
+    }
+    btns.forEach(function (b, i) {
+      b.addEventListener('click', function () { pick(b); track('billing_period', { period: b.getAttribute('data-period') }); });
+      b.addEventListener('keydown', function (ev) {
+        var n = ev.key === 'ArrowRight' || ev.key === 'ArrowDown' ? 1 : ev.key === 'ArrowLeft' || ev.key === 'ArrowUp' ? -1 : 0;
+        if (n) { ev.preventDefault(); pick(btns[(i + n + btns.length) % btns.length], true); }
+      });
+    });
+    pick(btns[0]);
+  });
+
   /* ---------- Sticky mobile CTA ---------- */
   var sticky = document.querySelector('[data-sticky-cta]');
   if (sticky && location.pathname.indexOf('/demo') !== 0 && !/demo\/index\.html$/.test(location.pathname)) {
@@ -128,8 +149,14 @@
     phone: 'Enter a 10-digit Indian mobile number.',
     clinic: "Enter your clinic's name.",
     city: 'Enter the city your clinic is in.',
+    speciality: 'Choose the type of clinic.',
     size: 'Choose how many doctors work at your clinic.'
   };
+  var SPECIALITIES = ['dental', 'skin', 'physio', 'ent', 'eye', 'gynae', 'paediatrics', 'general', 'diagnostics', 'other'];
+  var PLANS = { pilot: 'Pilot place, Rs 70 a day', clinic: 'Clinic pack', multi: 'Multi-branch pack' };
+  var chosenPlan = '';
+  try { chosenPlan = new URLSearchParams(location.search).get('plan') || ''; } catch (e) {}
+  if (!PLANS[chosenPlan]) chosenPlan = '';
 
   function normalisePhone(v) {
     var d = String(v || '').replace(/\D/g, '');
@@ -145,6 +172,7 @@
     if (!/^[6-9]\d{9}$/.test(normalisePhone(data.phone))) errors.phone = MESSAGES.phone;
     if (data.clinic.trim().length < 2) errors.clinic = MESSAGES.clinic;
     if (data.city.trim().length < 2) errors.city = MESSAGES.city;
+    if (SPECIALITIES.indexOf(data.speciality) === -1) errors.speciality = MESSAGES.speciality;
     if (['1', '2-3', '4+', 'multi'].indexOf(data.size) === -1) errors.size = MESSAGES.size;
     return errors;
   }
@@ -156,6 +184,12 @@
     var button = form.querySelector('[data-submit]');
     var openedAt = Date.now();
     var started = false, submitted = false, lastField = '';
+    if (chosenPlan) {
+      form.elements.plan.value = chosenPlan;
+      var chip = form.querySelector('[data-plan-chosen]');
+      chip.textContent = 'You chose: ' + PLANS[chosenPlan];
+      chip.hidden = false;
+    }
 
     function fieldBox(name) {
       var input = form.elements[name];
@@ -185,7 +219,7 @@
       var fd = new FormData(form);
       return {
         name: fd.get('name') || '', phone: fd.get('phone') || '', clinic: fd.get('clinic') || '', city: fd.get('city') || '',
-        size: fd.get('size') || '', call_time: fd.get('call_time') || '', rc_hp: fd.get('rc_hp') || ''
+        size: fd.get('size') || '', speciality: fd.get('speciality') || '', plan: fd.get('plan') || '', call_time: fd.get('call_time') || '', rc_hp: fd.get('rc_hp') || ''
       };
     }
 
@@ -230,7 +264,7 @@
         clearTimeout(timer);
         if (r.res.status === 201 && r.body && r.body.reference) {
           submitted = true;
-          track('lead_submitted', { form: 'demo', clinic_size: data.size });
+          track('lead_submitted', { form: 'demo', clinic_size: data.size, speciality: data.speciality, plan: data.plan || 'none' });
           var parts = data.name.trim().split(/\s+/);
           var first = /^(dr|mr|mrs|ms|prof)\.?$/i.test(parts[0]) && parts[1] ? parts[0] + ' ' + parts[1] : parts[0];
           shell.querySelector('[data-done-title]').textContent = 'Thanks, ' + first + '. Request received.';

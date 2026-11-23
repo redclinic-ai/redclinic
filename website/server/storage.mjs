@@ -51,7 +51,7 @@ export function webhookNotifier(url) {
   if (!url) return null;
   return async (r) => {
     const sizes = { '1': '1 doctor', '2-3': '2-3 doctors', '4+': '4+ doctors', multi: 'multiple locations' };
-    const text = `New demo request ${r.reference}: ${r.name}, ${r.clinic} (${r.city}), ${sizes[r.clinic_size]}. Call ${r.phone}${r.call_time ? ' in the ' + r.call_time : ''}. Source: ${r.utm_source || r.referrer || 'direct'}.`;
+    const text = `New demo request ${r.reference}: ${r.name}, ${r.clinic} (${r.city}), ${r.speciality}, ${sizes[r.clinic_size]}${r.plan ? ', wants ' + r.plan + ' pack' : ''}. Call ${r.phone}${r.call_time ? ' in the ' + r.call_time : ''}. Source: ${r.utm_source || r.referrer || 'direct'}.`;
     const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }), signal: AbortSignal.timeout(5000) });
     if (!res.ok) throw new Error('webhook returned ' + res.status);
   };

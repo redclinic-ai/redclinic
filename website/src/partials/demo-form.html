@@ -1,5 +1,7 @@
 <div class="form-shell" data-form-shell>
 <form class="demo-form" data-demo-form action="/api/demo-requests" method="post" novalidate>
+  <p class="plan-chosen" data-plan-chosen hidden></p>
+  <input type="hidden" name="plan" value="">
   <div class="field">
     <label for="f-name">Your name</label>
     <input id="f-name" name="name" type="text" autocomplete="name" maxlength="80" required>
@@ -25,6 +27,23 @@
       <input id="f-city" name="city" type="text" autocomplete="address-level2" maxlength="60" required>
       <p class="field-error" id="f-city-err" hidden></p>
     </div>
+  </div>
+  <div class="field">
+    <label for="f-speciality">Type of clinic</label>
+    <select id="f-speciality" name="speciality" required>
+      <option value="">Choose one</option>
+      <option value="dental">Dental</option>
+      <option value="skin">Skin, hair or cosmetology</option>
+      <option value="physio">Physiotherapy</option>
+      <option value="ent">ENT</option>
+      <option value="eye">Eye</option>
+      <option value="gynae">Gynaecology or fertility</option>
+      <option value="paediatrics">Paediatrics</option>
+      <option value="general">General practice</option>
+      <option value="diagnostics">Diagnostic centre</option>
+      <option value="other">Other speciality</option>
+    </select>
+    <p class="field-error" id="f-speciality-err" hidden></p>
   </div>
   <fieldset class="field choice">
     <legend>Doctors at your clinic</legend>
@@ -59,7 +78,7 @@
   <ol class="next-steps">
     <li><strong>We call you {{site.callbackPromise}}</strong> on <span data-done-phone></span> to agree a time that suits your clinic hours.</li>
     <li><strong>The demo takes about 20 minutes</strong>, by phone or video. We show you NEPA handling sample calls and the screens your team would use.</li>
-    <li><strong>You decide afterwards.</strong> No payment details, no commitment.</li>
+    <li><strong>You choose your pack afterwards.</strong> Nothing to pay until we agree it in writing.</li>
   </ol>
   <p class="done-alt">Prefer to talk now? Call <a href="tel:{{site.phoneE164}}">{{site.phoneDisplay}}</a> or email <a href="mailto:{{site.email}}">{{site.email}}</a>.</p>
 </div>

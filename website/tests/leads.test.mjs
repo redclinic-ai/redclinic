@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { validateLead, normalisePhone, handleDemoRequest, createRateLimiter, newReference } from '../server/leads.mjs';
 
-const good = { name: 'Dr Anjali Rao', phone: '98450 12345', clinic: 'Smile Dental', city: 'Bengaluru', size: '2-3', call_time: 'morning', elapsed_ms: 9000, utm_source: 'google', device: 'mobile' };
+const good = { name: 'Dr Anjali Rao', phone: '98450 12345', clinic: 'Smile Dental', city: 'Bengaluru', size: '2-3', speciality: 'dental', plan: 'pilot', call_time: 'morning', elapsed_ms: 9000, utm_source: 'google', device: 'mobile' };
 
 test('normalises Indian mobile numbers', () => {
   assert.equal(normalisePhone('+91 98450 12345'), '9845012345');
@@ -15,11 +15,13 @@ test('accepts a valid request', () => {
   assert.equal(lead.phone, '+919845012345');
   assert.equal(lead.clinic_size, '2-3');
   assert.equal(lead.utm_source, 'google');
+  assert.equal(lead.speciality, 'dental');
+  assert.equal(lead.plan, 'pilot');
 });
 
 test('rejects missing and bad fields with plain messages', () => {
   const { errors } = validateLead({ name: '', phone: '12345', clinic: '', city: 'x', size: 'lots', elapsed_ms: 9000 });
-  assert.deepEqual(Object.keys(errors).sort(), ['city', 'clinic', 'name', 'phone', 'size']);
+  assert.deepEqual(Object.keys(errors).sort(), ['city', 'clinic', 'name', 'phone', 'size', 'speciality']);
   assert.match(errors.phone, /10-digit/);
 });
 

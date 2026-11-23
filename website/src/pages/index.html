@@ -1,16 +1,16 @@
-<!--{"title":"RedClinic: AI receptionist and clinic software for dental clinics in India","ogTitle":"When you're at the chair, NEPA answers the phone","description":"RedClinic is dental clinic software with NEPA, an AI receptionist, built in. NEPA answers patient calls, books and confirms appointments, and follows up on RCT, braces and recall visits. Your staff approve what matters.","path":"/","nav":"home"}-->
+<!--{"title":"RedClinic: AI agent and clinic software for clinics in India","ogTitle":"Your clinic's own AI agent. For every patient, all year.","description":"RedClinic gives your clinic a personal AI agent, NEPA, that answers calls, books and reminds patients, follows up after every visit and keeps everything in one app. From Rs 140 a day.","path":"/","nav":"home"}-->
 <section class="hero">
   <div class="wrap">
-    <p class="status">Now taking on our first dental clinics in India</p>
+    <p class="status">Pilot open: Rs {{site.pricing.pilotDayPrice}} a day for the first {{site.pricing.pilotSeats}} clinics</p>
     <div class="hero-top">
-      <h1>When you're at the chair, NEPA answers the phone.</h1>
+      <h1>Your clinic's own AI agent. For every patient, all year.</h1>
       <div class="hero-copy">
-        <p class="lede">RedClinic is clinic software with an AI receptionist built in. NEPA picks up patient calls, books and confirms appointments, and follows up on RCT sittings, braces adjustments and check-ups. Your team approves anything important.</p>
+        <p class="lede">NEPA answers your calls, books and reminds patients, follows up after every visit and brings them back when they're due. Every update lands in the RedClinic app. One place to acquire, manage and stay in touch.</p>
         <div class="cta-row">
           <a class="btn btn-red btn-lg" href="/demo/" data-track="cta_click" data-loc="hero">Book a demo</a>
-          <a class="btn btn-ghost btn-lg" href="#calls" data-track="cta_click" data-loc="hero-secondary">Hear a sample call</a>
+          <a class="btn btn-ghost btn-lg" href="/pricing/" data-track="cta_click" data-loc="hero-pricing">See pricing</a>
         </div>
-        <p class="cta-note">A {{site.demoLength}} walkthrough by phone or video. No commitment.</p>
+        <p class="cta-note">From Rs {{site.pricing.dayPrice}} a day, including {{site.pricing.minutes}} call minutes a month.</p>
       </div>
     </div>
 
@@ -18,97 +18,125 @@
       <div class="stage-grid">
         <div class="ui">
           <div class="ui-bar">
-            <div class="call-head"><span class="avatar avatar-nepa">N</span><div><div class="ui-title">Incoming call</div><div class="ui-sub">+91 98450 •• ••• · Hindi and English</div></div></div>
+            <div class="call-head"><span class="avatar avatar-nepa">N</span><div><div class="ui-title">Incoming call, 9:14 pm</div><div class="ui-sub">Clinic closed · Hindi and English</div></div></div>
             <span class="pill pill-red"><span class="live-dot"></span>On a call</span>
           </div>
           <ol class="transcript" aria-label="Sample call transcript">
-            <li class="nepa"><span class="who">NEPA</span><span class="said">Namaste, Lotus Dental Care. Main NEPA hoon, clinic ki AI assistant.</span></li>
-            <li class="caller"><span class="who">Caller</span><span class="said">Root canal ki doosri sitting book karni thi.</span></li>
-            <li class="nepa"><span class="who">NEPA</span><span class="said">Priya ji, Dr Mehta Thursday 11:30 free hain. Chalega?</span></li>
-            <li class="caller"><span class="who">Caller</span><span class="said">Haan, chalega.</span></li>
-            <li class="event"><span class="said">Slot requested for staff approval</span></li>
+            <li class="nepa"><span class="who">NEPA</span><span class="said">Namaste, Lotus Clinic. Main NEPA hoon, clinic ki AI assistant.</span></li>
+            <li class="caller"><span class="who">Caller</span><span class="said">Acne scars ke liye consultation chahiye tha.</span></li>
+            <li class="nepa"><span class="who">NEPA</span><span class="said">Zaroor. Friday 11 baje Dr Sen free hain. Chalega?</span></li>
+            <li class="caller"><span class="who">Caller</span><span class="said">Haan, perfect.</span></li>
+            <li class="event"><span class="said">Booking requested · in the app</span></li>
           </ol>
         </div>
-        <div class="ui">
-          <div class="ui-bar">
-            <div><div class="ui-title">Thursday, 26 November</div><div class="ui-sub">Dr Mehta · Chair 1</div></div>
-            <span class="pill">7 booked</span>
-          </div>
-          <div class="day-rows">
-            <div class="day-row"><span class="day-time">10:00</span><span class="day-who"><strong>Rahul Verma</strong><span>Braces adjustment</span></span><span class="pill pill-ok">Confirmed by call</span></div>
-            <div class="day-row"><span class="day-time">10:45</span><span class="day-who"><strong>Sunita Joshi</strong><span>Scaling and polishing</span></span><span class="pill pill-ok">Confirmed by call</span></div>
-            <div class="day-row is-new"><span class="day-time">11:30</span><span class="day-who"><strong>Priya Sharma</strong><span>RCT sitting 2 · booked by NEPA</span></span><span class="pill pill-amber">Approve</span></div>
-            <div class="day-row"><span class="day-time">12:15</span><span class="day-who"><strong>Mohammed Irfan</strong><span>Crown fitting</span></span><span class="pill">Not confirmed</span></div>
-            <div class="day-row"><span class="day-time">16:00</span><span class="day-who"><strong>Kavya Nair</strong><span>Check-up, 6-month recall</span></span><span class="pill pill-ok">Confirmed by call</span></div>
-          </div>
-        </div>
+        {{> activity-mock}}
       </div>
       <p class="stage-caption">Illustrative preview with made-up patients. RedClinic is in development and screens may change.</p>
     </div>
   </div>
 </section>
 
-<section class="section" aria-labelledby="gaps-title">
+<section class="section" aria-labelledby="pillars-title">
   <div class="wrap">
     <div class="section-head">
-      <h2 id="gaps-title">Good clinics still lose patients in the gaps between appointments.</h2>
-      <p class="lede">Not because of the dentistry. Because nobody had a free moment at the right time.</p>
+      <h2 id="pillars-title">Everything that happens outside the consultation room, handled.</h2>
+      <p class="lede">Your team is busy with the patients in front of them. NEPA takes care of everyone else: the callers, the reminders, the follow-ups and the patients who haven't been back.</p>
     </div>
-    <div class="gaps">
-      <div class="gap"><h3>The phone rings mid-procedure</h3><p>Your receptionist is billing a patient at the desk. The caller doesn't leave a message. They try the next clinic on Google.</p></div>
-      <div class="gap"><h3>Second sittings don't get booked</h3><p>A patient starts a root canal, the pain settles, and they never come back for the next sitting or the crown.</p></div>
-      <div class="gap"><h3>No-shows go quiet</h3><p>Someone misses their slot. Calling them back to rebook is on the list, but the day fills up first.</p></div>
-      <div class="gap"><h3>Records live in five places</h3><p>Paper files, the appointment register, X-ray photos on a phone, and whatever the receptionist remembers.</p></div>
+    <div class="pillars">
+      <div class="pillar">
+        <span class="tag tag-acq">Acquire</span>
+        <h3>Every enquiry answered and followed through</h3>
+        <ul class="ticks">
+          <li>Answers calls day and night, including lunch and after closing</li>
+          <li>Calls back people whose calls you missed</li>
+          <li>Follows up callers who asked but didn't book</li>
+          <li class="soon">WhatsApp enquiries and Google review requests: coming next</li>
+        </ul>
+      </div>
+      <div class="pillar">
+        <span class="tag tag-man">Manage</span>
+        <h3>The whole clinic in one app</h3>
+        <ul class="ticks">
+          <li>Today's appointments and a short list of what needs you</li>
+          <li>One record per patient with a permanent ID</li>
+          <li>Prescriptions, X-rays and reports kept with the patient</li>
+          <li>Staff logins with the permissions you choose</li>
+        </ul>
+      </div>
+      <div class="pillar">
+        <span class="tag tag-touch">Stay in touch</span>
+        <h3>Every patient, all year, without chasing</h3>
+        <ul class="ticks">
+          <li>Confirmation calls before appointments</li>
+          <li>Rebooking for patients who missed a visit</li>
+          <li>Next sessions, check-ins and recalls by speciality</li>
+          <li class="soon">WhatsApp reminders and messages: coming next</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section flush-top" aria-labelledby="does-title">
+<section class="section tinted" aria-labelledby="year-title">
   <div class="wrap">
     <div class="section-head">
-      <h2 id="does-title">RedClinic answers, follows up and remembers, so your team doesn't have to chase.</h2>
+      <h2 id="year-title">One patient's year with your clinic.</h2>
+      <p class="lede">This is what "all year" means. Each step happens without anyone on your team having to remember it.</p>
     </div>
+    {{> patient-year}}
+  </div>
+</section>
 
-    <div class="feature">
-      <div>
-        <h3><span class="verb">Answers</span>NEPA picks up when your team can't.</h3>
-        <p class="muted">NEPA is the AI receptionist inside RedClinic. It answers patient calls on your clinic number in English, Hindi or Kannada, using the answers and timings you've approved.</p>
-        <ul class="ticks">
-          <li><strong>Tells callers it's an AI assistant</strong> and passes them to your staff if they'd rather talk to a person.</li>
-          <li><strong>Recognises existing patients</strong> and asks new callers what they need.</li>
-          <li><strong>Requests a slot</strong> from your real calendar, ready for staff to approve.</li>
-          <li><strong>Hands urgent calls to staff at once</strong>: pain, swelling, bleeding or a complaint.</li>
-        </ul>
-        <p class="more"><a class="text-link" href="/nepa/">How NEPA works</a></p>
-      </div>
-      <div>{{> today-mock}}<p class="mock-label">Illustrative Today screen with made-up patients.</p></div>
+<section class="section" aria-labelledby="spec-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="spec-title">Built for how your speciality works.</h2>
+      <p class="lede">The platform is the same for every clinic. The follow-ups change with what you treat.</p>
     </div>
-
-    <div class="feature flip">
-      <div>
-        <h3><span class="verb">Follows up</span>The calls nobody has time to make.</h3>
-        <p class="muted">Dental workflows are ready from the first day, and you decide how each one runs.</p>
-        <ul class="ticks">
-          <li><strong>Confirmation calls</strong> before appointments, at a time you choose.</li>
-          <li><strong>No-show follow-up</strong> to offer a new slot, then it stops. No pestering.</li>
-          <li><strong>Next RCT sitting and braces adjustments</strong> when nothing is booked yet.</li>
-          <li><strong>Six-month check-up recalls</strong> and a check-in the day after a procedure.</li>
-        </ul>
+    <div data-tabs class="spec-tabs">
+      <div class="tabs tabs-light" role="tablist" aria-label="Specialities" hidden data-tablist>
+        <button class="tab" role="tab" id="tab-dental" aria-controls="spec-dental" aria-selected="true">Dental</button>
+        <button class="tab" role="tab" id="tab-skin" aria-controls="spec-skin" aria-selected="false" tabindex="-1">Skin and hair</button>
+        <button class="tab" role="tab" id="tab-more" aria-controls="spec-more" aria-selected="false" tabindex="-1">Other clinics</button>
       </div>
-      <div>{{> rct-flow}}<p class="mock-label">Illustrative screen. Dental workflows are starting templates your clinic reviews and edits.</p></div>
-    </div>
-
-    <div class="feature">
-      <div>
-        <h3><span class="verb">Remembers</span>One record for every patient, from the first call.</h3>
-        <p class="muted">Each patient gets a permanent RedClinic ID. Visits, calls, transcripts, prescriptions and reports your staff upload all stay together, even if their phone number changes.</p>
-        <ul class="ticks">
-          <li><strong>Doctors can ask NEPA</strong> about a patient's history and get an answer linked to the original record.</li>
-          <li><strong>NEPA doesn't diagnose or prescribe.</strong> It finds what's already on file.</li>
-        </ul>
-        <p class="more"><a class="text-link" href="/platform/">See the whole platform</a></p>
+      <div class="spec-panel" id="spec-dental" role="tabpanel" aria-labelledby="tab-dental">
+        <div>
+          <h3>Dental clinics</h3>
+          <p class="muted">Ready-made follow-ups your clinic reviews and edits before anything goes out.</p>
+          <ul class="ticks">
+            <li><strong>Root canal:</strong> books the next sitting and checks in after each one</li>
+            <li><strong>Braces:</strong> reminders when the adjustment is due</li>
+            <li><strong>Check-ups:</strong> six-month recalls for cleaning and review</li>
+            <li><strong>Implants, crowns and bridges:</strong> keeps multi-visit treatment on track</li>
+          </ul>
+          <p class="more"><a class="text-link" href="/clinics/dental/">RedClinic for dental clinics</a></p>
+        </div>
+        <div>{{> rct-flow}}</div>
       </div>
-      <div>{{> record-mock}}<p class="mock-label">Illustrative patient record with a made-up patient.</p></div>
+      <div class="spec-panel" id="spec-skin" role="tabpanel" aria-labelledby="tab-skin">
+        <div>
+          <h3>Skin, hair and cosmetology clinics</h3>
+          <p class="muted">The skin pack is being prepared with our pilot clinics.</p>
+          <ul class="ticks">
+            <li><strong>Session courses:</strong> peels, laser and hair treatments booked session by session</li>
+            <li><strong>Acne and long treatments:</strong> review visits when they're due</li>
+            <li><strong>After procedures:</strong> a check-in the next day, with problems sent to staff</li>
+            <li><strong>Missed sessions:</strong> a call to rebook before the course stalls</li>
+          </ul>
+          <p class="more"><a class="text-link" href="/clinics/dermatology/">RedClinic for skin clinics</a></p>
+        </div>
+        <div>{{> skin-flow}}</div>
+      </div>
+      <div class="spec-panel" id="spec-more" role="tabpanel" aria-labelledby="tab-more">
+        <div>
+          <h3>Physio, ENT, eye, gynaecology, paediatrics and diagnostic centres</h3>
+          <p class="muted">The calls, reminders, records and app work for any small or medium clinic today. Speciality follow-up packs are being written one by one, and pilot clinics choose what comes next.</p>
+          <p class="more"><a class="text-link" href="/clinics/">See all clinic types</a></p>
+        </div>
+        <div class="spec-list">
+          <span>Physiotherapy</span><span>ENT</span><span>Eye</span><span>Gynaecology</span><span>Paediatrics</span><span>Urology</span><span>General practice</span><span>Diagnostic centres</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -134,23 +162,33 @@
       <div class="mode"><span class="pill pill-amber">Ask first</span><h3>The default for bookings</h3><p>NEPA gets everything ready and waits. Staff approve or reject with one tap, and both are logged.</p></div>
       <div class="mode"><span class="pill pill-ok">Automatic</span><h3>Only where you switch it on</h3><p>For routine work like appointment reminders, the clinic owner can let NEPA go ahead on its own.</p></div>
     </div>
-    <div class="roles">
-      <div><h3>Clinic owner</h3><p>Sets up the clinic, adds staff and decides what each person can see and do.</p></div>
-      <div><h3>Doctors</h3><p>See their patients' history, notes and documents, and can ask NEPA to find things.</p></div>
-      <div><h3>Receptionists</h3><p>Handle bookings and approvals and work through Needs attention.</p></div>
-      <div><h3>Clinic managers</h3><p>Keep an eye on the day, the calls and the follow-ups across the team.</p></div>
+  </div>
+</section>
+
+<section class="section-tight" aria-labelledby="price-title">
+  <div class="wrap">
+    <div class="price-teaser">
+      <div>
+        <h2 id="price-title">From Rs {{site.pricing.dayPrice}} a day.</h2>
+        <p class="lede more">The agent, the app and {{site.pricing.minutes}} call minutes a month, on a monthly, six-month or yearly pack. Pilot clinics pay Rs {{site.pricing.pilotDayPrice}} a day.</p>
+      </div>
+      <div class="price-teaser-figs">
+        <div><b>Rs {{site.pricing.dayPrice}}</b><span>a day, everything included</span></div>
+        <div class="pilot-fig"><b>Rs {{site.pricing.pilotDayPrice}}</b><span>a day for the first {{site.pricing.pilotSeats}} pilot clinics</span></div>
+        <a class="btn btn-ink btn-lg" href="/pricing/" data-track="cta_click" data-loc="home-pricing">Compare packs</a>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section flush-top" aria-labelledby="start-title">
+<section class="section" aria-labelledby="start-title">
   <div class="wrap">
     <div class="section-head">
       <h2 id="start-title">From demo to first calls, without changing your number.</h2>
     </div>
     <ol class="steps">
       <li><h3>See it working</h3><p>A {{site.demoLength}} demo with sample calls and the screens your team would use.</p></li>
-      <li><h3>Set up together</h3><p>We add your doctors, timings and services, bring in your patient list from Excel, and review the dental workflows with you.</p></li>
+      <li><h3>Set up together</h3><p>We add your doctors, timings and services, bring in your patient list from Excel, and set up the follow-ups for your speciality.</p></li>
       <li><h3>Test before patients hear it</h3><p>Call NEPA yourself, read the transcripts and change any answer you don't like.</p></li>
       <li><h3>Forward your calls</h3><p>Turn on call forwarding from your existing number when you're ready. Your staff stay the fallback.</p></li>
     </ol>
@@ -165,9 +203,9 @@
         <p class="muted more">We'd rather you hear this from us than find out later.</p>
       </div>
       <dl class="honest-list">
-        <div><dt>The product</dt><dd>RedClinic is being built now. We're starting with a small number of dental clinics so we can set each one up properly.</dd></div>
+        <div><dt>The product</dt><dd>RedClinic is being built now. Pilot clinics are set up first, one by one, so each gets it right.</dd></div>
         <div><dt>In your demo</dt><dd>We show what works today and what's still coming. NEPA demos use simulated calls in a test setup, and we'll say so.</dd></div>
-        <div><dt>Not in version one</dt><dd>WhatsApp messaging, online consultations and reading text out of scanned reports. They're planned for later.</dd></div>
+        <div><dt>Coming next</dt><dd>WhatsApp messages, review requests and more speciality packs. They're not in the first version.</dd></div>
       </dl>
     </div>
   </div>
@@ -175,16 +213,16 @@
 
 <section class="section" aria-labelledby="faq-title">
   <div class="wrap">
-    <div class="section-head"><h2 id="faq-title">Questions dentists ask us</h2></div>
+    <div class="section-head"><h2 id="faq-title">Questions clinic owners ask us</h2></div>
     <div class="faq">
       <details><summary>Will patients know they're talking to an AI?</summary><div class="answer">Yes. NEPA says it's the clinic's AI assistant at the start of every call. If a caller would rather speak to a person, NEPA passes the call to your staff.</div></details>
-      <details><summary>What if a patient is in pain or it's an emergency?</summary><div class="answer">NEPA never gives medical advice. When a caller mentions pain, swelling, bleeding or an injury, NEPA hands the call to your staff straight away and marks it urgent. If nobody picks up, it goes to the top of Needs attention.</div></details>
+      <details><summary>What if a patient is in pain or it's an emergency?</summary><div class="answer">NEPA never gives medical advice. When a caller mentions pain, bleeding, swelling or anything urgent, NEPA hands the call to your staff straight away and marks it urgent. If nobody picks up, it goes to the top of Needs attention.</div></details>
+      <details><summary>Which clinics is RedClinic for?</summary><div class="answer">Small and medium clinics of any speciality, from a single doctor to several branches. Dental follow-ups are ready first, skin is next, and pilot clinics help decide the order after that. Diagnostic centres are on the list too.</div></details>
       <details><summary>Does NEPA book appointments by itself?</summary><div class="answer">Not unless you allow it. By default NEPA requests the slot and a staff member approves it with one tap. The clinic owner can switch on automatic booking for specific workflows later.</div></details>
       <details><summary>Which languages does NEPA speak?</summary><div class="answer">English, Hindi and Kannada to begin with, including calls that mix Hindi and English. More Indian languages are planned.</div></details>
       <details><summary>Do I need a new phone number?</summary><div class="answer">No. You forward calls from your existing clinic number to NEPA. We'll guide your team through the setting, and you can switch it off at any time.</div></details>
-      <details><summary>Can I bring in my existing patients?</summary><div class="answer">Yes. During setup we import your patient list from an Excel or CSV file, so NEPA recognises returning patients from the first day.</div></details>
       <details><summary>Does it work on my phone?</summary><div class="answer">Yes. RedClinic runs in the browser on Android phones, iPhones, tablets and computers. There's nothing to install.</div></details>
-      <details><summary>How much does it cost?</summary><div class="answer">RedClinic is a monthly subscription per clinic, with plans based on how many call minutes you need. We'll go through the plans and any one-time setup fee in your demo, before you decide anything.</div></details>
+      <details><summary>How much does it cost?</summary><div class="answer">From Rs {{site.pricing.dayPrice}} a day plus GST, with {{site.pricing.minutes}} call minutes a month, on monthly, six-month or yearly packs. The first {{site.pricing.pilotSeats}} pilot clinics pay Rs {{site.pricing.pilotDayPrice}} a day. <a href="/pricing/">See all packs</a>.</div></details>
       <details><summary>Who can see my patients' records?</summary><div class="answer">Only your clinic's staff, with the permissions you give them. Records are kept separate for each clinic. RedClinic's own team can access clinic data to run and support the service, and that access is logged. More on our <a href="/security/">security page</a>.</div></details>
     </div>
   </div>
@@ -193,17 +231,17 @@
 <section class="close section" id="book" aria-labelledby="book-title">
   <div class="wrap close-grid">
     <div>
-      <h2 id="book-title">See it with your own clinic in mind.</h2>
+      <h2 id="book-title">See NEPA work for a clinic like yours.</h2>
       <p class="lede">Tell us a little about your clinic. We'll call to fix a time for a {{site.demoLength}} demo.</p>
       <ul class="close-points">
         <li>Sample calls in Hindi and English</li>
-        <li>The screens your receptionist and doctors would use</li>
-        <li>Straight answers about what's ready and what's coming</li>
+        <li>The app your reception and doctors would use</li>
+        <li>The right pack for your clinic, and pilot pricing while places last</li>
       </ul>
-      <p class="close-contact">Or call <a href="tel:{{site.phoneE164}}" data-track="call_click" data-loc="home-close">{{site.phoneDisplay}}</a></p>
+      <p class="close-contact">Or call <a href="tel:{{site.phoneE164}}" data-track="call_click" data-loc="home-close">{{site.phoneDisplay}}</a>, or <a href="https://wa.me/{{site.whatsappE164}}?text={{site.whatsappText}}" data-track="whatsapp_click" data-loc="home-close" rel="noopener">message us on WhatsApp</a></p>
     </div>
     {{> demo-form}}
   </div>
 </section>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"{{site.origin}}/#org","name":"RedClinic","url":"{{site.origin}}/","logo":"{{site.origin}}/assets/img/icon-512.png","slogan":"AI for Modern Clinics","email":"{{site.email}}","telephone":"{{site.phoneE164}}","areaServed":"IN"},{"@type":"WebSite","@id":"{{site.origin}}/#website","url":"{{site.origin}}/","name":"RedClinic","publisher":{"@id":"{{site.origin}}/#org"},"inLanguage":"en-IN"},{"@type":"SoftwareApplication","name":"RedClinic","applicationCategory":"BusinessApplication","applicationSubCategory":"Dental practice management","operatingSystem":"Web browser","description":"Dental clinic software with NEPA, an AI receptionist that answers patient calls, requests appointments for staff approval and follows up on dental treatments.","publisher":{"@id":"{{site.origin}}/#org"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"{{site.origin}}/#org","name":"RedClinic","url":"{{site.origin}}/","logo":"{{site.origin}}/assets/img/icon-512.png","slogan":"AI for Modern Clinics","email":"{{site.email}}","telephone":"{{site.phoneE164}}","areaServed":"IN"},{"@type":"WebSite","@id":"{{site.origin}}/#website","url":"{{site.origin}}/","name":"RedClinic","publisher":{"@id":"{{site.origin}}/#org"},"inLanguage":"en-IN"},{"@type":"SoftwareApplication","name":"RedClinic","applicationCategory":"BusinessApplication","applicationSubCategory":"Clinic management","operatingSystem":"Web browser","description":"A personal AI agent and clinic app that answers patient calls, books and reminds appointments, and follows up with patients all year.","offers":{"@type":"Offer","price":"{{site.pricing.monthlyNum}}","priceCurrency":"INR","url":"{{site.origin}}/pricing/"},"publisher":{"@id":"{{site.origin}}/#org"}}]}</script>

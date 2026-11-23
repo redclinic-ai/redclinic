@@ -2,11 +2,13 @@
   <div class="wrap footer-grid">
     <div class="footer-brand">
       <img src="/assets/img/logo.svg" alt="RedClinic" width="134" height="30" loading="lazy">
-      <p>AI for Modern Clinics. Clinic software with an AI receptionist, built for dental clinics in India.</p>
+      <p>AI for Modern Clinics. A personal AI agent that helps your clinic acquire, manage and stay in touch with patients all year.</p>
     </div>
     <nav id="footer-nav" aria-label="Footer">
-      <a href="/nepa/">NEPA AI receptionist</a>
-      <a href="/platform/">Platform</a>
+      <a href="/nepa/">NEPA agent</a>
+      <a href="/app/">The app</a>
+      <a href="/clinics/">Clinics we serve</a>
+      <a href="/pricing/">Pricing</a>
       <a href="/security/">Security and privacy</a>
       <a href="/demo/">Book a demo</a>
       <a href="/privacy/">Privacy notice</a>
@@ -14,14 +16,15 @@
     <div class="footer-contact">
       <p>Talk to us</p>
       <a href="tel:{{site.phoneE164}}" data-track="call_click" data-loc="footer">{{site.phoneDisplay}}</a>
+      <a href="https://wa.me/{{site.whatsappE164}}?text={{site.whatsappText}}" data-track="whatsapp_click" data-loc="footer" rel="noopener">WhatsApp</a>
       <a href="mailto:{{site.email}}" data-track="email_click" data-loc="footer">{{site.email}}</a>
     </div>
   </div>
   <div class="wrap footer-base">
-    <p>© 2026 RedClinic. Product screens on this site are illustrative previews of software in development.</p>
+    <p>© 2026 RedClinic. Prices exclude GST. Product screens on this site are illustrative previews of software in development.</p>
   </div>
 </footer>
 <div class="sticky-cta" data-sticky-cta hidden>
   <a class="btn btn-red" href="/demo/" data-track="cta_click" data-loc="sticky">Book a demo</a>
-  <a class="btn btn-ghost" href="tel:{{site.phoneE164}}" data-track="call_click" data-loc="sticky" aria-label="Call RedClinic on {{site.phoneDisplay}}">Call us</a>
+  <a class="btn btn-ghost" href="https://wa.me/{{site.whatsappE164}}?text={{site.whatsappText}}" data-track="whatsapp_click" data-loc="sticky" rel="noopener">WhatsApp</a>
 </div>

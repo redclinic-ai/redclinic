@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS demo_requests (
   clinic        text NOT NULL CHECK (char_length(clinic) BETWEEN 2 AND 120),
   city          text NOT NULL CHECK (char_length(city) BETWEEN 2 AND 60),
   clinic_size   text NOT NULL CHECK (clinic_size IN ('1','2-3','4+','multi')),
+  speciality    text NOT NULL CHECK (speciality IN ('dental','skin','physio','ent','eye','gynae','paediatrics','general','diagnostics','other')),
+  plan          text CHECK (plan IN ('pilot','clinic','multi')),
   call_time     text CHECK (call_time IN ('morning','afternoon','evening')),
   landing_page  text,
   referrer      text,
@@ -46,13 +48,14 @@ END $$;
 CREATE OR REPLACE VIEW demo_funnel AS
 SELECT coalesce(landing_page, '(unknown)') AS landing_page,
        coalesce(nullif(utm_source, ''), CASE WHEN referrer IS NOT NULL THEN 'referral' ELSE 'direct' END) AS source,
+       coalesce(plan, '(none)') AS plan,
        count(*) FILTER (WHERE status <> 'spam')                                        AS requests,
        count(*) FILTER (WHERE status IN ('demo_booked','demo_done','trial','won'))      AS demos_booked,
        count(*) FILTER (WHERE status IN ('demo_done','trial','won'))                    AS demos_attended,
        count(*) FILTER (WHERE status IN ('trial','won'))                                AS trials,
        count(*) FILTER (WHERE status = 'won')                                           AS paying_clinics
 FROM demo_requests WHERE deleted_at IS NULL
-GROUP BY 1, 2;
+GROUP BY 1, 2, 3;
 
 ALTER VIEW demo_funnel SET (security_invoker = true);
 REVOKE ALL ON demo_funnel FROM PUBLIC;

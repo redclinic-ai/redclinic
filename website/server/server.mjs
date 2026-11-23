@@ -43,6 +43,9 @@ if (process.env.HSTS === '1') SECURITY_HEADERS['Strict-Transport-Security'] = 'm
 
 const gzCache = new Map();
 
+// Old URLs that moved. Permanent redirects keep links and search rankings.
+const REDIRECTS = { '/platform/': '/app/', '/platform': '/app/' };
+
 function clientIp(req) {
   if (TRUST_PROXY) {
     const fwd = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
@@ -150,6 +153,8 @@ const server = createServer(async (req, res) => {
     if (url === '/api/health') return send(res, 200, JSON.stringify({ ok: true, storage: storage.name }), { 'Content-Type': TYPES['.json'], 'Cache-Control': 'no-store' });
     if (url.startsWith('/api/')) return send(res, 404, JSON.stringify({ error: 'not_found' }), { 'Content-Type': TYPES['.json'] });
     if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, '', { Allow: 'GET, HEAD' });
+    const bare = url.split('?')[0];
+    if (REDIRECTS[bare]) return send(res, 301, '', { Location: REDIRECTS[bare] });
     return await serveStatic(req, res);
   } catch (err) {
     console.error('[server]', err);

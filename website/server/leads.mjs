@@ -4,6 +4,8 @@
 import { randomBytes } from 'node:crypto';
 
 export const SIZES = ['1', '2-3', '4+', 'multi'];
+export const SPECIALITIES = ['dental', 'skin', 'physio', 'ent', 'eye', 'gynae', 'paediatrics', 'general', 'diagnostics', 'other'];
+export const PLANS = ['', 'pilot', 'clinic', 'multi'];
 export const CALL_TIMES = ['', 'morning', 'afternoon', 'evening'];
 const ATTR_FIELDS = ['landing_page', 'referrer', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'click_id'];
 const DEVICES = ['mobile', 'tablet', 'desktop', ''];
@@ -27,12 +29,15 @@ export function validateLead(input) {
   const city = clean(b.city, 60);
   const size = String(b.size ?? '');
   const call_time = String(b.call_time ?? '');
+  const speciality = String(b.speciality ?? '');
+  const plan = String(b.plan ?? '');
 
   if (name.length < 2 || !/\p{L}/u.test(name)) errors.name = 'Enter your name.';
   if (!/^[6-9]\d{9}$/.test(phone)) errors.phone = 'Enter a 10-digit Indian mobile number.';
   if (clinic.length < 2) errors.clinic = "Enter your clinic's name.";
   if (city.length < 2) errors.city = 'Enter the city your clinic is in.';
   if (!SIZES.includes(size)) errors.size = 'Choose how many doctors work at your clinic.';
+  if (!SPECIALITIES.includes(speciality)) errors.speciality = 'Choose the type of clinic.';
   if (!CALL_TIMES.includes(call_time)) errors.call_time = 'Choose a time to call.';
 
   // Spam signals: the hidden field is filled, or the form was sent faster than a person can type.
@@ -41,7 +46,7 @@ export function validateLead(input) {
   if (spam) errors.form = 'Request rejected.';
   if (Object.keys(errors).length) return { errors, spam };
 
-  const lead = { name, phone: '+91' + phone, clinic, city, clinic_size: size, call_time: call_time || null };
+  const lead = { name, phone: '+91' + phone, clinic, city, clinic_size: size, speciality, plan: PLANS.includes(plan) && plan ? plan : null, call_time: call_time || null };
   for (const f of ATTR_FIELDS) lead[f] = clean(b[f], f === 'referrer' ? 300 : 120) || null;
   lead.device = DEVICES.includes(b.device) ? b.device || null : null;
   return { lead };

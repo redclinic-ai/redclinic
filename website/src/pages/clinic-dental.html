@@ -1,0 +1,70 @@
+<!--{"title":"Dental clinic software with an AI agent | RedClinic","ogTitle":"RedClinic for dental clinics","description":"Dental clinic software for India with NEPA, an AI agent that answers calls, books RCT sittings and braces adjustments, confirms appointments and recalls patients for check-ups. From Rs 140 a day.","path":"/clinics/dental/","nav":"clinics"}-->
+<section class="page-head">
+  <div class="wrap">
+    <p class="status">Dental pack ready · pilot price Rs {{site.pricing.pilotDayPrice}} a day</p>
+    <h1>When you're at the chair, NEPA answers the phone.</h1>
+    <p class="lede">RedClinic for dental clinics: an AI agent that picks up patient calls, books and confirms appointments, and keeps RCT sittings, braces adjustments and check-ups on track. Everything lands in one app.</p>
+    <div class="cta-row">
+      <a class="btn btn-red btn-lg" href="/demo/" data-track="cta_click" data-loc="dental-head">Book a demo</a>
+      <a class="btn btn-ghost btn-lg" href="/pricing/" data-track="cta_click" data-loc="dental-pricing">See pricing</a>
+    </div>
+  </div>
+</section>
+
+<section class="section flush-top" aria-labelledby="dgaps-title">
+  <div class="wrap">
+    <div class="section-head"><h2 id="dgaps-title">Where dental clinics lose patients</h2></div>
+    <div class="gaps">
+      <div class="gap"><h3>The phone rings mid-procedure</h3><p>Your receptionist is billing a patient. The caller doesn't leave a message and tries the next clinic.</p></div>
+      <div class="gap"><h3>Second sittings don't get booked</h3><p>The pain settles after the first RCT sitting, and the patient never comes back for the crown.</p></div>
+      <div class="gap"><h3>No-shows go quiet</h3><p>Calling back to rebook is on the list, but the day fills up first.</p></div>
+      <div class="gap"><h3>Check-ups slip by</h3><p>Six months pass and nobody reminds the patient that their cleaning is due.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section tinted" aria-labelledby="dpack-title">
+  <div class="wrap">
+    <div class="feature">
+      <div>
+        <h2 id="dpack-title">The dental pack, ready on day one</h2>
+        <p class="lede more">Starting templates for every common dental journey. Your clinic reviews each one, changes the timing and wording, and turns on only what it wants.</p>
+      </div>
+      <div>{{> rct-flow}}<p class="mock-label">Illustrative workflow screen.</p></div>
+    </div>
+    <ul class="workflow-list">
+      <li><strong>Appointment reminder</strong><span>A call before each appointment, then a flag if it's not confirmed.</span></li>
+      <li><strong>Missed appointment</strong><span>Offers a new slot, then hands over to staff.</span></li>
+      <li><strong>Root canal sittings</strong><span>Books the next sitting and checks in after each one.</span></li>
+      <li><strong>Braces adjustments</strong><span>Reminds patients when their adjustment is due.</span></li>
+      <li><strong>Check-up recall</strong><span>Six months after the last visit, or the gap you set.</span></li>
+      <li><strong>After extraction or surgery</strong><span>A check-in the next day, with pain sent straight to staff.</span></li>
+      <li><strong>Implants, crowns and bridges</strong><span>Keeps multi-visit treatment on track.</span></li>
+      <li><strong>New enquiries</strong><span>Follows up callers who asked but didn't book.</span></li>
+      <li><strong>Urgent pain</strong><span>Always hands the patient to staff. Never advises.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="night section" id="calls" aria-labelledby="calls-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="calls-title">Three ordinary calls at a dental clinic</h2>
+      <p class="lede">Each one ends up on the patient's record with a transcript and a summary.</p>
+    </div>
+    {{> conversations}}
+  </div>
+</section>
+
+<section class="section" aria-labelledby="dtoday-title">
+  <div class="wrap feature flip">
+    <div>
+      <h2 id="dtoday-title">Open the app and see what needs you</h2>
+      <p class="lede more">Today's chairs, the calls NEPA handled and a short list of things that need a person: urgent call-backs, bookings to approve, no-shows to rebook.</p>
+      <p class="more"><a class="text-link" href="/app/">Tour the app</a></p>
+    </div>
+    <div>{{> today-mock}}<p class="mock-label">Illustrative Today screen with made-up patients.</p></div>
+  </div>
+</section>
+
+{{> cta-band}}

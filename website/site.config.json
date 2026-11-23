@@ -10,5 +10,22 @@
   "analytics": {
     "consentBanner": false,
     "endpoint": ""
+  },
+  "whatsappE164": "919954674179",
+  "whatsappText": "Hi%20RedClinic%2C%20I%27d%20like%20to%20know%20more%20about%20NEPA%20for%20my%20clinic.",
+  "pricing": {
+    "minutes": "700",
+    "dayPrice": "140",
+    "pilotDayPrice": "70",
+    "pilotSeats": "100",
+    "monthly": "4,200",
+    "sixMonth": "25,200",
+    "yearly": "46,200",
+    "yearlyPerDay": "127",
+    "pilotMonthly": "2,100",
+    "pilotSixMonth": "12,600",
+    "pilotYearly": "23,100",
+    "pilotYearlyPerDay": "63",
+    "monthlyNum": "4200"
   }
 }

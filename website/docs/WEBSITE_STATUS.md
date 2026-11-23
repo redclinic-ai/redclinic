@@ -29,6 +29,25 @@ Not tested: Safari and Firefox (only Chrome was available here), real Android de
 | Analytics tool | Optional: approve a tool, add a consent banner, then connect it to `window.dataLayer` |
 | Google Search Console | Verify the domain and submit `/sitemap.xml` after launch |
 
+## Version 2 (23 November 2026, evening)
+
+Repositioned from dental-only to all clinics: "Acquire, manage, stay in touch, all year".
+New pages: `/pricing/`, `/clinics/`, `/clinics/dental/`, `/clinics/dermatology/`. `/platform/` became `/app/` (301 redirect).
+Form asks for the type of clinic and carries the chosen pack (`?plan=pilot|clinic|multi`) into the stored lead.
+WhatsApp chat links (wa.me, tracked as `whatsapp_click`) in the header, sticky mobile bar, footer, demo and pricing pages.
+All prices live in `site.config.json` under `pricing`; change them there only.
+
+Pricing as published: Clinic Rs 140 a day (Rs 4,200 a month, Rs 25,200 for 6 months, Rs 46,200 a year),
+700 call minutes a month. Pilot Rs 70 a day for the first 100 clinics (Rs 2,100 / 12,600 / 23,100).
+Multi-branch: tailored. A month = 30 days, 6 months = 180 days, yearly = 11 months billed for 12. GST extra.
+
+### Pricing points to confirm
+- 6-month packs carry no discount; yearly gives 1 month free (from the earlier annual-plan decision). Applied to pilot too.
+- How long pilot pricing is held: the site says terms are confirmed in writing before signing.
+- Extra-minute rate and any setup fee: not shown; the site says they're agreed before they apply.
+- Pilot places are not counted down on the site. Add a real count only if it's kept accurate.
+- Skin pack is marked "in preparation" because no dermatology workflows exist in the product yet.
+
 ## Founder decisions and checks before launch
 
 1. **Callback promise.** The site promises a call "within one working day". Change it in `site.config.json`
