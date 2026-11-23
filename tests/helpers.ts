@@ -18,7 +18,7 @@ export async function newClinic(clinicType: "dental" | "dermatology" = "dental")
   const adminEmail = uniqueEmail("admin");
   const r = await signupClinic(
     { clinicName: "Smile Dental", clinicType, city: "Pune", phone: "+91 98000 00000", adminName: "Dr Admin", adminEmail, password: PASSWORD, acceptTerms: true },
-    "127.0.0.1",
+    null, // no IP: the per-network sign-up limit is tested on its own in security.test.ts
   );
   if (!r.ok) throw new Error(r.error);
   const session = await signIn(adminEmail);

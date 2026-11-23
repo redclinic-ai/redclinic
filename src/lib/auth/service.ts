@@ -55,7 +55,12 @@ export const signupSchema = z.object({
 });
 export type SignupInput = z.input<typeof signupSchema>;
 
+async function withinLimit(bucket: string, max: number, window: string) {
+  return withoutUser(async (c) => (await c.query("SELECT rc_rate_limit($1,$2,$3::interval) AS ok", [bucket, max, window])).rows[0].ok as boolean);
+}
+
 export async function signupClinic(input: SignupInput, ip: string | null): Promise<Result<{ clinicId: string; userId: string }>> {
+  if (ip && !(await withinLimit(`signup:ip:${ip}`, 5, "1 hour"))) return fail("Too many sign-ups from this network. Please try again in an hour.");
   const parsed = signupSchema.safeParse(input);
   if (!parsed.success) {
     const issue = parsed.error.issues[0];
@@ -152,9 +157,12 @@ export async function logout(token: string | undefined | null): Promise<void> {
 // ---------- password reset ----------
 
 /** Always reports success to the caller, so it cannot be used to find out which emails have accounts. */
-export async function requestPasswordReset(rawEmail: string): Promise<void> {
+export async function requestPasswordReset(rawEmail: string, ip: string | null = null): Promise<void> {
   const parsed = email.safeParse(rawEmail);
   if (!parsed.success) return;
+  // at most 3 reset emails per address per hour (silently: the caller always sees the same message)
+  if (!(await withinLimit(`reset:email:${parsed.data}`, 3, "1 hour"))) return;
+  if (ip && !(await withinLimit(`reset:ip:${ip}`, 20, "1 hour"))) return;
   const token = newToken();
   const row = await withoutUser(async (c) => {
     const r = await c.query("SELECT * FROM rc_reset_token_create($1,$2,$3::interval)", [

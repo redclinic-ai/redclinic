@@ -17,3 +17,8 @@ export function finish<T>(r: Result<T>, success: { redirect?: string | ((v: T) =
   if (success.redirect) redirect(typeof success.redirect === "function" ? success.redirect(r.value) : success.redirect);
   return { message: success.message ?? "Saved.", ok: Date.now() };
 }
+
+/** Only same-site paths: "/inbox?x=1" yes; "https://…", "//evil" or "javascript:" no. */
+export function safePath(p: string, fallback = "/home"): string {
+  return /^\/(?![\/\\])[\w\-./?=&%#:]*$/.test(p) ? p : fallback;
+}

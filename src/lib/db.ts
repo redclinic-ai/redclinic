@@ -11,7 +11,11 @@ let pool: Pool | undefined;
 
 export function getPool(): Pool {
   if (!pool) {
-    pool = new Pool({ connectionString: databaseUrl(), max: 10, idleTimeoutMillis: 30_000 });
+    pool = new Pool({
+      connectionString: databaseUrl(), max: 10, idleTimeoutMillis: 30_000,
+      // short app queries: JIT compilation costs far more than it saves (measured ~400 ms on patient search)
+      options: "-c jit=off -c statement_timeout=15000",
+    });
     pool.on("error", (err) => console.error("[db] idle client error", err));
   }
   return pool;

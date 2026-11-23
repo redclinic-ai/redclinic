@@ -44,7 +44,7 @@ export async function signupAction(_: FormState, form: FormData): Promise<FormSt
 }
 
 export async function forgotPasswordAction(_: FormState, form: FormData): Promise<FormState> {
-  await requestPasswordReset(str(form, "email"));
+  await requestPasswordReset(str(form, "email"), (await requestMeta()).ip);
   return { done: true };
 }
 

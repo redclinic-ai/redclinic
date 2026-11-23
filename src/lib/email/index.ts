@@ -21,9 +21,13 @@ export class SimulatedEmailAdapter implements EmailAdapter {
 
   async send(message: EmailMessage): Promise<void> {
     this.outbox.push({ ...message, at: new Date() });
-    if (process.env.APP_ENV !== "test") {
-      console.info(`[email:SIMULATED] to=${message.to} subject="${message.subject}"\n${message.text}`);
+    if (process.env.APP_ENV === "test") return;
+    if (process.env.APP_ENV === "production" || process.env.APP_ENV === "staging") {
+      // never write sign-in links into production logs
+      console.warn(`[email:NOT SENT] no email provider configured; to=${message.to.replace(/^(.).*(@.*)$/, "$1***$2")} subject="${message.subject}"`);
+      return;
     }
+    console.info(`[email:SIMULATED] to=${message.to} subject="${message.subject}"\n${message.text}`);
   }
 }
 

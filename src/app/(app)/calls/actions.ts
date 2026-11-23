@@ -21,8 +21,15 @@ export async function startTestCallAction(f: FormData) {
   redirect(`/calls/test?call=${r.callId}`);
 }
 
+/** Staff may only speak into test calls, never into a real patient's call. */
+async function requireTestCall(user: Awaited<ReturnType<typeof requireTester>>, callId: string) {
+  const ok = await withContext(contextOf(user), async (c) => (await c.query("SELECT test_call FROM calls WHERE id = $1", [callId])).rows[0]?.test_call === true).catch(() => false);
+  if (!ok) redirect("/calls/test");
+}
+
 export async function sayAction(_: ActionState, f: FormData): Promise<ActionState> {
   const user = await requireTester();
+  await requireTestCall(user, field(f, "callId"));
   const text = field(f, "text");
   if (!text) return { error: "Type what the caller says.", field: "text" };
   try {
@@ -36,6 +43,7 @@ export async function sayAction(_: ActionState, f: FormData): Promise<ActionStat
 export async function endTestCallAction(f: FormData) {
   const user = await requireTester();
   const id = field(f, "callId");
+  await requireTestCall(user, id);
   await endCall(user.clinicId!, id, "caller_hung_up");
   redirect(`/calls/${id}?test=1`);
 }

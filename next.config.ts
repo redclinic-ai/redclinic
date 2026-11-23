@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === "production";
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   output: "standalone",
@@ -15,7 +17,12 @@ const nextConfig: NextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "same-origin" },
-          { key: "Permissions-Policy", value: "camera=(), geolocation=(), microphone=()" },
+          { key: "Permissions-Policy", value: "camera=(self), geolocation=(), microphone=()" },
+          ...(isProd ? [
+            { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+            // no outside scripts, frames or form targets; Next.js needs inline scripts without a nonce
+            { key: "Content-Security-Policy", value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'" },
+          ] : []),
         ],
       },
     ];

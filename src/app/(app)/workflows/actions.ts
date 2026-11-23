@@ -1,6 +1,6 @@
 "use server";
 
-import { field, finish, requireUser } from "@/lib/action-helpers";
+import { field, finish, requireUser, safePath } from "@/lib/action-helpers";
 import type { ActionState } from "@/components/action-form";
 import { applyMasterUpdate, createWorkflow, keepMyVersion, restoreWorkflowVersion, saveWorkflow, setWorkflowSwitches } from "@/lib/workflows/service";
 
@@ -42,7 +42,7 @@ export async function switchAction(_: ActionState, f: FormData): Promise<ActionS
   const user = await requireUser();
   const id = field(f, "id");
   const op = field(f, "op");
-  const back = field(f, "back") || "/workflows";
+  const back = safePath(field(f, "back") || "/workflows", "/workflows");
   const r = op === "on" ? await setWorkflowSwitches(user, id, { enabled: true })
     : op === "off" ? await setWorkflowSwitches(user, id, { enabled: false })
     : op === "auto" ? await setWorkflowSwitches(user, id, { automatic: true })

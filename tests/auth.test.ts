@@ -52,7 +52,7 @@ describe("clinic signup", () => {
     await withContext(contextOf(admin), async (c) => {
       const terms = await c.query("SELECT terms_version, wording, ip FROM terms_acceptances");
       expect(terms.rowCount).toBe(1);
-      expect(terms.rows[0].ip).toBe("127.0.0.1");
+      expect(terms.rows[0].ip).toBeNull(); // helper signs up without an IP
       expect(terms.rows[0].wording.length).toBeGreaterThan(50);
       const wf = await c.query("SELECT count(*)::int AS n FROM clinic_workflows");
       expect(wf.rows[0].n).toBeGreaterThan(0);

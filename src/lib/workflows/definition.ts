@@ -57,7 +57,7 @@ export const AGENT_FOR: Record<string, string> = {
 export function describeStep(s: Definition["steps"][number]): string {
   const when = s.beforeAppointmentMinutes !== undefined ? `${fmtMinutes(s.beforeAppointmentMinutes)} before the appointment`
     : s.afterMinutes === 0 ? "Straight away" : `${fmtMinutes(s.afterMinutes!)} later`;
-  const what = s.action === "call" ? `NEPA calls to ${(PURPOSES[s.purpose!] ?? "").toLowerCase()}` : `Tell staff: ${s.reason ?? "needs attention"}`;
+  const what = s.action === "call" ? `NEPA calls to ${(PURPOSES[s.purpose!] ?? "").toLowerCase()}` : `Tell staff: ${(s.reason ?? "needs attention").replace(/[.\s]+$/, "")}`;
   return `${when}: ${what}${s.onlyIf !== "always" ? ` (${CONDITIONS[s.onlyIf].toLowerCase()})` : ""}.`;
 }
 export function fmtMinutes(m: number) {

@@ -1,6 +1,6 @@
 "use server";
 
-import { field, finish, requireUser } from "@/lib/action-helpers";
+import { field, finish, requireUser, safePath } from "@/lib/action-helpers";
 import type { ActionState } from "@/components/action-form";
 import { addAttention, assignAttention, reopenAttention, resolveAttention, snoozeAttention } from "@/lib/attention/service";
 
@@ -14,7 +14,7 @@ export async function itemAction(_: ActionState, f: FormData): Promise<ActionSta
     : op === "unassign" ? await assignAttention(user, id, null)
     : op.startsWith("snooze:") ? await snoozeAttention(user, id, op.slice(7))
     : { ok: false as const, error: "Unknown action." };
-  const back = field(f, "back") || "/inbox";
+  const back = safePath(field(f, "back") || "/inbox", "/inbox");
   const sep = back.includes("?") ? "&" : "?";
   if (op === "resolve" || op === "reopen" || op.startsWith("snooze:")) {
     return finish(r, { redirect: `${back}${sep}ok=${op === "resolve" ? "resolved" : op === "reopen" ? "saved" : "snoozed"}`, revalidate: ["/inbox", "/home"] });

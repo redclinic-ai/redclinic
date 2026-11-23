@@ -172,7 +172,9 @@ export async function listAppointments(actor: SignedInUser, f: { from: string; t
     if (f.doctorId) { args.push(f.doctorId); extra += ` AND a.doctor_id = $${args.length}`; }
     if (!f.includeCancelled) extra += " AND a.status <> 'cancelled'";
     const r = await c.query(
-      `${SELECT} WHERE a.starts_at >= ($1::date::timestamp AT TIME ZONE cl.timezone) AND a.starts_at < (($2::date + 1)::timestamp AT TIME ZONE cl.timezone) ${extra}
+      `${SELECT} WHERE a.clinic_id = rc_clinic_id()
+         AND a.starts_at >= ($1::date::timestamp AT TIME ZONE (SELECT timezone FROM clinics WHERE id = rc_clinic_id()))
+         AND a.starts_at < (($2::date + 1)::timestamp AT TIME ZONE (SELECT timezone FROM clinics WHERE id = rc_clinic_id())) ${extra}
        ORDER BY a.starts_at, d.display_name`,
       args,
     );

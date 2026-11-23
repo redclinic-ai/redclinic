@@ -305,3 +305,8 @@ DELETE FROM staff_capabilities WHERE user_id = rct.id('ra') AND capability = 'vi
 SELECT rct.as_user(rct.id('ra'), rct.id('ca'));
 SELECT rct.check('staff without view_calls cannot read calls', rct.count('SELECT count(*) FROM calls') = 0);
 ROLLBACK;
+
+-- ---------- performance rule: policies evaluate context functions once per query (migration 017) ----------
+SELECT rct.check('no policy calls context functions per row',
+  (SELECT count(*) FROM pg_policies WHERE schemaname = 'public'
+    AND (coalesce(qual,'') || ' ' || coalesce(with_check,'')) ~ '(?<!SELECT |rc_clinic_active\()rc_(is_super|clinic_id|has_capability|user_id)\(') = 0);

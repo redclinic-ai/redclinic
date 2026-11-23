@@ -123,7 +123,7 @@ export async function searchPatients(actor: SignedInUser, f: PatientFilter = {})
       const digits = q.replace(/\D/g, "").slice(-10);
       args.push(digits.length >= 4 ? digits : null);
       const j = args.length;
-      where.push(`(p.name ILIKE '%' || $${i} || '%' OR similarity(p.name, $${i}) > 0.35 OR upper(p.patient_code) = upper($${i})
+      where.push(`(p.name ILIKE '%' || $${i} || '%' OR p.name % $${i} OR upper(p.patient_code) = upper($${i})
                   OR EXISTS (SELECT 1 FROM patients m WHERE m.merged_into = p.id AND upper(m.patient_code) = upper($${i}))
                   OR ($${j}::text IS NOT NULL AND rc_phone_digits(p.phone) LIKE '%' || $${j}::text || '%'))`);
     }
