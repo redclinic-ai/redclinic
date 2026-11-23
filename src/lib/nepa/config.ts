@@ -168,6 +168,11 @@ export async function listAgents(actor: SignedInUser) {
 export async function setAgentEnabled(actor: SignedInUser, agentId: string, enabled: boolean) {
   return act(actor, async (c) => {
     await requireCap(c, "edit_workflow");
+    if (enabled) {
+      const kind = (await c.query("SELECT kind FROM nepa_agents WHERE id = $1", [agentId])).rows[0]?.kind;
+      const feature = kind === "receptionist" ? "nepa_inbound" : "nepa_outbound";
+      if (kind && !(await c.query("SELECT rc_feature_enabled($1) AS on", [feature])).rows[0].on) throw new UserError("RedClinic has switched this off for your clinic. Please contact RedClinic.");
+    }
     const r = await c.query("UPDATE nepa_agents SET enabled = $2 WHERE id = $1", [agentId, enabled]);
     if (!r.rowCount) throw new UserError("Agent not found.");
     await audit(c, actor, enabled ? "nepa_agent_enabled" : "nepa_agent_disabled", "nepa_agent", agentId);

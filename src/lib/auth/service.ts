@@ -217,6 +217,9 @@ export async function inviteStaff(actor: SignedInUser, input: z.input<typeof inv
     const userId = await withContext(contextOf(actor), async (c) => {
       const allowed = (await c.query("SELECT rc_has_capability('manage_staff') AS ok")).rows[0].ok;
       if (!allowed) throw new PermissionError();
+      const seats = (await c.query("SELECT staff_accounts FROM rc_entitlements()")).rows[0]?.staff_accounts ?? 3;
+      const used = (await c.query("SELECT count(*)::int AS n FROM users WHERE status = 'active' AND role <> 'super_admin'")).rows[0].n;
+      if (used >= seats) throw new SeatLimit(seats);
       const r = await c.query(
         "INSERT INTO users (clinic_id, role, email, display_name) VALUES ($1,$2,$3,$4) RETURNING id",
         [actor.clinicId, d.role, d.email, d.displayName],
@@ -236,6 +239,7 @@ export async function inviteStaff(actor: SignedInUser, input: z.input<typeof inv
     return { ok: true, value: { userId } };
   } catch (err) {
     if (err instanceof PermissionError) return fail("You don't have permission to add staff.");
+    if (err instanceof SeatLimit) return fail(`Your plan includes ${err.seats} staff accounts, and they are all in use. Switch off an old account or ask RedClinic to change your plan.`);
     if ((err as { code?: string }).code === "23505") return fail("Someone with this email already has a RedClinic account.", "email");
     throw err;
   }
@@ -261,3 +265,4 @@ export async function deactivateUser(actor: SignedInUser, userId: string): Promi
 }
 
 class PermissionError extends Error {}
+class SeatLimit extends Error { constructor(public seats: number) { super("seat limit"); } }

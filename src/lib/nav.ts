@@ -19,9 +19,10 @@ export function navFor(user: SignedInUser, caps: Set<string>): NavItem[] {
   if (user.isSuperAdmin) {
     return [
       { href: "/admin", label: "Clinics", icon: "building", primary: true },
-      { href: "/admin/usage", label: "Usage", icon: "chart", primary: true },
-      { href: "/admin/policies", label: "Policies", icon: "shield", primary: true },
       { href: "/admin/plans", label: "Plans", icon: "card", primary: true },
+      { href: "/admin/policies", label: "Policies", icon: "shield", primary: true },
+      { href: "/admin/audit", label: "Audit log", icon: "inbox", primary: true },
+      { href: "/admin/system", label: "System", icon: "gear" },
     ];
   }
   const items: NavItem[] = [{ href: "/home", label: "Today", icon: "sun", primary: true }];

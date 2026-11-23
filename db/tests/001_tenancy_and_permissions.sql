@@ -271,11 +271,16 @@ SELECT rct.check('clinic users cannot read payment events', rct.count('SELECT co
 ROLLBACK;
 
 -- ---------- no clinic revenue anywhere (decision D5) ----------
-SELECT rct.check('no revenue, price, fee, income or visit-value columns exist',
+-- RedClinic's own subscription billing (packages, subscriptions, invoices) is the only place money may appear.
+SELECT rct.check('no revenue, price, fee, income or visit-value columns outside RedClinic billing',
   (SELECT count(*) FROM information_schema.columns
-   WHERE table_schema='public' AND column_name ~* '(revenue|price|fee|income|visit_value|amount|payment_status)') = 0,
+   WHERE table_schema='public' AND table_name NOT IN ('packages','subscriptions','invoices')
+     AND column_name ~* '(revenue|price|fee|income|visit_value|amount|payment_status|paise)') = 0,
   (SELECT string_agg(table_name||'.'||column_name, ', ') FROM information_schema.columns
-   WHERE table_schema='public' AND column_name ~* '(revenue|price|fee|income|visit_value|amount|payment_status)'));
+   WHERE table_schema='public' AND table_name NOT IN ('packages','subscriptions','invoices')
+     AND column_name ~* '(revenue|price|fee|income|visit_value|amount|payment_status|paise)'));
+SELECT rct.check('billing tables are not readable by clinic staff without manage_billing',
+  (SELECT count(*) FROM pg_policies WHERE tablename IN ('invoices','subscriptions') AND qual ~ 'manage_billing') = 2);
 
 -- ---------- every clinic-owned table has row-level security ----------
 SELECT rct.check('all tables with clinic_id have RLS enabled',

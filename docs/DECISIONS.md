@@ -24,6 +24,9 @@ Status labels: Locked, Approved, Proposed, Recommended, Unresolved. Recommendati
 | D19 | Rescheduling by NEPA always goes to staff (NEPA collects the wish; a person picks the new slot), even if automatic is allowed. | Approved (engineering) |
 | D20 | Workflow timing follows the founder's stated decisions: confirmation call about 3 hours before (founder: 2–3 h); no-show recovery limited to two calls (at the appointment time and ~5.5 h later), then staff are told. WhatsApp first touches (location for confirmed patients) wait for V2. | Approved (founder decisions in planning) |
 | D21 | Packs install switched on (spec: "Dental Pack activates automatically") but never automatic, so every call they want to make needs staff approval until the clinic admin makes a workflow automatic. | Approved (engineering) |
+| D22 | Plans are seeded with the founder's planning figures (Starter ₹2,999 / 300 min incoming only; Growth ₹7,999 / 700 min; Scale ₹12,999 / 1,200 min; setup ₹9,999 waivable with 3 references; annual = 11 months; GST 18% on top) but stay in draft until the founder confirms launch pricing. Overage price is left empty until set. | Founder planning figures; launch pricing to be confirmed |
+| D23 | New clinics get a 14-day trial on Growth so they can try outgoing calls (founder: V1 must include incoming and outgoing). | Approved (engineering); founder may change |
+| D24 | Using more voice minutes than the plan never stops calls; it raises alerts and bills extra minutes at renewal (founder priced overage). A lapsed plan (expired/cancelled) pauses NEPA and sends calls to staff. | Approved (engineering) |
 | D9 | Simulated calls are flagged and excluded from real dashboards by default. | Approved (engineering) |
 
 ## Conflicts found

@@ -16,6 +16,8 @@ Three environments: development, staging, production. Each has its own database 
 | `CRON_SECRET` | `/api/cron/dialer` | server only | Bearer token the scheduler sends |
 | `CARTESIA_VERIFIED` | voice adapter | server | `1` only after a successful connection test |
 | `CARTESIA_MODEL`, `CARTESIA_API_VERSION` | voice adapter | server | Optional overrides |
+| `BILLING_WEBHOOK_SECRET` | payment webhook | server only | HMAC secret for payment events |
+| `ALLOW_SIMULATED_PAYMENTS` | payment webhook | server | `1` only on staging |
 | `APP_BASE_URL` | auth emails | server | Public address used in reset and invitation links |
 | `CARTESIA_API_KEY` | voice adapter | server only | Added when the voice phase is ready |
 

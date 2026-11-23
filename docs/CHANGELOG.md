@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2026-11-23: Phase 7
+- Migration 015: plan prices and limits, subscription lifecycle fields, invoices, usage alerts, entitlements, trials, kill switch details, admin overview, feature switches; attention de-duplication covers items without a patient.
+- Billing service, payment webhook, admin service; screens: admin clinics, clinic detail, plans, audit log, system; clinic Plan & usage.
+- Plan limits enforced in calls, outgoing queue, staff invitations, agents and the assistant.
+
 ## 2026-11-23: Phase 6
 - Migration 014: workflow format 2, Core pack v1, Dental Pack v2, clinic workflow versions, master-update offers, workflow runs, engine helper functions; after-treatment check-in conversation.
 - Workflow engine (runs with the dialler), workflow service, Workflows screens (list, editor, history, runs, new).

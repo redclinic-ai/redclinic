@@ -28,7 +28,7 @@ export default async function TodayPage({ searchParams }: { searchParams: Promis
   const done = t.completed;
   return (
     <>
-      {denied && <div className="alert alert-error" role="alert">You don't have access to that page. Ask your clinic admin if you need it.</div>}
+      {denied && user.clinicStatus !== "suspended" && <div className="alert alert-error" role="alert">You don't have access to that page. Ask your clinic admin if you need it.</div>}
       {welcome === "dental" && <div className="alert alert-success" role="status">Dental workflows are ready. Review and edit them in Workflows.</div>}
       <div className="page-head"><div><h1>{greeting()}, {user.displayName.split(" ")[0] === "Dr" ? user.displayName : user.displayName.split(" ")[0]}</h1><p className="muted">{fmtDay(t.date)}</p></div></div>
 

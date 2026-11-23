@@ -11,6 +11,7 @@ import { decideOutbound } from "../nepa/tools";
 import { getModel, newConversation, type ConversationState, type Lang } from "../nepa/engine";
 import { getSpeechToText, getSummarizer, getTelephony } from "../providers";
 import { getStorage } from "../storage";
+import { entitlements } from "../billing/service";
 
 const clinicCtx = (clinicId: string): DbContext => ({ userId: null, clinicId, isSuperAdmin: false });
 const now = () => new Date();
@@ -44,6 +45,9 @@ export async function startCall(clinicId: string, input: {
     const agentKind = input.agentKind ?? (input.direction === "inbound" ? "receptionist" : "reminder");
     const r = await resolve(c, agentKind);
     if (r.agent && !r.agent.enabled && input.direction === "outbound") throw new AgentOff(`The ${agentKind.replace("_", " ")} agent is switched off.`);
+    const ent = await entitlements(c);
+    if (!ent.serviceActive && input.direction === "outbound") throw new AgentOff("The clinic's RedClinic plan is not active.");
+    const planOff = !ent.serviceActive && !input.testCall;
     const callId = randomUUID();
     await c.query(
       `INSERT INTO calls (id, clinic_id, direction, is_simulated, test_call, caller_number, started_at, status, handled_by_nepa, transcription_status,
@@ -54,8 +58,11 @@ export async function startCall(clinicId: string, input: {
        input.provider ?? "simulated", input.providerCallId ?? null, input.purpose ?? null, input.patientId ?? null,
        input.appointmentId ?? null, input.workflowId ?? null, input.approvalId ?? null, input.callbackOf ?? null,
        input.simulated ? "none" : "recording", input.simulated ? null : "wav-pcm16-16khz-2ch"]);
-    if (r.agent && !r.agent.enabled) {
-      // inbound call while the receptionist is off: straight to staff
+    if (planOff) {
+      await c.query(`INSERT INTO attention_items (clinic_id, kind, reason, urgency) VALUES (rc_clinic_id(), 'billing', 'A call came in but NEPA is paused because the RedClinic plan is not active. Calls go to your staff.', 1) ON CONFLICT DO NOTHING`);
+    }
+    if ((r.agent && !r.agent.enabled) || planOff) {
+      // inbound call while the receptionist is off (or the plan has lapsed): straight to staff
       const s = newConversation(input.callerNumber, input.lang ?? "en");
       s.ended = true; s.handedOff = true; s.outcome = "handed_to_staff";
       await saveState(c, callId, s, 0);
@@ -127,6 +134,7 @@ export async function endCall(clinicId: string, callId: string, how: "completed"
         [call.patient_id, callId, call.is_simulated]);
     }
     await c.query("INSERT INTO usage_events (clinic_id, kind, quantity, is_simulated) VALUES (rc_clinic_id(), 'voice_seconds', $1, $2), (rc_clinic_id(), 'call', 1, $2)", [duration, call.is_simulated]);
+    if (!call.is_simulated) await c.query("SELECT rc_check_usage_alerts()");
     await c.query("UPDATE outbound_queue SET status = $2 WHERE call_id = $1 AND status = 'calling'", [callId, how === "failed" ? "failed" : "done"]);
   });
 }
@@ -159,7 +167,12 @@ export async function queueOutbound(clinicId: string, input: { patientId: string
     const agentKind = input.agentKind ?? "reminder";
     const r = await resolve(c, agentKind);
     const kind = ["confirmation", "reminder"].includes(input.purpose) ? "send_reminder" : "outbound_call";
-    const d = await decideOutbound({ c, r, callId: null, simulated: !!input.simulated }, kind, input.workflowId ?? null, p.consent_status);
+    const ent = await entitlements(c);
+    const outboundOn = (await c.query("SELECT rc_feature_enabled('nepa_outbound') AS on")).rows[0].on;
+    const d = !ent.serviceActive ? { mode: "prohibited" as const, reason: "The clinic's RedClinic plan is not active." }
+      : !outboundOn ? { mode: "prohibited" as const, reason: "Outgoing calls are switched off for this clinic by RedClinic." }
+      : !ent.outboundCalls ? { mode: "prohibited" as const, reason: "The clinic's plan covers incoming calls only." }
+      : await decideOutbound({ c, r, callId: null, simulated: !!input.simulated }, kind, input.workflowId ?? null, p.consent_status);
     const id = randomUUID();
     if (d.mode === "prohibited" || d.mode === "suggest") {
       // no call: withdrawn consent, or NEPA may only suggest

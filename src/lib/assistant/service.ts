@@ -104,6 +104,7 @@ export async function ask(actor: SignedInUser, question: string, opts: { patient
     const q = question.trim().slice(0, 1000);
     if (q.length < 2) throw new UserError("Type a question.");
     if (!(await can(c, "view_patients"))) throw new UserError("You don't have access to the assistant.");
+    if (!(await c.query("SELECT rc_feature_enabled('assistant') AS on")).rows[0].on) throw new UserError("The assistant is switched off for your clinic. Please contact RedClinic.");
     const r = await resolve(c, null);
     let res: AssistantAnswer;
 
