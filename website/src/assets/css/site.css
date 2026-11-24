@@ -182,3 +182,17 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
 .center .lede { margin-top: 16px; }
+
+/* Everything she does */
+.narrow-head { max-width: 680px; margin-bottom: 48px; }
+.narrow-head .lede { margin-top: 14px; }
+.groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 48px; }
+.group h3 { font-size: 1.1rem; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1.5px solid var(--ink); }
+.group ul { display: grid; gap: 10px; }
+.group li { position: relative; padding-left: 24px; color: var(--ink-2); }
+.group li::before { content: ""; position: absolute; left: 2px; top: .58em; width: 11px; height: 6px; border-left: 2px solid var(--red); border-bottom: 2px solid var(--red); transform: rotate(-45deg); }
+.group-soon h3 { color: var(--ink-3); border-color: var(--line); }
+.group-soon li { color: var(--ink-3); }
+.group-soon li::before { width: 6px; height: 6px; border: 0; border-radius: 50%; background: var(--line); transform: none; top: .6em; left: 4px; }
+@media (max-width: 900px) { .groups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .groups { grid-template-columns: minmax(0, 1fr); gap: 36px; } }
