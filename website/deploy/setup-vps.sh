@@ -113,6 +113,5 @@ curl -fsS "http://127.0.0.1:$PORT/api/health" >/dev/null && echo "WEBSITE RUNNIN
 if [ "${NEW_PASSWORD:-}" = 1 ]; then
   echo
   echo "Demo requests page: https://$DOMAIN/admin/leads   user: founder"
-  echo "Password: $ADMIN_PASSWORD"
-  echo "Save it now. It is also stored in $ENV_FILE"
+  echo "To see the password, run:  grep ADMIN_PASSWORD $ENV_FILE"
 fi
