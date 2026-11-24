@@ -1,5 +1,15 @@
 # Website status
 
+## Current version: minimal (25 November 2026)
+
+At the founder's request the site was cut back to one calm page plus booking and privacy:
+`/` (hero, four problems solved, talking to the AI, three steps, staying in charge, five FAQs, booking form), `/demo/`, `/privacy/`.
+Typeface changed to Figtree. Pricing removed entirely. Old URLs (`/pricing/`, `/nepa/`, `/app/`, `/clinics/...`, `/security/`, `/platform/`)
+redirect to `/`. The form asks only name, mobile, clinic name and city.
+
+Earlier notes below describe previous versions and are kept for history.
+
+
 Last updated 23 November 2026.
 
 ## Complete and tested

@@ -46,7 +46,8 @@ if (process.env.HSTS === '1') SECURITY_HEADERS['Strict-Transport-Security'] = 'm
 const gzCache = new Map();
 
 // Old URLs that moved. Permanent redirects keep links and search rankings.
-const REDIRECTS = { '/platform/': '/app/', '/platform': '/app/' };
+// Pages removed in the minimal redesign point home.
+const REDIRECTS = Object.fromEntries(['/platform', '/app', '/nepa', '/pricing', '/clinics', '/clinics/dental', '/clinics/dermatology', '/security'].flatMap((p) => [[p, '/'], [p + '/', '/']]));
 
 function clientIp(req) {
   if (TRUST_PROXY) {

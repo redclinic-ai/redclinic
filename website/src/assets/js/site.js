@@ -149,14 +149,7 @@
     phone: 'Enter a 10-digit Indian mobile number.',
     clinic: "Enter your clinic's name.",
     city: 'Enter the city your clinic is in.',
-    speciality: 'Choose the type of clinic.',
-    size: 'Choose how many doctors work at your clinic.'
   };
-  var SPECIALITIES = ['dental', 'skin', 'physio', 'ent', 'eye', 'gynae', 'paediatrics', 'general', 'diagnostics', 'other'];
-  var PLANS = { pilot: 'Pilot place, Rs 70 a day', clinic: 'Clinic pack', multi: 'Multi-branch pack' };
-  var chosenPlan = '';
-  try { chosenPlan = new URLSearchParams(location.search).get('plan') || ''; } catch (e) {}
-  if (!PLANS[chosenPlan]) chosenPlan = '';
 
   function normalisePhone(v) {
     var d = String(v || '').replace(/\D/g, '');
@@ -172,8 +165,6 @@
     if (!/^[6-9]\d{9}$/.test(normalisePhone(data.phone))) errors.phone = MESSAGES.phone;
     if (data.clinic.trim().length < 2) errors.clinic = MESSAGES.clinic;
     if (data.city.trim().length < 2) errors.city = MESSAGES.city;
-    if (SPECIALITIES.indexOf(data.speciality) === -1) errors.speciality = MESSAGES.speciality;
-    if (['1', '2-3', '4+', 'multi'].indexOf(data.size) === -1) errors.size = MESSAGES.size;
     return errors;
   }
 
@@ -184,12 +175,7 @@
     var button = form.querySelector('[data-submit]');
     var openedAt = Date.now();
     var started = false, submitted = false, lastField = '';
-    if (chosenPlan) {
-      form.elements.plan.value = chosenPlan;
-      var chip = form.querySelector('[data-plan-chosen]');
-      chip.textContent = 'You chose: ' + PLANS[chosenPlan];
-      chip.hidden = false;
-    }
+
 
     function fieldBox(name) {
       var input = form.elements[name];
@@ -264,10 +250,10 @@
         clearTimeout(timer);
         if (r.res.status === 201 && r.body && r.body.reference) {
           submitted = true;
-          track('lead_submitted', { form: 'demo', clinic_size: data.size, speciality: data.speciality, plan: data.plan || 'none' });
+          track('lead_submitted', { form: 'demo' });
           var parts = data.name.trim().split(/\s+/);
           var first = /^(dr|mr|mrs|ms|prof)\.?$/i.test(parts[0]) && parts[1] ? parts[0] + ' ' + parts[1] : parts[0];
-          shell.querySelector('[data-done-title]').textContent = 'Thanks, ' + first + '. Request received.';
+          shell.querySelector('[data-done-title]').textContent = 'Thank you, ' + first + '.';
           shell.querySelector('[data-done-ref]').textContent = r.body.reference;
           shell.querySelector('[data-done-phone]').textContent = '+91 ' + payload.phone.slice(0, 5) + ' ' + payload.phone.slice(5);
           form.hidden = true;
@@ -295,7 +281,7 @@
           track('form_error', { form: 'demo', fields: 'network' });
         }
       }).then(function () {
-        if (!submitted) { button.disabled = false; button.textContent = 'Request my demo'; }
+        if (!submitted) { button.disabled = false; button.textContent = 'Book my free demo'; }
       });
     });
 

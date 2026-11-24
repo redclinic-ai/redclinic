@@ -21,7 +21,7 @@ test('accepts a valid request', () => {
 
 test('rejects missing and bad fields with plain messages', () => {
   const { errors } = validateLead({ name: '', phone: '12345', clinic: '', city: 'x', size: 'lots', elapsed_ms: 9000 });
-  assert.deepEqual(Object.keys(errors).sort(), ['city', 'clinic', 'name', 'phone', 'size', 'speciality']);
+  assert.deepEqual(Object.keys(errors).sort(), ['city', 'clinic', 'name', 'phone', 'size']);
   assert.match(errors.phone, /10-digit/);
 });
 
@@ -64,4 +64,11 @@ test('rate limits repeated requests from one address', async () => {
 test('references are unique enough', () => {
   const set = new Set(Array.from({ length: 5000 }, newReference));
   assert.equal(set.size, 5000);
+});
+
+test('clinic size and speciality are optional', () => {
+  const { lead, errors } = validateLead({ name: 'Ravi', phone: '9876543210', clinic: 'Ravi Dental', city: 'Pune', elapsed_ms: 5000 });
+  assert.equal(errors, undefined);
+  assert.equal(lead.clinic_size, null);
+  assert.equal(lead.speciality, null);
 });

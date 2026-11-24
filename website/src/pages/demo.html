@@ -1,19 +1,16 @@
-<!--{"title":"Book a demo of RedClinic for your clinic","ogTitle":"Book a RedClinic demo","description":"Book a 20-minute demo of RedClinic and NEPA, the AI agent for clinics. We'll call you within one working day to fix a time.","path":"/demo/","nav":"demo"}-->
-<section class="page-head">
-  <div class="wrap demo-grid">
+<!--{"title":"Book a free demo | RedClinic","ogTitle":"Book a free RedClinic demo","description":"See your clinic's own AI assistant at work. Leave your details and we'll call you to fix a time. The demo is free and takes 20 minutes.","path":"/demo/","nav":"demo"}-->
+<section class="section page-top">
+  <div class="wrap book-grid">
     <div>
-      <h1>See RedClinic in 20 minutes.</h1>
-      <p class="lede">Tell us about your clinic and we'll call to fix a time that works around your patients.</p>
-      <ul class="expect">
-        <li><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 6v5l3 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><div><strong>About 20 minutes</strong><span>By phone or video, at a time you choose.</span></div></li>
-        <li><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M4 5h14v9H9l-4 3v-3H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><div><strong>NEPA on sample calls</strong><span>Hear how it handles bookings, a patient in pain and a confirmation call, in the languages you need.</span></div></li>
-        <li><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="3.5" y="4.5" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 8.5h15" stroke="currentColor" stroke-width="1.6"/></svg><div><strong>The screens your team would use</strong><span>Today, Needs attention, patient records and the follow-ups for your speciality.</span></div></li>
-        <li><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M5 11.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><div><strong>The right pack for you</strong><span>From Rs {{site.pricing.dayPrice}} a day, or Rs {{site.pricing.pilotDayPrice}} a day while pilot places last. Nothing to pay until we agree it in writing.</span></div></li>
+      <h1>Book a free demo.</h1>
+      <p class="lede">Leave your details and we'll call you to fix a time that suits your clinic.</p>
+      <ul class="plain">
+        <li>It takes about 20 minutes, by phone or video.</li>
+        <li>You'll see her answer calls and do tasks for a clinic like yours.</li>
+        <li>No payment, no commitment.</li>
       </ul>
-      <p class="muted more">Rather talk now? Call <a href="tel:{{site.phoneE164}}" data-track="call_click" data-loc="demo-page">{{site.phoneDisplay}}</a> <a href="https://wa.me/{{site.whatsappE164}}?text={{site.whatsappText}}" data-track="whatsapp_click" data-loc="demo-page" rel="noopener">message us on WhatsApp</a>, or email <a href="mailto:{{site.email}}" data-track="email_click" data-loc="demo-page">{{site.email}}</a>.</p>
+      <p class="muted more">Prefer to talk now? Call <a href="tel:{{site.phoneE164}}" data-track="call_click" data-loc="demo">{{site.phoneDisplay}}</a> or <a href="https://wa.me/{{site.whatsappE164}}?text={{site.whatsappText}}" data-track="whatsapp_click" data-loc="demo" rel="noopener">WhatsApp us</a>.</p>
     </div>
-    <div class="form-col" id="book">
-      {{> demo-form}}
-    </div>
+    <div id="book">{{> demo-form}}</div>
   </div>
 </section>
