@@ -23,7 +23,7 @@ Not tested: Safari and Firefox (only Chrome was available here), real Android de
 
 | Item | What to do |
 |---|---|
-| Hosting and domain | Choose a host that runs Node, deploy, point redclinic.ai, enable HTTPS, set `HSTS=1` |
+| Hosting and domain | Choose a host that runs Node, deploy, point redclinic.in, enable HTTPS, set `HSTS=1` |
 | Leads database | Create a Supabase project (or other Postgres + PostgREST), run `db/demo_requests.sql`, set `LEADS_REST_URL` and `LEADS_REST_KEY` |
 | New-lead alerts | Optional: set `LEAD_WEBHOOK_URL`. This sends lead details to that chat service, so approve it first |
 | Analytics tool | Optional: approve a tool, add a consent banner, then connect it to `window.dataLayer` |

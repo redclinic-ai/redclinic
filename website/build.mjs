@@ -111,6 +111,6 @@ await writeFile(join(out, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
   urls.map((p) => `  <url><loc>${p.canonical}</loc><lastmod>${today}</lastmod></url>`).join('\n') +
   `\n</urlset>\n`);
-await writeFile(join(out, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${site.origin}/sitemap.xml\n`);
+await writeFile(join(out, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin/\n\nSitemap: ${site.origin}/sitemap.xml\n`);
 
 console.log(`Built ${pages.length} pages into ${relative(root, out)}/`);

@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
 import { handleDemoRequest, createRateLimiter } from './leads.mjs';
 import { storageFromEnv, webhookNotifier } from './storage.mjs';
+import { adminFromEnv } from './admin.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const SITE = JSON.parse(await readFile(join(here, '..', 'site.config.json'), 'utf8'));
@@ -22,6 +23,7 @@ const TRUST_PROXY = process.env.TRUST_PROXY === '1';
 
 const storage = storageFromEnv();
 const notify = webhookNotifier(process.env.LEAD_WEBHOOK_URL);
+const admin = adminFromEnv();
 const limiter = createRateLimiter({ limit: Number(process.env.LEAD_RATE_LIMIT || 5), windowMs: 10 * 60 * 1000 });
 
 const TYPES = {
@@ -151,6 +153,10 @@ const server = createServer(async (req, res) => {
       return await handleApi(req, res);
     }
     if (url === '/api/health') return send(res, 200, JSON.stringify({ ok: true, storage: storage.name }), { 'Content-Type': TYPES['.json'], 'Cache-Control': 'no-store' });
+    if (url.startsWith('/admin/')) {
+      if (admin && await admin(req, res, send)) return;
+      return send(res, 404, 'Not found', { 'Content-Type': 'text/plain' });
+    }
     if (url.startsWith('/api/')) return send(res, 404, JSON.stringify({ error: 'not_found' }), { 'Content-Type': TYPES['.json'] });
     if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, '', { Allow: 'GET, HEAD' });
     const bare = url.split('?')[0];

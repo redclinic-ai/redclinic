@@ -1,6 +1,6 @@
 # RedClinic marketing website
 
-The public website for redclinic.ai. Static pages plus one small Node server that stores demo requests.
+The public website for redclinic.in. Static pages plus one small Node server that stores demo requests.
 Independent of the clinic application: it shares no code, database tables or credentials with it.
 
 No runtime dependencies. Node 20 or newer is the only requirement.
@@ -59,7 +59,7 @@ Pages: `/`, `/nepa/`, `/platform/`, `/security/`, `/demo/`, `/privacy/`, plus `4
 Any host that runs a Node process works (a small VM, Render, Railway, Fly.io, a container).
 1. Create the leads table: run `db/demo_requests.sql` in the leads database (e.g. a Supabase project).
 2. Set `LEAD_STORAGE=postgrest`, `LEADS_REST_URL`, `LEADS_REST_KEY`, `TRUST_PROXY=1`.
-3. `npm run build && npm start`. Point redclinic.ai at it, enable HTTPS, then set `HSTS=1`.
+3. `npm run build && npm start`. Point redclinic.in at it, enable HTTPS, then set `HSTS=1`.
 4. Check `GET /api/health`, submit one test request from a phone and confirm the row exists.
 
 Static-only hosts (Netlify, Cloudflare Pages, Vercel static) can serve `dist/`, but the form then needs
