@@ -10,7 +10,7 @@ export const SESSION_COOKIE = "rc_session";
 export async function setSessionCookie(token: string, expiresAt: Date): Promise<void> {
   (await cookies()).set(SESSION_COOKIE, token, {
     httpOnly: true,
-    secure: isProduction(),
+    secure: isProduction() || (process.env.APP_BASE_URL ?? "").startsWith("https://"),
     sameSite: "lax",
     path: "/",
     expires: expiresAt,

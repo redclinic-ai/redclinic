@@ -1,6 +1,6 @@
 # DEPLOYMENT
 
-Not deployed. No hosting account or domain yet (KNOWN_ISSUES K8). CI runs on GitHub Actions. The `Dockerfile` builds a production image that runs on any container host; set the variables in ENVIRONMENT_VARIABLES.md and mount a private volume at `STORAGE_DIR` while local storage is used.
+Staging: Hostinger KVM VPS in India (189.72.179.204, Ubuntu 24.04), https://staging.redclinic.in. Production: not deployed. CI runs on GitHub Actions. The `Dockerfile` builds a production image that runs on any container host; set the variables in ENVIRONMENT_VARIABLES.md and mount a private volume at `STORAGE_DIR` while local storage is used.
 
 Backups: `scripts/backup-db.sh` (before every migration and daily). Restore: `scripts/restore-db.sh` into a new empty database, check it, then switch the app to it.
 
@@ -28,3 +28,16 @@ Tests: `npm test` (application, needs a local Postgres superuser to build `rc_vi
 7. Optional demo data: `npm run seed-demo` (refuses to run when `APP_ENV=production`).
 8. Run `BASE_URL=https://staging... npm run smoke`. All checks must pass before production.
 9. Take a backup (`scripts/backup-db.sh`) and test a restore into a scratch database.
+
+## Staging server (Hostinger VPS)
+
+Everything runs on one Ubuntu 24.04 server: PostgreSQL 16, the Next.js standalone app (systemd `redclinic-staging`, port 3000 on localhost), Caddy for HTTPS, a systemd timer calling the scheduler every minute and a daily backup at 03:00 IST (kept 14 days in `/var/backups/redclinic`; copy off the server once storage is chosen).
+
+First time, as root in Hostinger's browser terminal:
+1. `ssh-keygen -t ed25519 -N "" -f ~/.ssh/redclinic_deploy -C redclinic-staging && cat ~/.ssh/redclinic_deploy.pub` → add the printed key in GitHub → Settings → Deploy keys (read-only).
+2. Clone to `/opt/redclinic/src` with that key and run `bash /opt/redclinic/src/scripts/server/setup.sh` (firewall, swap, Node 22, database and roles, secrets in `/etc/redclinic/`, build, migrations, services, HTTPS).
+3. `bash /opt/redclinic/src/scripts/server/create-admin.sh` (password typed on the server only).
+
+Updates: `bash /opt/redclinic/src/scripts/server/deploy.sh` (pull, build, backup, migrate, restart, health check).
+Secrets: `/etc/redclinic/staging.env` (app) and `/etc/redclinic/staging-admin.env` (owner connection; never loaded by the app). Both root-only.
+Logs: `journalctl -u redclinic-staging -f`. `app.redclinic.in` shows a holding page until production.
