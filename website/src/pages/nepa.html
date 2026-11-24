@@ -1,9 +1,9 @@
-<!--{"title":"NEPA: AI agent and receptionist for clinics in India | RedClinic","ogTitle":"NEPA, your clinic's personal AI agent","description":"NEPA answers your clinic's calls in English, Hindi and Kannada, books appointments, makes confirmation and follow-up calls all year, and hands urgent calls to your staff. Every update goes into the RedClinic app.","path":"/nepa/","nav":"nepa"}-->
+<!--{"title":"NEPA: your clinic's own AI, by voice, chat and phone | RedClinic","ogTitle":"NEPA, the AI brain of your clinic","description":"NEPA (Network of Expert Practice Agents) is the AI brain of RedClinic, personalised to each clinic and named by you. Doctors ask and order by voice or chat; it answers patient calls in English, Hindi and Kannada, books, reminds and follows up.","path":"/nepa/","nav":"nepa"}-->
 <section class="page-head">
   <div class="wrap">
-    <p class="status">Acquire, manage, stay in touch. In development</p>
-    <h1>NEPA, the agent who looks after every patient.</h1>
-    <p class="lede">NEPA is your clinic's personal AI agent. It answers calls, brings in new patients, makes the reminder and follow-up calls your team doesn't get to, and writes everything into the RedClinic app. Your staff decide what it's allowed to do.</p>
+    <p class="status">NEPA: Network of Expert Practice Agents</p>
+    <h1>The AI brain of your clinic. With the name you give it.</h1>
+    <p class="lede">NEPA powers every RedClinic clinic's own AI. You name it at signup, Priya, Ruhi or anything you like. Doctors and staff talk or type to it to find anything and get work done. Patients hear it on the phone. Your clinic owner decides what it's allowed to do.</p>
     <div class="cta-row">
       <a class="btn btn-red btn-lg" href="/demo/" data-track="cta_click" data-loc="nepa-head">Book a demo</a>
       <a class="btn btn-ghost btn-lg" href="#calls" data-track="cta_click" data-loc="nepa-head-secondary">Hear sample calls</a>
@@ -11,10 +11,42 @@
   </div>
 </section>
 
+<section class="section flush-top" aria-labelledby="ask-title">
+  <div class="wrap feature">
+    <div>
+      <h2 id="ask-title">Ask it. Tell it. It gets done.</h2>
+      <p class="lede more">Summon your clinic's AI from any screen, by voice or chat, on your phone or computer. It can pull up anything in RedClinic that you're allowed to see, and act on it within the rules you set.</p>
+      <ul class="asks">
+        <li>"Book Mr Sharma with Dr Iyer on Thursday at 11."</li>
+        <li>"Which root canal patients haven't booked their next sitting?"</li>
+        <li>"Summarise Anita Sharma's last three visits."</li>
+        <li>"Call everyone due for a check-up this month."</li>
+        <li>"How many calls did you answer after closing time this week?"</li>
+      </ul>
+    </div>
+    <div>{{> ask-mock}}<p class="mock-label">Illustrative preview. A clinic's AI here named Priya.</p></div>
+  </div>
+</section>
+
+<section class="section tinted" aria-labelledby="one-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="one-title">One brain, two ways in</h2>
+      <p class="lede">The same AI talks to your team inside the app and to your patients on the phone, so everything it hears and does ends up in one place.</p>
+    </div>
+    <div class="grid-3">
+      <div class="item"><h3>Knows your clinic</h3><p>Your doctors, timings, services and every patient's history on file. Personalised to each clinic.</p></div>
+      <div class="item"><h3>Works for your team</h3><p>Finds records, answers questions, books and moves appointments, sets up calls and follow-ups, all by voice or chat.</p></div>
+      <div class="item"><h3>Talks to your patients</h3><p>Answers your clinic number, calls before and after visits, and brings patients back when they're due.</p></div>
+    </div>
+  </div>
+</section>
+
+
 <section class="section flush-top" aria-labelledby="handles-title">
   <div class="wrap">
     <div class="section-head">
-      <h2 id="handles-title">The work NEPA takes off your desk</h2>
+      <h2 id="handles-title">The patient calls it takes off your desk</h2>
       <p class="lede">NEPA works from the timings, services and answers your clinic approves. It doesn't make things up, and when it doesn't know, it says so and passes the call on.</p>
     </div>
     <ul class="call-types">
@@ -78,7 +110,7 @@
     </div>
     <div class="grid-3">
       <div class="item"><h3>Your clinic's answers</h3><p>Timings, doctors, services, directions and common questions, in your words. NEPA sticks to them.</p></div>
-      <div class="item"><h3>Languages and greeting</h3><p>Choose English, Hindi or Kannada and how NEPA greets callers on your number.</p></div>
+      <div class="item"><h3>Name, language and greeting</h3><p>Give your AI its name, choose English, Hindi or Kannada, and decide how it greets callers on your number.</p></div>
       <div class="item"><h3>Workflows</h3><p>Turn each follow-up workflow on or off, and change the number of calls, the timing and what NEPA says.</p></div>
       <div class="item"><h3>Permissions</h3><p>Decide what NEPA may suggest, what needs approval and what it can do automatically.</p></div>
       <div class="item"><h3>Test calls</h3><p>Call NEPA yourself before going live and read back the transcript of each test.</p></div>
@@ -90,14 +122,14 @@
 <section class="section" aria-labelledby="assist-title">
   <div class="wrap feature flip">
     <div>
-      <h2 id="assist-title">NEPA also helps inside the clinic.</h2>
-      <p class="lede more">Doctors and staff can ask NEPA, by typing or speaking, to find what's already on file.</p>
+      <h2 id="assist-title">Answers come with their source.</h2>
+      <p class="lede more">When your AI tells a doctor something about a patient, it links to the original note, document or call, so you can check it in one tap.</p>
       <ul class="ticks">
         <li><strong>"When was her last X-ray?"</strong> Answered with a link to the original upload.</li>
         <li><strong>"Who missed appointments this week?"</strong> A list, ready for follow-up.</li>
         <li><strong>"Summarise his last three visits."</strong> From your notes, with sources.</li>
       </ul>
-      <p class="muted more">NEPA only sees patients the person asking is allowed to see. It doesn't diagnose, prescribe or recommend treatment.</p>
+      <p class="muted more">It only sees patients the person asking is allowed to see. It doesn't diagnose, prescribe or recommend treatment.</p>
     </div>
     <div>{{> record-mock}}<p class="mock-label">Illustrative patient record with a made-up patient.</p></div>
   </div>
@@ -108,6 +140,7 @@
     <div class="honest">
       <div><h2 id="nepa-status-title">What's ready, and what isn't yet</h2></div>
       <dl class="honest-list">
+        <div><dt>Voice and chat</dt><dd>Asking and ordering by voice or chat inside the app, and naming your AI, are being built for version 1. Your demo shows what works today.</dd></div>
         <div><dt>Phone calls</dt><dd>NEPA is in development. Live phone calling switches on only after the telephone connection has been tested end to end. Until then, demos use simulated calls, clearly marked.</dd></div>
         <div><dt>Languages</dt><dd>English, Hindi and Kannada are planned for launch. Others will follow.</dd></div>
         <div><dt>WhatsApp</dt><dd>Not in the first version. NEPA works by phone call first.</dd></div>
@@ -120,6 +153,7 @@
   <div class="wrap">
     <div class="section-head"><h2 id="nepa-faq-title">Questions about NEPA</h2></div>
     <div class="faq">
+      <details><summary>What does NEPA stand for?</summary><div class="answer">Network of Expert Practice Agents. It's the AI brain inside RedClinic. Your clinic's AI, whatever you name it, runs on NEPA.</div></details>
       <details><summary>Will NEPA replace my receptionist?</summary><div class="answer">No. NEPA takes the calls your receptionist can't get to and the repetitive follow-ups. Your receptionist still runs the desk, approves bookings and handles anything that needs a person.</div></details>
       <details><summary>Does NEPA sound like a robot?</summary><div class="answer">NEPA uses a natural-sounding voice. The best way to judge is to hear it, which is what the demo is for.</div></details>
       <details><summary>Are calls recorded?</summary><div class="answer">Calls are transcribed and, where permitted, recorded, so your staff can check exactly what was said. Callers are told at the start of the call.</div></details>

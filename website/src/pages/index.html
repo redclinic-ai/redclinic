@@ -1,11 +1,11 @@
-<!--{"title":"RedClinic: AI agent and clinic software for clinics in India","ogTitle":"Your clinic's own AI agent. For every patient, all year.","description":"RedClinic gives your clinic a personal AI agent, NEPA, that answers calls, books and reminds patients, follows up after every visit and keeps everything in one app. From Rs 140 a day.","path":"/","nav":"home"}-->
+<!--{"title":"RedClinic: your clinic's own AI, by voice and chat | Clinic software India","ogTitle":"Your clinic's own AI. Name her Priya, Ruhi, anything.","description":"RedClinic gives every clinic its own AI, powered by NEPA. Doctors ask and order by voice or chat; she answers patient calls, books and reminds, follows up all year and runs everything in one app. From Rs 140 a day.","path":"/","nav":"home"}-->
 <section class="hero">
   <div class="wrap">
     <p class="status">Pilot open: Rs {{site.pricing.pilotDayPrice}} a day for the first {{site.pricing.pilotSeats}} clinics</p>
     <div class="hero-top">
-      <h1>Your clinic's own AI agent. For every patient, all year.</h1>
+      <h1>Your clinic's own AI. Name her Priya, Ruhi, anything.</h1>
       <div class="hero-copy">
-        <p class="lede">NEPA answers your calls, books and reminds patients, follows up after every visit and brings them back when they're due. Every update lands in the RedClinic app. One place to acquire, manage and stay in touch.</p>
+        <p class="lede">Ask her anything or tell her what to do, by voice or chat. She pulls up any patient, books and moves appointments, answers and calls patients, and follows up all year. Powered by NEPA, the AI brain of the RedClinic app.</p>
         <div class="cta-row">
           <a class="btn btn-red btn-lg" href="/demo/" data-track="cta_click" data-loc="hero">Book a demo</a>
           <a class="btn btn-ghost btn-lg" href="/pricing/" data-track="cta_click" data-loc="hero-pricing">See pricing</a>
@@ -16,31 +16,52 @@
 
     <div class="stage" data-play>
       <div class="stage-grid">
-        <div class="ui">
-          <div class="ui-bar">
-            <div class="call-head"><span class="avatar avatar-nepa">N</span><div><div class="ui-title">Incoming call, 9:14 pm</div><div class="ui-sub">Clinic closed · Hindi and English</div></div></div>
-            <span class="pill pill-red"><span class="live-dot"></span>On a call</span>
-          </div>
-          <ol class="transcript" aria-label="Sample call transcript">
-            <li class="nepa"><span class="who">NEPA</span><span class="said">Namaste, Lotus Clinic. Main NEPA hoon, clinic ki AI assistant.</span></li>
-            <li class="caller"><span class="who">Caller</span><span class="said">Acne scars ke liye consultation chahiye tha.</span></li>
-            <li class="nepa"><span class="who">NEPA</span><span class="said">Zaroor. Friday 11 baje Dr Sen free hain. Chalega?</span></li>
-            <li class="caller"><span class="who">Caller</span><span class="said">Haan, perfect.</span></li>
-            <li class="event"><span class="said">Booking requested · in the app</span></li>
-          </ol>
-        </div>
+        {{> ask-mock}}
         {{> activity-mock}}
       </div>
-      <p class="stage-caption">Illustrative preview with made-up patients. RedClinic is in development and screens may change.</p>
+      <p class="stage-caption">Illustrative preview with made-up patients and a clinic AI named Priya. RedClinic is in development and screens may change.</p>
     </div>
   </div>
 </section>
 
-<section class="section" aria-labelledby="pillars-title">
+<section class="section" aria-labelledby="brain-title">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="brain-title">One AI that knows your whole clinic.</h2>
+      <p class="lede">NEPA, the Network of Expert Practice Agents, is the brain inside RedClinic. Each clinic gets its own, trained on its doctors, timings, services and patients, and gives it a name at signup.</p>
+    </div>
+    <div class="ways">
+      <div class="way">
+        <h3>For you and your team: talk or type</h3>
+        <p class="muted">Summon her from any screen, on your phone or computer.</p>
+        <ul class="asks">
+          <li>"Book Mr Sharma with Dr Iyer on Thursday at 11."</li>
+          <li>"Who is due for a check-up this month?"</li>
+          <li>"Summarise Anita Sharma's last three visits."</li>
+          <li>"Call everyone who missed an appointment this week."</li>
+          <li>"How many new patients called today?"</li>
+        </ul>
+      </div>
+      <div class="way">
+        <h3>For your patients: she picks up the phone</h3>
+        <p class="muted">On your clinic number, in English, Hindi or Kannada, she introduces herself by the name you chose.</p>
+        <ul class="asks">
+          <li>Answers enquiries, day and night</li>
+          <li>Books and confirms appointments</li>
+          <li>Calls before visits, after treatment and when a recall is due</li>
+          <li>Hands urgent calls to your staff at once</li>
+        </ul>
+      </div>
+    </div>
+    <p class="callout more"><strong>You stay in charge.</strong> She can find anything a staff member is allowed to see. Bookings, calls and record changes follow the rules you set: suggest, ask first, or do it automatically.</p>
+  </div>
+</section>
+
+<section class="section flush-top" aria-labelledby="pillars-title">
   <div class="wrap">
     <div class="section-head">
       <h2 id="pillars-title">Everything that happens outside the consultation room, handled.</h2>
-      <p class="lede">Your team is busy with the patients in front of them. NEPA takes care of everyone else: the callers, the reminders, the follow-ups and the patients who haven't been back.</p>
+      <p class="lede">Your team is busy with the patients in front of them. Your clinic's AI takes care of everyone else: the callers, the reminders, the follow-ups and the patients who haven't been back.</p>
     </div>
     <div class="pillars">
       <div class="pillar">
@@ -144,8 +165,8 @@
 <section class="night section" id="calls" aria-labelledby="calls-title">
   <div class="wrap">
     <div class="section-head">
-      <h2 id="calls-title">Listen in on three ordinary calls.</h2>
-      <p class="lede">Every call ends up on the patient's record with a transcript and a summary. Anything NEPA can't finish goes to your staff.</p>
+      <h2 id="calls-title">Listen in on three ordinary patient calls.</h2>
+      <p class="lede">Every call ends up on the patient's record with a transcript and a summary. Anything she can't finish goes to your staff.</p>
     </div>
     {{> conversations}}
   </div>
@@ -154,13 +175,13 @@
 <section class="section" aria-labelledby="control-title">
   <div class="wrap">
     <div class="section-head">
-      <h2 id="control-title">NEPA does what you allow. Nothing more.</h2>
-      <p class="lede">You choose, workflow by workflow, how much NEPA does on its own. Anything that changes a booking or a record asks first unless you say otherwise.</p>
+      <h2 id="control-title">She does what you allow. Nothing more.</h2>
+      <p class="lede">You choose, workflow by workflow, how much she does on her own. Anything that changes a booking or a record asks first unless you say otherwise.</p>
     </div>
     <div class="modes">
-      <div class="mode"><span class="pill">Suggest</span><h3>NEPA prepares, your staff act</h3><p>NEPA drafts the follow-up or finds the slot. A person makes the call or the change.</p></div>
-      <div class="mode"><span class="pill pill-amber">Ask first</span><h3>The default for bookings</h3><p>NEPA gets everything ready and waits. Staff approve or reject with one tap, and both are logged.</p></div>
-      <div class="mode"><span class="pill pill-ok">Automatic</span><h3>Only where you switch it on</h3><p>For routine work like appointment reminders, the clinic owner can let NEPA go ahead on its own.</p></div>
+      <div class="mode"><span class="pill">Suggest</span><h3>She prepares, your staff act</h3><p>She drafts the follow-up or finds the slot. A person makes the call or the change.</p></div>
+      <div class="mode"><span class="pill pill-amber">Ask first</span><h3>The default for bookings</h3><p>She gets everything ready and waits. Staff approve or reject with one tap, and both are logged.</p></div>
+      <div class="mode"><span class="pill pill-ok">Automatic</span><h3>Only where you switch it on</h3><p>For routine work like appointment reminders, the clinic owner can let her go ahead on her own.</p></div>
     </div>
   </div>
 </section>
@@ -170,7 +191,7 @@
     <div class="price-teaser">
       <div>
         <h2 id="price-title">From Rs {{site.pricing.dayPrice}} a day.</h2>
-        <p class="lede more">The agent, the app and {{site.pricing.minutes}} call minutes a month, on a monthly, six-month or yearly pack. Pilot clinics pay Rs {{site.pricing.pilotDayPrice}} a day.</p>
+        <p class="lede more">Your clinic's own AI, the app and {{site.pricing.minutes}} call minutes a month, on a monthly, six-month or yearly pack. Pilot clinics pay Rs {{site.pricing.pilotDayPrice}} a day.</p>
       </div>
       <div class="price-teaser-figs">
         <div><b>Rs {{site.pricing.dayPrice}}</b><span>a day, everything included</span></div>
@@ -204,7 +225,7 @@
       </div>
       <dl class="honest-list">
         <div><dt>The product</dt><dd>RedClinic is being built now. Pilot clinics are set up first, one by one, so each gets it right.</dd></div>
-        <div><dt>In your demo</dt><dd>We show what works today and what's still coming. NEPA demos use simulated calls in a test setup, and we'll say so.</dd></div>
+        <div><dt>In your demo</dt><dd>We show what works today and what's still being built. Voice and chat commands, naming your AI and patient calls are all being built for version 1; demos use a test setup, and we'll say so.</dd></div>
         <div><dt>Coming next</dt><dd>WhatsApp messages, review requests and more speciality packs. They're not in the first version.</dd></div>
       </dl>
     </div>
@@ -215,7 +236,9 @@
   <div class="wrap">
     <div class="section-head"><h2 id="faq-title">Questions clinic owners ask us</h2></div>
     <div class="faq">
-      <details><summary>Will patients know they're talking to an AI?</summary><div class="answer">Yes. NEPA says it's the clinic's AI assistant at the start of every call. If a caller would rather speak to a person, NEPA passes the call to your staff.</div></details>
+      <details><summary>What is NEPA?</summary><div class="answer">NEPA, short for Network of Expert Practice Agents, is the AI brain of RedClinic. Each clinic gets its own NEPA, personalised to its doctors, services and patients. You talk to it or type to it to find information and get work done, and it handles patient calls and follow-ups.</div></details>
+      <details><summary>Can we give it our own name?</summary><div class="answer">Yes. You name your AI when you sign up, for example Priya or Ruhi. Your team and your patients see and hear that name everywhere. NEPA is the technology underneath.</div></details>
+      <details><summary>Will patients know they're talking to an AI?</summary><div class="answer">Yes. She introduces herself by name as the clinic's AI assistant at the start of every call. If a caller would rather speak to a person, she passes the call to your staff.</div></details>
       <details><summary>What if a patient is in pain or it's an emergency?</summary><div class="answer">NEPA never gives medical advice. When a caller mentions pain, bleeding, swelling or anything urgent, NEPA hands the call to your staff straight away and marks it urgent. If nobody picks up, it goes to the top of Needs attention.</div></details>
       <details><summary>Which clinics is RedClinic for?</summary><div class="answer">Small and medium clinics of any speciality, from a single doctor to several branches. Dental follow-ups are ready first, skin is next, and pilot clinics help decide the order after that. Diagnostic centres are on the list too.</div></details>
       <details><summary>Does NEPA book appointments by itself?</summary><div class="answer">Not unless you allow it. By default NEPA requests the slot and a staff member approves it with one tap. The clinic owner can switch on automatic booking for specific workflows later.</div></details>
@@ -231,10 +254,11 @@
 <section class="close section" id="book" aria-labelledby="book-title">
   <div class="wrap close-grid">
     <div>
-      <h2 id="book-title">See NEPA work for a clinic like yours.</h2>
+      <h2 id="book-title">Meet your clinic's AI before you decide.</h2>
       <p class="lede">Tell us a little about your clinic. We'll call to fix a time for a {{site.demoLength}} demo.</p>
       <ul class="close-points">
-        <li>Sample calls in Hindi and English</li>
+        <li>Ask her questions and give her tasks, live</li>
+        <li>Sample patient calls in Hindi and English</li>
         <li>The app your reception and doctors would use</li>
         <li>The right pack for your clinic, and pilot pricing while places last</li>
       </ul>
@@ -244,4 +268,4 @@
   </div>
 </section>
 
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"{{site.origin}}/#org","name":"RedClinic","url":"{{site.origin}}/","logo":"{{site.origin}}/assets/img/icon-512.png","slogan":"AI for Modern Clinics","email":"{{site.email}}","telephone":"{{site.phoneE164}}","areaServed":"IN"},{"@type":"WebSite","@id":"{{site.origin}}/#website","url":"{{site.origin}}/","name":"RedClinic","publisher":{"@id":"{{site.origin}}/#org"},"inLanguage":"en-IN"},{"@type":"SoftwareApplication","name":"RedClinic","applicationCategory":"BusinessApplication","applicationSubCategory":"Clinic management","operatingSystem":"Web browser","description":"A personal AI agent and clinic app that answers patient calls, books and reminds appointments, and follows up with patients all year.","offers":{"@type":"Offer","price":"{{site.pricing.monthlyNum}}","priceCurrency":"INR","url":"{{site.origin}}/pricing/"},"publisher":{"@id":"{{site.origin}}/#org"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"{{site.origin}}/#org","name":"RedClinic","url":"{{site.origin}}/","logo":"{{site.origin}}/assets/img/icon-512.png","slogan":"AI for Modern Clinics","email":"{{site.email}}","telephone":"{{site.phoneE164}}","areaServed":"IN"},{"@type":"WebSite","@id":"{{site.origin}}/#website","url":"{{site.origin}}/","name":"RedClinic","publisher":{"@id":"{{site.origin}}/#org"},"inLanguage":"en-IN"},{"@type":"SoftwareApplication","name":"RedClinic","applicationCategory":"BusinessApplication","applicationSubCategory":"Clinic management","operatingSystem":"Web browser","description":"Clinic software with its own named AI, powered by NEPA, that doctors talk to by voice or chat and that answers patient calls, books and reminds appointments, and follows up with patients all year.","offers":{"@type":"Offer","price":"{{site.pricing.monthlyNum}}","priceCurrency":"INR","url":"{{site.origin}}/pricing/"},"publisher":{"@id":"{{site.origin}}/#org"}}]}</script>

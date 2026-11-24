@@ -606,3 +606,13 @@ ul, ol { margin: 0; padding: 0; }
   .billing button { flex-direction: column; justify-content: center; gap: 3px; padding: 6px 4px; border-radius: 12px; min-height: 52px; font-size: .9rem; }
   .billing .save { font-size: .75rem; padding: 1px 6px; }
 }
+
+/* Clinic AI (NEPA) */
+.ways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.way { border: 1px solid var(--line-2); border-radius: var(--radius-lg); padding: 28px; }
+.way h3 { font-size: 1.4rem; margin-bottom: 6px; }
+.asks { list-style: none; display: grid; gap: 10px; margin-top: 18px; }
+.asks li { background: var(--surface); border-radius: 12px; border-top-left-radius: 4px; padding: 10px 14px; font-weight: 500; }
+@media (max-width: 860px) { .ways { grid-template-columns: minmax(0, 1fr); } }
+.ask-input { display: flex; justify-content: space-between; align-items: center; margin: 0 12px 12px; padding: 10px 14px; border: 1px solid var(--line-2); border-radius: 999px; color: var(--ink-3); font-size: .85rem; }
+.ask-input svg { color: var(--red); flex: none; }
