@@ -42,3 +42,6 @@ Status labels: Locked, Approved, Proposed, Recommended, Unresolved. Recommendati
 - C7: Spec 3.4 asks to reserve "fee, payment" fields on appointments; spec 1 forbids visit value and treatment price. Same as C4. Still only `online_meeting_ref` exists. Founder to confirm that no fee column is wanted until V2.
 - C8 (resolved in migration 011): Spec 3.9 lists Results metrics beyond migration 006 (missed calls called back, appointments booked from missed calls, confirmation rate, recall/follow-up calls, visits booked from follow-ups, voice minutes versus plan, no-shows rebooked). Needs call-to-appointment links and follow-up tracking in the schema. Planned, not built.
 - C9: Spec 3.2 asks for duplicate detection and controlled merge, CSV import/export, and 3.3 for document access audit logs. Schema has `merged_into` only. Planned, not built.
+
+## D26 (2026-11-25): Domain redclinic.in
+Founder registered **redclinic.in** (Hostinger). Plan: `redclinic.in` / `www` = marketing website; `app.redclinic.in` = the clinic app (`APP_URL`); `staging.redclinic.in` = staging; email from `@redclinic.in` (SPF, DKIM, DMARC set once the email provider is chosen). DNS records are added when hosting is chosen (K8).

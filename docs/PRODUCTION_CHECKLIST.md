@@ -6,7 +6,8 @@ Nothing here is done until it is ticked by a person. Steps marked **Founder** ne
 
 **Decisions and accounts (Founder)**
 - [ ] Hosting chosen, India region (K8). Managed PostgreSQL 16 with daily backups and point-in-time recovery; private object storage for documents and recordings
-- [ ] Domain and email sending domain (SPF, DKIM, DMARC)
+- [x] Domain: redclinic.in (registered 2026-11-25, Hostinger)
+- [ ] DNS: app.redclinic.in and staging.redclinic.in → server; email records (SPF, DKIM, DMARC)
 - [ ] Providers chosen and signed up: telephony (Indian numbers, call forwarding, recording), speech-to-text (Hindi/Kannada/English), LLM, email, payment gateway, error monitoring
 - [ ] Cartesia key shared; voice chosen per agent
 - [ ] Launch pricing and extra-minute price confirmed (current figures are planning only)
