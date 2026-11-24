@@ -148,12 +148,12 @@ describe("results", () => {
     const { recep, doctor, admin, clinicId } = await setup();
     const p = await patient(recep, "Rate Patient");
     await call(clinicId, { seconds: 61 });
-    // Noon today in the clinic's time zone (IST), so the test passes at any hour of the day.
-    const noonIst = new Date(`${new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10)}T12:00:00+05:30`);
-    const at = (h: number) => new Date(noonIst.getTime() + h * 3600_000);
-    await apptAt(clinicId, p, doctor.userId, at(-3), "completed");
-    await apptAt(clinicId, p, doctor.userId, at(-2), "scheduled");
-    await apptAt(clinicId, p, doctor.userId, at(-1), "cancelled");
+    // Spread between midnight in the clinic's time zone (IST) and now, so the test passes at any hour.
+    const midnightIst = new Date(`${new Date(Date.now() + 5.5 * 3600_000).toISOString().slice(0, 10)}T00:00:00+05:30`).getTime();
+    const at = (f: number) => new Date(midnightIst + (Date.now() - midnightIst) * f);
+    await apptAt(clinicId, p, doctor.userId, at(0.25), "completed");
+    await apptAt(clinicId, p, doctor.userId, at(0.5), "scheduled");
+    await apptAt(clinicId, p, doctor.userId, at(0.75), "cancelled");
     const v = ok(await getResults(admin, "today")).values;
     expect(v.voice_minutes_used).toBe(2);
     expect(v.appointments_total).toBe(2);
