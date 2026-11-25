@@ -5,6 +5,7 @@ import { checked, field, finish, requireUser } from "@/lib/action-helpers";
 import type { ActionState } from "@/components/action-form";
 import { importPatientsCsv, mergePatients, recordConsent, registerPatient, updateClinical, updatePatient, type PatientInput } from "@/lib/patients/service";
 import { uploadDocument } from "@/lib/documents/service";
+import { setPatientWhatsApp } from "@/lib/whatsapp/service";
 
 function patientFields(f: FormData): PatientInput {
   return {
@@ -81,4 +82,11 @@ export async function importAction(_: ActionState, f: FormData): Promise<ActionS
 
 export async function goToPatient(f: FormData) {
   redirect(`/patients?q=${encodeURIComponent(field(f, "q"))}`);
+}
+
+export async function whatsappOptAction(_: ActionState, f: FormData): Promise<ActionState> {
+  const user = await requireUser();
+  const id = field(f, "id");
+  const r = await setPatientWhatsApp(user, id, { status: field(f, "status"), language: field(f, "language") });
+  return finish(r, { message: "WhatsApp choice recorded.", revalidate: [`/patients/${id}`] });
 }

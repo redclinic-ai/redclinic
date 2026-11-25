@@ -8,7 +8,7 @@ import { currentConsentWordings } from "@/lib/clinic/service";
 import { Badge, Empty, Flash, fmtDate, fmtDateTime, PageHeader } from "@/components/ui";
 import { ActionForm, Submit } from "@/components/action-form";
 import { Select, TextArea } from "@/components/form";
-import { clinicalAction, consentAction, mergeAction, uploadAction } from "../actions";
+import { clinicalAction, consentAction, mergeAction, uploadAction, whatsappOptAction } from "../actions";
 
 export const metadata = { title: "Patient · RedClinic" };
 const METHOD: Record<string, string> = { in_person: "In person", signed_form: "Signed form", verbal: "Verbally (phone)", uploaded_form: "Uploaded form", bulk_import_confirmed: "Confirmed at import" };
@@ -81,6 +81,24 @@ export default async function PatientPage({ params, searchParams }: { params: Pr
               {consent.value.map((c, i) => <li key={i}>{c.status === "given" ? "Agreed" : "Withdrew"} · {METHOD[c.method]} · {fmtDateTime(c.recordedAt)}{c.recordedBy ? ` · ${c.recordedBy}` : ""}</li>)}
             </ul>
           )}
+        </section>
+        <section className="card" aria-labelledby="h-wa">
+          <h2 className="h2" id="h-wa">WhatsApp <Badge status={p.whatsapp === "opted_in" ? "active" : p.whatsapp === "opted_out" ? "withdrawn" : "draft"}
+            label={p.whatsapp === "opted_in" ? "Agreed" : p.whatsapp === "opted_out" ? "Does not want messages" : "Not asked"} /></h2>
+          <p className="small">{p.whatsapp === "opted_in" ? "NEPA may send this patient appointment and care messages on WhatsApp."
+            : p.whatsapp === "opted_out" ? "No WhatsApp messages are sent to this patient." : "Ask the patient if they want appointment messages on WhatsApp."}
+            {p.whatsappAt ? ` Recorded ${fmtDateTime(p.whatsappAt)}.` : ""}</p>
+          {caps.has("edit_patient") && (
+            <ActionForm action={whatsappOptAction}>
+              <input type="hidden" name="id" value={id} />
+              <div className="row2">
+                <Select label="Patient's answer" name="status" required defaultValue={p.whatsapp === "opted_in" ? "opted_out" : "opted_in"} options={[["opted_in", "Wants WhatsApp messages"], ["opted_out", "Does not want them"]]} />
+                <Select label="Message language" name="language" defaultValue={p.preferredLanguage ?? "en"} options={[["en", "English"], ["hi", "Hindi"], ["kn", "Kannada"]]} />
+              </div>
+              <Submit>Record</Submit>
+            </ActionForm>
+          )}
+          {caps.has("view_patients") && <p className="small"><Link href={`/messages/${id}`}>Open WhatsApp messages</Link></p>}
         </section>
       </div>
 

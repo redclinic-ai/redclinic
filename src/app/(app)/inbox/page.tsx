@@ -52,6 +52,7 @@ export default async function InboxPage({ searchParams }: { searchParams: Promis
                 {i.status !== "resolved" && i.appointmentId && <Link className="btn btn-ghost" href={`/appointments/${i.appointmentId}`}>{["Reschedule", "Cancel appointment"].includes(i.nextAction) ? i.nextAction : "Open appointment"}</Link>}
                 {i.status !== "resolved" && i.approvalId && <Link className="btn btn-primary" href={`/approvals#${i.approvalId}`}>Review</Link>}
                 {i.callId && <Link className="btn btn-ghost" href={`/calls/${i.callId}`}>Open call</Link>}
+                {i.kind === "whatsapp_reply" && i.patientId && <Link className="btn btn-primary" href={`/messages/${i.patientId}`}>Open messages</Link>}
               </div>
               {can && (
                 <ActionForm action={itemAction} className="att-ops">

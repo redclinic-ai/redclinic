@@ -51,7 +51,8 @@ async function execute(c: PoolClient, actor: SignedInUser, a: Record<string, any
       return { queued: true }; // an outgoing reminder call: the dialler picks up approved calls
     }
     case "outbound_call":
-      return { queued: true };
+    case "send_whatsapp":
+      return { queued: true }; // the dialler / WhatsApp sender picks up approved items
     case "reschedule_appointment": {
       if (!input.date || !input.time) throw new UserError("Choose the new date and time to approve this.", "date");
       const { rescheduleAppointment } = await import("../appointments/service");

@@ -135,7 +135,7 @@ export async function requestReschedule(t: ToolContext, appointmentId: string, p
   return mode === "suggest" ? { status: "suggested", mode: "suggest", approvalId: id } : { status: "awaiting_approval", mode: "approval_required", approvalId: id };
 }
 
-export async function decideOutbound(t: ToolContext, kind: "outbound_call" | "send_reminder", workflowId: string | null, consent: "given" | "withdrawn" | "not_recorded") {
+export async function decideOutbound(t: ToolContext, kind: "outbound_call" | "send_reminder" | "send_whatsapp", workflowId: string | null, consent: "given" | "withdrawn" | "not_recorded") {
   return decide(kind, { clinic: t.r.clinicConfig.permissions, agent: t.r.agentConfig?.permissions, workflow: await workflowFor(t, workflowId), consent });
 }
 

@@ -8,6 +8,7 @@ import { workflowTick } from "@/lib/workflows/engine";
 import { billingTick } from "@/lib/billing/service";
 import { reportError } from "@/lib/monitoring";
 import { runRetention } from "@/lib/privacy/service";
+import { runWhatsApp } from "@/lib/whatsapp/service";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,6 +27,7 @@ export async function POST(req: NextRequest) {
     try {
       await workflowTick(id);           // schedule workflow steps first
       placed += (await runDialer(id)).length;
+      await runWhatsApp(id);
     } catch (e) { failed++; reportError(e, { route: "cron jobs", clinic: id }); }
   }
   let purged = 0;

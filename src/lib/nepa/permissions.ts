@@ -17,6 +17,7 @@ export const ACTIONS = {
   cancel_appointment:     { label: "Cancel an appointment",            default: "approval_required", max: "automatic" },
   outbound_call:          { label: "Make an outgoing call",            default: "approval_required", max: "automatic" },
   send_reminder:          { label: "Send a reminder or confirmation call", default: "approval_required", max: "automatic" },
+  send_whatsapp:          { label: "Send a WhatsApp message",          default: "approval_required", max: "automatic" },
   delete_record:          { label: "Delete anything",                  default: "prohibited",        max: "approval_required" },
 } as const satisfies Record<string, { label: string; default: Mode; max: Mode }>;
 export type Action = keyof typeof ACTIONS;
@@ -41,14 +42,14 @@ export function decide(action: Action, ctx: DecisionContext = {}): Decision {
   let mode = strictest(globalMax, clinic, agent);
   let reason = mode === "automatic" ? "Allowed." : mode === "prohibited" ? "Not allowed for NEPA." : mode === "suggest" ? "NEPA may only suggest this; staff do it." : "Needs staff approval.";
   let workflowMode: Mode | undefined;
-  if (action === "outbound_call" || action === "send_reminder") {
-    if (ctx.consent === "withdrawn") return { action, mode: "prohibited", reason: "The patient withdrew consent for calls.", layers: { global: globalMax, clinic, agent } };
+  if (action === "outbound_call" || action === "send_reminder" || action === "send_whatsapp") {
+    if (ctx.consent === "withdrawn") return { action, mode: "prohibited", reason: action === "send_whatsapp" ? "The patient withdrew consent for contact." : "The patient withdrew consent for calls.", layers: { global: globalMax, clinic, agent } };
     if (!ctx.workflow || !ctx.workflow.enabled) {
       workflowMode = "approval_required";
-      reason = "Outgoing calls need an approved workflow; without one, staff must approve each call.";
+      reason = action === "send_whatsapp" ? "Messages need an approved workflow; without one, staff must approve each message." : "Outgoing calls need an approved workflow; without one, staff must approve each call.";
     } else {
       workflowMode = ctx.workflow.automaticEnabled ? "automatic" : "approval_required";
-      if (!ctx.workflow.automaticEnabled) reason = "This workflow is not switched to automatic, so each call needs approval.";
+      if (!ctx.workflow.automaticEnabled) reason = `This workflow is not switched to automatic, so each ${action === "send_whatsapp" ? "message" : "call"} needs approval.`;
     }
     mode = strictest(mode, workflowMode);
   }

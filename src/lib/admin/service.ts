@@ -33,6 +33,7 @@ export const FEATURE_SWITCHES: { key: string; label: string }[] = [
   { key: "nepa_inbound", label: "NEPA answers incoming calls" },
   { key: "nepa_outbound", label: "NEPA makes outgoing calls" },
   { key: "assistant", label: "In-app assistant" },
+  { key: "whatsapp", label: "WhatsApp messages" },
   { key: "cap:export_data", label: "Staff may export data" },
   { key: "cap:import_patients", label: "Staff may import patients" },
   { key: "cap:merge_patients", label: "Staff may merge patients" },

@@ -7,6 +7,7 @@ import { DAYS, deleteFaq, saveConsentWording, saveFaq, saveService, updateClinic
 import { deactivateUser, inviteStaff } from "@/lib/auth/service";
 import { setStaffCapabilities } from "@/lib/staff/service";
 import { decideGrant, saveDataPolicy } from "@/lib/privacy/service";
+import { saveWhatsAppSettings } from "@/lib/whatsapp/service";
 
 export async function saveProfileAction(_: ActionState, f: FormData): Promise<ActionState> {
   const user = await requireUser();
@@ -78,4 +79,13 @@ export async function decideGrantAction(_: ActionState, f: FormData): Promise<Ac
   const decision = field(f, "decision") as "approve" | "deny" | "revoke";
   const r = await decideGrant(user, field(f, "id"), decision);
   return finish(r, { redirect: `/settings/privacy?ok=${decision === "approve" ? "approved" : decision === "deny" ? "denied" : "revoked"}`, revalidate: ["/settings/privacy"] });
+}
+
+export async function saveWhatsAppAction(_: ActionState, f: FormData): Promise<ActionState> {
+  const user = await requireUser();
+  const r = await saveWhatsAppSettings(user, {
+    status: field(f, "status"), businessNumber: field(f, "businessNumber"), phoneNumberId: field(f, "phoneNumberId"),
+    mapsUrl: field(f, "mapsUrl"), reviewUrl: field(f, "reviewUrl"),
+  });
+  return finish(r, { message: "WhatsApp settings saved.", revalidate: ["/settings/whatsapp"] });
 }

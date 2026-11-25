@@ -17,7 +17,9 @@ function definitionFrom(f: FormData) {
     steps.push({
       key: field(f, `s${i}_key`) || `step${i + 1}`, action,
       ...(when === "before" ? { beforeAppointmentMinutes: amount } : { afterMinutes: amount }),
-      ...(action === "call" ? { purpose: field(f, `s${i}_purpose`) } : { reason: field(f, `s${i}_reason`) || "Needs staff attention." }),
+      ...(action === "call" ? { purpose: field(f, `s${i}_purpose`) }
+        : action === "whatsapp" ? { template: field(f, `s${i}_template`) }
+        : { reason: field(f, `s${i}_reason`) || "Needs staff attention." }),
       onlyIf: field(f, `s${i}_onlyIf`) || "always",
     });
   }

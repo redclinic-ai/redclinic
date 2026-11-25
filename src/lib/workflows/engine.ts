@@ -4,6 +4,7 @@
 import type { PoolClient } from "pg";
 import { withContext, type DbContext } from "../db";
 import { queueOutbound } from "../calls/service";
+import { queueWhatsApp } from "../whatsapp/service";
 import { AGENT_FOR, definitionSchema, type Definition } from "./definition";
 
 const clinicCtx = (clinicId: string): DbContext => ({ userId: null, clinicId, isSuperAdmin: false });
@@ -58,7 +59,28 @@ async function conditionHolds(c: PoolClient, onlyIf: string, run: Record<string,
     return { ok: true };
   }
   if (onlyIf === "not_rebooked") return a.rebooked || a.upcoming ? { ok: false, stop: "Patient rebooked." } : { ok: true };
+  if (onlyIf === "was_confirmed") return a.was_confirmed ? { ok: true } : { ok: false, stop: "Patient had not confirmed (the call workflow handles them)." };
   return { ok: true };
+}
+
+/**
+ * Founder rule: after a no-show, call patients who had not confirmed; message (with directions) those who had.
+ * When the clinic has the WhatsApp no-show workflow on and the patient agreed to WhatsApp, calls skip confirmed patients.
+ */
+async function whatsappHandlesNoShow(c: PoolClient, run: Record<string, any>): Promise<{ ok: boolean; stop?: string }> {
+  if (!run.appointment_id) return { ok: true };
+  const a = (await c.query("SELECT * FROM rc_wf_appointment($1)", [run.appointment_id])).rows[0];
+  if (!a?.was_confirmed) return { ok: true };
+  const wfs = (await c.query("SELECT steps FROM clinic_workflows WHERE enabled AND step_format = 2")).rows;
+  const waOn = wfs.some((w) => {
+    const d = definitionSchema.safeParse(w.steps);
+    return d.success && d.data.trigger.event === "appointment_no_show" && d.data.steps.some((st) => st.action === "whatsapp" && st.onlyIf === "was_confirmed");
+  });
+  if (!waOn) return { ok: true };
+  const p = (await c.query("SELECT * FROM rc_nepa_patient_brief($1)", [run.patient_id])).rows[0];
+  const wp = p?.phone ? (await c.query("SELECT whatsapp_status FROM rc_whatsapp_patient($1)", [p.phone])).rows[0] : null;
+  const connected = (await c.query("SELECT 1 FROM clinic_whatsapp WHERE clinic_id = rc_clinic_id() AND status <> 'off'")).rowCount;
+  return wp?.whatsapp_status === "opted_in" && connected ? { ok: false, stop: "Patient had confirmed; the WhatsApp no-show message handles them." } : { ok: true };
 }
 
 /** Processes due steps. Returns what was done, for logs and tests. */
@@ -78,7 +100,10 @@ async function processDue(clinicId: string) {
     const steps = def.data.steps;
     const step = steps[run.next_step];
     if (!step) { await withContext(clinicCtx(clinicId), (c) => c.query("UPDATE workflow_runs SET status='done' WHERE id=$1", [run.id])); continue; }
-    const cond = await withContext(clinicCtx(clinicId), (c) => conditionHolds(c, step.onlyIf, run));
+    let cond = await withContext(clinicCtx(clinicId), (c) => conditionHolds(c, step.onlyIf, run));
+    if (cond.ok && step.action === "call" && def.data.trigger.event === "appointment_no_show") {
+      cond = await withContext(clinicCtx(clinicId), (c) => whatsappHandlesNoShow(c, run));
+    }
     let result: string;
     if (!cond.ok) {
       result = `skipped: ${cond.stop}`;
@@ -95,6 +120,11 @@ async function processDue(clinicId: string) {
           agentKind: AGENT_FOR[step.purpose!] ?? "lead_followup", simulated: run.is_simulated, summary: `${step.purpose!.replace(/_/g, " ")} call from workflow`,
         });
         result = q.mode === "prohibited" ? `not called: ${q.reason}` : q.mode === "suggest" ? "suggested to staff" : q.mode === "approval_required" ? "call waiting for approval" : "call queued";
+      } else if (step.action === "whatsapp") {
+        const q = await queueWhatsApp(clinicId, {
+          patientId: run.patient_id, template: step.template!, appointmentId: run.appointment_id, workflowId: run.wf_id, simulated: run.is_simulated,
+        });
+        result = q.mode === "prohibited" || q.mode === "suggest" ? `not sent: ${q.reason}` : q.mode === "approval_required" ? "message waiting for approval" : "message queued";
       } else {
         await withContext(clinicCtx(clinicId), (c) => c.query(
           `INSERT INTO attention_items (clinic_id, kind, patient_id, appointment_id, reason, urgency, is_simulated)

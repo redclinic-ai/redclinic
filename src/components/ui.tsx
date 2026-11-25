@@ -17,7 +17,7 @@ export function PageHeader({ title, subtitle, actions, back }: { title: string; 
 }
 
 const FLASH: Record<string, string> = {
-  saved: "Saved.", requested: "Request sent. The clinic admin has been emailed.", denied: "Request denied.", revoked: "Access closed.", booked: "Appointment booked.", moved: "Appointment moved.", cancelled: "Appointment cancelled.",
+  saved: "Saved.", sent: "Message sent.", requested: "Request sent. The clinic admin has been emailed.", denied: "Request denied.", revoked: "Access closed.", booked: "Appointment booked.", moved: "Appointment moved.", cancelled: "Appointment cancelled.",
   confirmed: "Marked as confirmed.", completed: "Marked as done.", no_show: "Marked as no-show.", scheduled: "Marked as not confirmed.",
   invited: "Invitation sent.", deactivated: "Account switched off.", merged: "Records merged.", uploaded: "Document added.",
   consent: "Consent recorded.", registered: "Patient added.", resolved: "Marked as done.", snoozed: "Snoozed.",

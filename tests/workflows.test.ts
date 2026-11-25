@@ -46,10 +46,12 @@ describe("packs and clinic copies", () => {
   it("a dental clinic gets Core and Dental workflows (switched on, never automatic); another specialty gets Core only", async () => {
     const d = await setup("dental");
     const derm = await setup("dermatology");
-    const dk = ok(await listWorkflows(d.admin)).filter((w) => w.format === 2).map((w) => w.templateKey).sort();
+    const notWa = (w: { templateKey: string | null }) => !w.templateKey?.startsWith("wa_");   // the WhatsApp pack is checked in whatsapp.test.ts
+    const dk = ok(await listWorkflows(d.admin)).filter((w) => w.format === 2 && notWa(w)).map((w) => w.templateKey).sort();
     expect(dk).toEqual(["appointment_confirmation", "braces_adjustment", "enquiry_followup", "no_show_recovery", "post_procedure_checkin", "rct_next_visit", "routine_recall"]);
-    expect(ok(await listWorkflows(derm.admin)).map((w) => w.templateKey).sort()).toEqual(["appointment_confirmation", "enquiry_followup", "no_show_recovery", "routine_recall"]);
-    expect(ok(await listWorkflows(d.admin)).filter((w) => w.format === 2).every((w) => w.enabled && !w.automatic)).toBe(true);
+    expect(ok(await listWorkflows(derm.admin)).filter(notWa).map((w) => w.templateKey).sort()).toEqual(["appointment_confirmation", "enquiry_followup", "no_show_recovery", "routine_recall"]);
+    expect(ok(await listWorkflows(d.admin)).filter((w) => w.format === 2 && notWa(w)).every((w) => w.enabled && !w.automatic)).toBe(true);
+    expect(ok(await listWorkflows(d.admin)).filter((w) => !notWa(w)).every((w) => !w.enabled)).toBe(true);
     const conf = await wfByKey(d.admin, "appointment_confirmation");
     expect(conf.summary).toEqual(["3 hours before the appointment: NEPA calls to confirm the appointment (only if not confirmed yet)."]);
   });

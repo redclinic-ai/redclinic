@@ -12,7 +12,10 @@ SELECT rct.check('every active template has a trigger and at least one step',
   (SELECT count(*) FROM workflow_templates t JOIN workflow_packs p ON p.id = t.pack_id
    WHERE p.is_active AND (t.steps->'trigger'->>'event' IS NULL OR jsonb_array_length(t.steps->'steps') = 0)) = 0);
 SELECT rct.check('dental clinic has the core and dental workflows (format 2)',
-  (SELECT count(DISTINCT template_key) FROM clinic_workflows WHERE clinic_id = rct.id('ca') AND step_format = 2) = 7);
+  (SELECT count(DISTINCT template_key) FROM clinic_workflows WHERE clinic_id = rct.id('ca') AND step_format = 2 AND coalesce(pack_key,'') <> 'whatsapp') = 7);
+SELECT rct.check('the WhatsApp pack is installed switched off',
+  (SELECT count(*) FROM clinic_workflows WHERE clinic_id = rct.id('ca') AND pack_key = 'whatsapp' AND NOT enabled) = 4
+  AND NOT EXISTS (SELECT 1 FROM clinic_workflows WHERE clinic_id = rct.id('ca') AND pack_key = 'whatsapp' AND enabled));
 
 -- editing a clinic copy never changes the master template
 BEGIN;

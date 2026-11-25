@@ -15,6 +15,7 @@ export interface Patient extends PatientSummary {
   email: string | null; dateOfBirth: string | null; address: string | null; assignedDoctorId: string | null;
   firstProblem: string | null; mergedInto: string | null;
   clinical: { medicalHistory: string; allergies: string; notes: string } | null; // null = no permission to see
+  whatsapp: "unknown" | "opted_in" | "opted_out"; whatsappAt: Date | null; preferredLanguage: "en" | "hi" | "kn" | null;
 }
 
 export interface Duplicate { patientId: string; code: string; name: string; phone: string | null; reason: string }
@@ -154,6 +155,7 @@ export async function getPatient(actor: SignedInUser, patientId: string) {
     return {
       ...toSummary(r.rows[0]), email: x.email, dateOfBirth: x.date_of_birth ?? null,
       address: x.address, assignedDoctorId: x.assigned_doctor_id, firstProblem: x.first_problem, mergedInto: x.merged_into, clinical,
+      whatsapp: x.whatsapp_status, whatsappAt: x.whatsapp_status_at, preferredLanguage: x.preferred_language,
     } as Patient;
   });
 }

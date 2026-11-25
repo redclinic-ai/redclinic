@@ -1,5 +1,6 @@
 // Workflow definition (format 2). Plain data, edited by clinics through a simple form, run by the engine.
 import { z } from "zod";
+import { TEMPLATE_KEYS, TEMPLATES } from "../whatsapp/templates";
 
 export const EVENTS = {
   appointment_scheduled: "When an appointment is booked",
@@ -15,19 +16,22 @@ export const PURPOSES = {
 } as const;
 export const CONDITIONS = {
   always: "Always", not_confirmed: "Only if not confirmed yet", not_rebooked: "Only if not rebooked", no_upcoming: "Only if nothing is booked",
+  was_confirmed: "Only if they had confirmed",
 } as const;
 
 const step = z.object({
   key: z.string().trim().min(1).max(40),
   afterMinutes: z.number().int().min(0).max(525_600).optional(),
   beforeAppointmentMinutes: z.number().int().min(10).max(20_160).optional(),
-  action: z.enum(["call", "attention"]),
+  action: z.enum(["call", "attention", "whatsapp"]),
+  template: z.enum(TEMPLATE_KEYS).optional(),
   purpose: z.enum(Object.keys(PURPOSES) as [keyof typeof PURPOSES]).optional(),
   onlyIf: z.enum(Object.keys(CONDITIONS) as [keyof typeof CONDITIONS]).default("always"),
   script: z.string().max(500).optional(),
   reason: z.string().max(300).optional(),
 }).refine((s) => (s.afterMinutes === undefined) !== (s.beforeAppointmentMinutes === undefined), "Each step needs one timing: after the trigger, or before the appointment.")
-  .refine((s) => s.action !== "call" || !!s.purpose, "A call step needs a purpose.");
+  .refine((s) => s.action !== "call" || !!s.purpose, "A call step needs a purpose.")
+  .refine((s) => s.action !== "whatsapp" || !!s.template, "A WhatsApp step needs a message.");
 
 export const definitionSchema = z.object({
   trigger: z.object({
@@ -45,6 +49,10 @@ export const definitionSchema = z.object({
   if (d.trigger.event === "weeks_since_last_visit" && !d.trigger.weeks) ctx.addIssue({ code: "custom", message: "Say how many weeks." });
   const calls = d.steps.filter((s) => s.action === "call").length;
   if (calls > 3) ctx.addIssue({ code: "custom", message: "A workflow can call a patient at most 3 times." });
+  if (d.steps.filter((s) => s.action === "whatsapp").length > 3) ctx.addIssue({ code: "custom", message: "A workflow can message a patient at most 3 times." });
+  if (d.steps.some((s) => s.onlyIf === "was_confirmed") && d.trigger.event !== "appointment_no_show") {
+    ctx.addIssue({ code: "custom", message: "“Only if they had confirmed” works with “When a patient doesn't come”." });
+  }
 });
 export type Definition = z.infer<typeof definitionSchema>;
 
@@ -57,7 +65,9 @@ export const AGENT_FOR: Record<string, string> = {
 export function describeStep(s: Definition["steps"][number]): string {
   const when = s.beforeAppointmentMinutes !== undefined ? `${fmtMinutes(s.beforeAppointmentMinutes)} before the appointment`
     : s.afterMinutes === 0 ? "Straight away" : `${fmtMinutes(s.afterMinutes!)} later`;
-  const what = s.action === "call" ? `NEPA calls to ${(PURPOSES[s.purpose!] ?? "").toLowerCase()}` : `Tell staff: ${(s.reason ?? "needs attention").replace(/[.\s]+$/, "")}`;
+  const what = s.action === "call" ? `NEPA calls to ${(PURPOSES[s.purpose!] ?? "").toLowerCase()}`
+    : s.action === "whatsapp" ? `WhatsApp: ${(TEMPLATES[s.template!]?.label ?? "message").toLowerCase()}`
+    : `Tell staff: ${(s.reason ?? "needs attention").replace(/[.\s]+$/, "")}`;
   return `${when}: ${what}${s.onlyIf !== "always" ? ` (${CONDITIONS[s.onlyIf].toLowerCase()})` : ""}.`;
 }
 export function fmtMinutes(m: number) {

@@ -8,6 +8,7 @@ export const KIND_LABEL: Record<string, string> = {
   complaint: "Complaint", reschedule_request: "Wants to reschedule", cancellation_request: "Wants to cancel",
   unconfirmed_appointment: "Not confirmed", no_show_no_rebooking: "No-show, not rebooked", failed_outbound_call: "Call didn't go through",
   pending_approval: "Waiting for approval", failed_workflow: "Workflow failed", consent_withdrawn: "Consent withdrawn",
+  whatsapp_reply: "WhatsApp message", usage_alert: "Usage", billing: "Billing",
 };
 
 /** What the main button does for each kind. */
@@ -15,7 +16,7 @@ export const NEXT_ACTION: Record<string, string> = {
   call_not_completed: "Call back", call_handed_over: "Call back", unanswered_question: "Call back", complaint: "Call back",
   reschedule_request: "Reschedule", cancellation_request: "Cancel appointment", unconfirmed_appointment: "Call to confirm",
   no_show_no_rebooking: "Call to rebook", failed_outbound_call: "Call back", pending_approval: "Review", failed_workflow: "Review",
-  consent_withdrawn: "Review",
+  consent_withdrawn: "Review", whatsapp_reply: "Open messages",
 };
 
 export interface AttentionItem {

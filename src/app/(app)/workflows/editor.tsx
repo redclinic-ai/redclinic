@@ -1,4 +1,5 @@
 import { CONDITIONS, EVENTS, PURPOSES, type Definition } from "@/lib/workflows/definition";
+import { TEMPLATES } from "@/lib/whatsapp/templates";
 import { Input } from "@/components/form";
 
 function split(min: number) {
@@ -34,7 +35,7 @@ export function WorkflowEditor({ name, def }: { name: string; def: Definition })
                 <input type="hidden" name={`s${i}_key`} defaultValue={s?.key ?? ""} />
                 <span className="step-no">{i + 1}</span>
                 <select name={`s${i}_action`} defaultValue={s?.action ?? "none"} aria-label={`Step ${i + 1}: what happens`}>
-                  <option value="none">— no step —</option><option value="call">NEPA calls</option><option value="attention">Tell staff</option>
+                  <option value="none">— no step —</option><option value="call">NEPA calls</option><option value="whatsapp">WhatsApp message</option><option value="attention">Tell staff</option>
                 </select>
                 <input name={`s${i}_amount`} type="number" min={0} defaultValue={t.amount} aria-label={`Step ${i + 1}: how long`} className="num" />
                 <select name={`s${i}_unit`} defaultValue={t.unit} aria-label={`Step ${i + 1}: unit`}><option value="minutes">minutes</option><option value="hours">hours</option><option value="days">days</option><option value="weeks">weeks</option></select>
@@ -42,13 +43,14 @@ export function WorkflowEditor({ name, def }: { name: string; def: Definition })
                   <option value="after">after it starts</option><option value="before">before the appointment</option>
                 </select>
                 <select name={`s${i}_purpose`} defaultValue={s?.purpose ?? "follow_up"} aria-label={`Step ${i + 1}: call purpose`}>{Object.entries(PURPOSES).map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select>
+                <select name={`s${i}_template`} defaultValue={s?.template ?? "appointment_confirmation"} aria-label={`Step ${i + 1}: WhatsApp message`}>{Object.entries(TEMPLATES).map(([k, t]) => <option key={k} value={k}>{t.label}</option>)}</select>
                 <select name={`s${i}_onlyIf`} defaultValue={s?.onlyIf ?? "always"} aria-label={`Step ${i + 1}: condition`}>{Object.entries(CONDITIONS).map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select>
                 <input name={`s${i}_reason`} defaultValue={s?.reason ?? ""} placeholder="Message for staff (for “Tell staff”)" aria-label={`Step ${i + 1}: message for staff`} className="reason" />
               </div>
             );
           })}
         </div>
-        <p className="field-hint">At most 3 calls per workflow. Each step's condition is checked when it is due; if it no longer applies, the workflow stops for that patient. Patients who withdrew consent are never called.</p>
+        <p className="field-hint">At most 3 calls per workflow. Each step's condition is checked when it is due; if it no longer applies, the workflow stops for that patient. Patients who withdrew consent are never called. WhatsApp steps need WhatsApp connected and the patient's agreement; at most 3 messages per workflow.</p>
       </fieldset>
     </>
   );
