@@ -45,3 +45,13 @@ Status labels: Locked, Approved, Proposed, Recommended, Unresolved. Recommendati
 
 ## D26 (2026-11-25): Domain redclinic.in
 Founder registered **redclinic.in** (Hostinger). Plan: `redclinic.in` / `www` = marketing website; `app.redclinic.in` = the clinic app (`APP_URL`); `staging.redclinic.in` = staging; email from `@redclinic.in` (SPF, DKIM, DMARC set once the email provider is chosen). DNS records are added when hosting is chosen (K8).
+
+## V2 decisions (2026-11-25)
+- D27: RedClinic access to patient data is a clinic choice: "any time" (V1 behaviour, default) or "on request". Enforced in the database: patient-data policies let a super admin in only for the clinic in context and only when the policy or an approved, unexpired grant allows. The super admin can never change a clinic's choice or approve its own request.
+- D28: Retention periods are per clinic and cover call recordings, transcripts, assistant history and phone logs only. Patient records, appointments, documents and consent are never purged automatically (medical-record retention law needs the lawyer's view first).
+- D29: WhatsApp needs the patient's recorded agreement (staff, lead form or the patient's own START). STOP is honoured at once. Messages follow the same permission engine as calls (approval unless the workflow and the clinic permission are automatic) and the same 9 am–9 pm window.
+- D30: Founder rule after a no-show is implemented: when the WhatsApp no-show workflow is on and the patient had confirmed and agreed to WhatsApp, the call workflow skips them and they get directions on WhatsApp; unconfirmed patients are called.
+- D31: Every lead becomes (or matches by phone) a patient with a permanent ID, so follow-ups hang off the patient ID. Leads are never "converted" by hand: "booked" is read from appointments.
+- D32: Review requests go to every patient alike after a completed visit (no filtering by satisfaction, which Google forbids), at most once in 6 months, through a tracked link.
+- D33: Document reading runs on RedClinic's server with open-source tools (pdf.js, Tesseract) and plain rules, not an AI service: no patient documents leave the server, and every suggestion shows its source line. A doctor confirms each item.
+- D34: Online consultations use Jitsi (open source). No fee or payment fields (C4/C7 stand: no clinic revenue).

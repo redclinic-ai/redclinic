@@ -30,6 +30,11 @@ Tests: `npm run test:db` (SQL, needs PostgreSQL 16), `npm test` (app), `npm run 
 7. **Audit** anything a person would ask “who did this?” about: `audit(c, action, entity, id, details)`.
 8. **Simulated data** is flagged and hidden from Results unless chosen.
 
+## V2 modules
+- `src/lib/privacy` (data policy, access grants, retention job), `src/lib/whatsapp` (templates, provider, service), `src/lib/leads` (Meta lead ads), `src/lib/records` (record, visits, document reading), `src/lib/telehealth` (Jitsi rooms).
+- New patient-data tables use `rc_enable_patient_rls` or `rc_enable_clinical_rls` (migration 018/021), never `rc_enable_tenant_rls`, so RedClinic access follows the clinic's data policy. A SQL check in migration 018 fails if a patient-data policy gives the super admin a blanket bypass.
+- Optional packs install switched off (`workflow_packs.install_enabled`).
+
 ## Where things stand
 See BUILD_STATUS.md. All ten phases are built as far as they can go without outside accounts. What remains is listed in PRODUCTION_CHECKLIST.md §1. Open issues: KNOWN_ISSUES.md.
 

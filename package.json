@@ -16,7 +16,8 @@
     "create-super-admin": "tsx scripts/create-super-admin.mts",
     "smoke": "node e2e/smoke.mjs",
     "seed-demo": "tsx scripts/seed-demo.mts",
-    "check-cartesia": "tsx scripts/check-cartesia.mts"
+    "check-cartesia": "tsx scripts/check-cartesia.mts",
+    "smoke:v2": "node e2e/v2-smoke.mjs"
   },
   "dependencies": {
     "@tesseract.js-data/eng": "^1.0.0",

@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2026-11-25: V2
+- Migration 018: clinic data policy (RedClinic access on request, clinic-scoped super admin access in the database), retention rules and clean-up job; billing notices through a definer function.
+- Migration 019: WhatsApp (connection, opt-in, message log, receipts, workflow steps, "was confirmed" condition, WhatsApp pack, packs that install switched off).
+- Migration 020: Meta lead ads (forms, leads, ingest, "lead received" event, lead follow-up pack), review requests with tracked links, `rc_results_v2`.
+- Migration 021: medical record (visit notes, conditions, medicines, allergies, test results, `write_clinical`), document extractions, online consultations.
+- Migration 022: skin/hair, physiotherapy and general practice packs.
+- New screens: Messages, Leads, medical record, visit note, prescription print, document review; Settings → WhatsApp, Lead ads, Online consultations, Privacy & data.
+- `e2e/v2-smoke.mjs` (`npm run smoke:v2`).
+
 ## 2026-11-23: Phases 9 and 10
 - Cartesia adapter updated to the current API (Bearer auth, version 2026-08-14, Sonic 3.6, Indian locales); tests; `npm run check-cartesia`.
 - Test calls: "Listen" plays NEPA's lines in the agent's voice once Cartesia is verified (`/api/tts/[segmentId]`, transcript permission required).

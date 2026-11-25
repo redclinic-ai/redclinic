@@ -25,3 +25,18 @@ Three environments: development, staging, production. Each has its own database 
 `.env.example` contains the names only, never values.
 
 `SESSION_SECRET` was planned but is not needed: session tokens are random and only their hashes are stored. Test runs may set `TEST_DATABASE_ADMIN_URL` and `TEST_DATABASE_URL`.
+
+### V2
+| Variable | Used by | Where | Notes |
+|---|---|---|---|
+| `WHATSAPP_ACCESS_TOKEN` | WhatsApp sending | server only | System-user token of RedClinic's Meta app |
+| `WHATSAPP_APP_SECRET` | WhatsApp webhook | server only | Meta app secret; checks X-Hub-Signature-256 |
+| `WHATSAPP_VERIFY_TOKEN` | WhatsApp webhook setup | server only | Any long random string, also typed into Meta's webhook settings |
+| `WHATSAPP_VERIFIED` | WhatsApp | server | `1` only after a live test message; until then the simulated provider is used |
+| `WHATSAPP_GRAPH_VERSION` | WhatsApp | server | Optional, default `v21.0`; set to Meta's current version |
+| `ALLOW_SIMULATED_WHATSAPP` | WhatsApp | server | `1` only on staging |
+| `META_PAGE_ACCESS_TOKEN` | lead ads | server only | Token with `leads_retrieval` for the clinics' pages |
+| `META_APP_SECRET` | lead-ads webhook | server only | Same Meta app secret as WhatsApp if one app is used |
+| `META_VERIFY_TOKEN` | lead-ads webhook setup | server only | Random string for Meta's webhook verification |
+| `META_LEADS_VERIFIED` | lead ads | server | `1` after a live test lead |
+| `ALLOW_SIMULATED_LEADS` | lead ads | server | `1` only on staging |

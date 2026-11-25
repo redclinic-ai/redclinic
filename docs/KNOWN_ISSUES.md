@@ -24,3 +24,11 @@ Resolved: the complete final master prompt (`docs/MASTER_PROMPT.md`) was used.
 - K9: No error-monitoring provider is chosen. Errors are logged as JSON only. A free tier (for example Sentry) can be added behind `ErrorReporter` in `src/lib/monitoring` once approved.
 - K10: In-app assistant voice input waits for a speech-to-text provider (text works now). Browser speech recognition was not used because it sends audio to a third party without a contract.
 - K11: The dialler and attention refresh need a scheduler calling `POST /api/cron/dialer` every minute with `CRON_SECRET` (host cron or uptime pinger). Not set up until hosting is chosen (K8).
+
+## V2 (2026-11-25)
+- K12: Hindi and Kannada wording of WhatsApp templates (`src/lib/whatsapp/templates.ts`) was written by the engineering team. Have a native speaker check it before patients see it. Template names and wording must also be submitted and approved in the WhatsApp Business account exactly as in the file.
+- K13: Skin/hair, physiotherapy and general practice packs (migration 022) are engineering drafts like the Dental Pack (K4). Review with a practising professional before real patients.
+- K14: Online consultations default to the public meet.jit.si service (free, run by Jitsi's company). For real patients, run RedClinic's own Jitsi server in India and set its domain in Settings → Online consultations.
+- K15: WhatsApp Cloud API and Meta lead-ads adapters are written to Meta's documented formats but not verified: no Meta app or WhatsApp Business account yet. They switch on only with their keys and WHATSAPP_VERIFIED / META_LEADS_VERIFIED set after a live test.
+- K16: Document suggestions use rules. They read typed prescriptions and lab reports well; handwriting is not read reliably. Doctors confirm every item. An AI extractor can be added behind the same interface once an AI provider is approved.
+- K17: Document reading runs when a person asks ("Read into record"), not automatically on upload; OCR of a photo takes a few seconds on the KVM 1 server.

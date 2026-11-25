@@ -14,3 +14,17 @@ V1 collects the data below so later decisions on use can be made from complete r
 | Usage events | Plan limits, results | `usage_events` | Clinic admin, super admin |
 | Audit log | Accountability | `audit_log` | Clinic admin (own clinic), super admin |
 | Subscriptions | Billing | `subscriptions` | Clinic admin, super admin |
+
+## V2 tables
+| Table | Holds | Patient data | Notes |
+|---|---|---|---|
+| clinic_data_policy | RedClinic access choice, retention days | no | changed only by the clinic |
+| super_access_grants | RedClinic access requests and decisions | no | audited, emailed to clinic admins |
+| clinic_whatsapp | WhatsApp number, links | no | |
+| whatsapp_messages | messages both ways, receipts, review-link clicks | yes | opt-in on `patients.whatsapp_status` |
+| lead_forms | linked Meta forms | no | |
+| leads | lead form answers, campaign names | yes | becomes/matches a patient |
+| visit_notes | complaint, vitals, findings, diagnosis, advice | yes (clinical) | signed notes locked |
+| patient_conditions, patient_medications, patient_allergies, lab_results | structured record | yes (clinical) | each with source and evidence; marked, never deleted |
+| document_extractions | text read from documents, suggestions | yes (clinical) | |
+| clinic_telehealth | online consultation settings | no | room names on `appointments.online_meeting_ref` |
