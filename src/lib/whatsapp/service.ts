@@ -3,7 +3,8 @@
 //  2. The scheduler sends due messages (runWhatsApp), never at night, never to a patient without opt-in.
 //  3. The webhook brings replies and delivery receipts (receiveWhatsApp). Simple replies are acted on
 //     (1 = confirm, 2 = change, STOP/START); anything else goes to staff in Messages and Needs attention.
-import { randomUUID } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
+import { appBaseUrl } from "../env";
 import type { PoolClient } from "pg";
 import { z } from "zod";
 import type { SignedInUser } from "../auth/service";
@@ -127,11 +128,21 @@ export async function queueWhatsApp(clinicId: string, input: QueueInput): Promis
     const allow = (await c.query("SELECT * FROM rc_whatsapp_allowance()")).rows[0];
     if (allow.allowance !== null && allow.used >= allow.allowance && !input.simulated) return skip("The plan's WhatsApp messages for this period are used up.");
 
+    // review requests: every patient alike (never filtered by how they felt), at most once in 6 months
+    let linkToken: string | null = null;
+    if (input.template === "review_request") {
+      if (!wa.review_url) return skip("Cannot send “Ask for a Google review”: add a Google review link in Settings → WhatsApp.");
+      const recent = (await c.query(
+        `SELECT 1 FROM whatsapp_messages WHERE patient_id = $1 AND template_key = 'review_request' AND status IN ('awaiting_approval','queued','sent','delivered','read')
+          AND created_at > now() - interval '180 days'`, [input.patientId])).rowCount;
+      if (recent) return skip("A review request was already sent to this patient in the last 6 months.");
+      linkToken = randomBytes(18).toString("base64url");
+    }
     const r = await resolve(c, "reminder");
     const lang = (wp.preferred_language ?? "en") as Lang;
     const filled = render(input.template, lang, {
       name: p.name.split(" ")[0], clinic: r.knowledge.clinic.name, assistant: r.agentConfig?.name ?? "the clinic assistant",
-      phone: r.knowledge.clinic.phone, maps: wa.maps_url, review: wa.review_url,
+      phone: r.knowledge.clinic.phone, maps: wa.maps_url, review: linkToken ? `${appBaseUrl()}/r/${linkToken}` : null,
       when: await appointmentWhen(c, input.appointmentId, lang), service: "visit", ...input.vars,
     });
     if (!filled.ok) return skip(`Cannot send “${TEMPLATES[input.template].label}”: add ${describeMissing(filled.missing)} in Settings → WhatsApp.`);
@@ -151,11 +162,11 @@ export async function queueWhatsApp(clinicId: string, input: QueueInput): Promis
     }
     const ins = await c.query(
       `INSERT INTO whatsapp_messages (id, clinic_id, patient_id, direction, template_key, language, body, status, peer_number, provider,
-                                      appointment_id, workflow_id, approval_id, due_at, is_simulated)
-       VALUES ($1, rc_clinic_id(), $2, 'out', $3, $4, $5, $6, $7, $8, $9, $10, $11, coalesce($12, now()), $13) ON CONFLICT DO NOTHING`,
+                                      appointment_id, workflow_id, approval_id, due_at, is_simulated, link_token)
+       VALUES ($1, rc_clinic_id(), $2, 'out', $3, $4, $5, $6, $7, $8, $9, $10, $11, coalesce($12, now()), $13, $14) ON CONFLICT DO NOTHING`,
       [id, input.patientId, input.template, lang, filled.text, approvalId ? "awaiting_approval" : "queued", toE164Digits(p.phone),
        wa.status === "connected" ? "meta_cloud" : "simulated", input.appointmentId ?? null, input.workflowId ?? null, approvalId, input.dueAt ?? null,
-       !!input.simulated || wa.status === "simulated"]);
+       !!input.simulated || wa.status === "simulated", linkToken]);
     return { messageId: ins.rowCount ? id : null, mode: d.mode, reason: d.reason };
   });
 }

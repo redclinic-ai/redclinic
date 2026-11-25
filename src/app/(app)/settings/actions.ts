@@ -8,6 +8,7 @@ import { deactivateUser, inviteStaff } from "@/lib/auth/service";
 import { setStaffCapabilities } from "@/lib/staff/service";
 import { decideGrant, saveDataPolicy } from "@/lib/privacy/service";
 import { saveWhatsAppSettings } from "@/lib/whatsapp/service";
+import { addLeadForm, setLeadFormEnabled } from "@/lib/leads/service";
 
 export async function saveProfileAction(_: ActionState, f: FormData): Promise<ActionState> {
   const user = await requireUser();
@@ -88,4 +89,16 @@ export async function saveWhatsAppAction(_: ActionState, f: FormData): Promise<A
     mapsUrl: field(f, "mapsUrl"), reviewUrl: field(f, "reviewUrl"),
   });
   return finish(r, { message: "WhatsApp settings saved.", revalidate: ["/settings/whatsapp"] });
+}
+
+export async function addLeadFormAction(_: ActionState, f: FormData): Promise<ActionState> {
+  const user = await requireUser();
+  const r = await addLeadForm(user, { label: field(f, "label"), pageId: field(f, "pageId"), formId: field(f, "formId") });
+  return finish(r, { redirect: "/settings/leads?ok=saved", revalidate: ["/settings/leads"] });
+}
+
+export async function leadFormSwitchAction(_: ActionState, f: FormData): Promise<ActionState> {
+  const user = await requireUser();
+  const r = await setLeadFormEnabled(user, field(f, "id"), field(f, "enabled") === "1");
+  return finish(r, { redirect: "/settings/leads?ok=saved", revalidate: ["/settings/leads"] });
 }

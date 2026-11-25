@@ -18,6 +18,13 @@ export const METRICS: { key: string; label: string; how: string; group: string }
   { group: "Appointments", key: "no_shows_rebooked", label: "No-shows rebooked", how: "Of those no-shows, patients who booked again afterwards." },
   { group: "Follow-ups", key: "followup_calls", label: "Recall and follow-up calls", how: "Outgoing calls made for recalls, follow-ups and no-show follow-ups." },
   { group: "Follow-ups", key: "visits_booked_from_followups", label: "Visits booked from follow-ups", how: "Appointments booked during one of those calls." },
+  { group: "WhatsApp", key: "whatsapp_sent", label: "WhatsApp messages sent", how: "Messages that reached WhatsApp (sent, delivered or read)." },
+  { group: "WhatsApp", key: "whatsapp_replies", label: "Patient replies", how: "WhatsApp messages received from patients." },
+  { group: "WhatsApp", key: "confirmed_on_whatsapp", label: "Confirmed on WhatsApp", how: "Appointments confirmed by a patient replying 1 to a confirmation message." },
+  { group: "Leads and reviews", key: "leads_received", label: "Leads received", how: "Enquiries from lead ads or added by staff in this period." },
+  { group: "Leads and reviews", key: "leads_booked", label: "Leads that booked", how: "Of those leads, people who booked an appointment afterwards (not cancelled)." },
+  { group: "Leads and reviews", key: "review_requests_sent", label: "Review requests sent", how: "WhatsApp review requests that reached the patient." },
+  { group: "Leads and reviews", key: "review_links_opened", label: "Review links opened", how: "Review requests whose link was opened. RedClinic cannot see whether a review was posted." },
   { group: "Usage", key: "voice_minutes_used", label: "Voice minutes used", how: "Total length of all calls in this period, rounded up to whole minutes." },
   { group: "Usage", key: "new_patients", label: "New patients", how: "Patients registered in this period (merged duplicates not counted)." },
 ];
@@ -38,7 +45,8 @@ export async function getResults(actor: SignedInUser, period: Period, includeSim
     await requireCap(c, "view_results", "You don't have access to Results.");
     const { from, to, label } = periodRange(period);
     const r = await c.query("SELECT metric, value FROM rc_results($1,$2,$3)", [from, to, includeSimulated]);
-    const values = Object.fromEntries(r.rows.map((x) => [x.metric, x.value === null ? null : Number(x.value)]));
+    const r2 = await c.query("SELECT metric, value FROM rc_results_v2($1,$2,$3)", [from, to, includeSimulated]);
+    const values = Object.fromEntries([...r.rows, ...r2.rows].map((x) => [x.metric, x.value === null ? null : Number(x.value)]));
     const anyCalls = (await c.query(`SELECT EXISTS (SELECT 1 FROM calls WHERE ${includeSimulated ? "true" : "NOT is_simulated"}) AS e`)).rows[0].e;
     const plan = (await c.query(
       "SELECT (p.limits->>'voice_minutes')::int AS m FROM subscriptions s JOIN packages p ON p.id = s.package_id WHERE s.status IN ('trialing','active','past_due','grace') ORDER BY s.created_at DESC LIMIT 1",

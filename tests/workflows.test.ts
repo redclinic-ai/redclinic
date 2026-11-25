@@ -46,7 +46,8 @@ describe("packs and clinic copies", () => {
   it("a dental clinic gets Core and Dental workflows (switched on, never automatic); another specialty gets Core only", async () => {
     const d = await setup("dental");
     const derm = await setup("dermatology");
-    const notWa = (w: { templateKey: string | null }) => !w.templateKey?.startsWith("wa_");   // the WhatsApp pack is checked in whatsapp.test.ts
+    // optional packs (WhatsApp, lead ads, reviews) are installed switched off; they are tested in their own files
+    const notWa = (w: { templateKey: string | null }) => !w.templateKey?.startsWith("wa_") && !["lead_followup", "review_request"].includes(w.templateKey ?? "");
     const dk = ok(await listWorkflows(d.admin)).filter((w) => w.format === 2 && notWa(w)).map((w) => w.templateKey).sort();
     expect(dk).toEqual(["appointment_confirmation", "braces_adjustment", "enquiry_followup", "no_show_recovery", "post_procedure_checkin", "rct_next_visit", "routine_recall"]);
     expect(ok(await listWorkflows(derm.admin)).filter(notWa).map((w) => w.templateKey).sort()).toEqual(["appointment_confirmation", "enquiry_followup", "no_show_recovery", "routine_recall"]);

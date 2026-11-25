@@ -2,7 +2,8 @@
 // Integration state (master prompt section 23) is reported per adapter so nothing simulated is shown as real.
 
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { getWhatsApp } from "../whatsapp/provider";  // type-only import back, so no cycle at runtime
+import { getWhatsApp } from "../whatsapp/provider";  // these import only types from here, so no cycle at runtime
+import { getLeadAds } from "../leads/provider";
 
 export type IntegrationState =
   | "architecture_ready" | "adapter_implemented" | "mock_tested" | "provider_selected"
@@ -168,7 +169,7 @@ export function integrationStatus(): ProviderInfo[] {
     getTelephony().info, getSpeechToText().info, getTextToSpeech().info, getSummarizer().info,
     { kind: "llm_conversation", name: "Rule-based conversation model", simulated: true, state: "mock_tested", note: "LLM not selected. NEPA follows fixed, approved responses." },
     { kind: "payments", name: "Simulated payments", simulated: true, state: "mock_tested", note: "Gateway not approved. Billing events are simulated." },
-    getWhatsApp().info,
+    getWhatsApp().info, getLeadAds().info,
     { kind: "email", name: "Simulated email", simulated: true, state: "mock_tested", note: "Provider not selected. Emails go to the server log." },
   ];
 }

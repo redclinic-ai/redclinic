@@ -9,6 +9,7 @@ export const EVENTS = {
   months_since_last_visit: "Some months after the last visit",
   weeks_since_last_visit: "Some weeks after the last visit",
   enquiry_without_booking: "When a caller enquires but doesn't book",
+  lead_received: "When a lead-ad or new enquiry comes in",
 } as const;
 export const PURPOSES = {
   confirmation: "Confirm the appointment", recall: "Offer a check-up", follow_up: "Book the next visit",
