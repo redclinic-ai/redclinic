@@ -9,6 +9,7 @@ import { setStaffCapabilities } from "@/lib/staff/service";
 import { decideGrant, saveDataPolicy } from "@/lib/privacy/service";
 import { saveWhatsAppSettings } from "@/lib/whatsapp/service";
 import { addLeadForm, setLeadFormEnabled } from "@/lib/leads/service";
+import { saveTelehealth } from "@/lib/telehealth/service";
 
 export async function saveProfileAction(_: ActionState, f: FormData): Promise<ActionState> {
   const user = await requireUser();
@@ -101,4 +102,10 @@ export async function leadFormSwitchAction(_: ActionState, f: FormData): Promise
   const user = await requireUser();
   const r = await setLeadFormEnabled(user, field(f, "id"), field(f, "enabled") === "1");
   return finish(r, { redirect: "/settings/leads?ok=saved", revalidate: ["/settings/leads"] });
+}
+
+export async function saveTelehealthAction(_: ActionState, f: FormData): Promise<ActionState> {
+  const user = await requireUser();
+  const r = await saveTelehealth(user, { enabled: checked(f, "enabled"), jitsiDomain: field(f, "jitsiDomain") });
+  return finish(r, { message: "Saved.", revalidate: ["/settings/online"] });
 }

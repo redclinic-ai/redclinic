@@ -7,7 +7,9 @@ import { listDoctors } from "@/lib/patients/service";
 import { Badge, Flash, fmtDay, fmtLocalTime, PageHeader } from "@/components/ui";
 import { ActionForm, Submit } from "@/components/action-form";
 import { Input, Select } from "@/components/form";
-import { moveAction, statusAction } from "../actions";
+import { moveAction, onlineAction, statusAction } from "../actions";
+import { onlineDetails } from "@/lib/telehealth/service";
+import { startVisitAction } from "../../patients/records-actions";
 
 export const metadata = { title: "Appointment · RedClinic" };
 
@@ -31,6 +33,7 @@ export default async function AppointmentPage({ params, searchParams }: { params
   const upcoming = a.status === "scheduled" || a.status === "confirmed";
   const started = a.startsAt.getTime() <= Date.now() + 60 * 60_000;
   const doctors = upcoming ? await listDoctors(user) : null;
+  const online = await onlineDetails(user, a.id);
   return (
     <>
       <Flash ok={ok} />
@@ -56,6 +59,26 @@ export default async function AppointmentPage({ params, searchParams }: { params
           </div>
         )}
       </div>
+      {(caps.has("write_clinical") || (online.ok && (online.value.available || online.value.online))) && (
+        <section className="card">
+          <h2 className="h2">{online.ok && online.value.online ? "Online consultation" : "Consultation"}</h2>
+          {online.ok && online.value.url && (
+            <p><a className="btn btn-primary" href={online.value.url} target="_blank" rel="noopener">Join the video call</a>
+              <span className="muted small"> Private room for this appointment. The patient joins from the link on their phone.</span></p>
+          )}
+          {online.ok && online.value.online && online.value.publicService && <p className="muted small">Uses the free public Jitsi service. For real patients, RedClinic should set up its own video server (Settings → Online consultations).</p>}
+          <div className="form-actions">
+            {caps.has("manage_appointments") && upcoming && online.ok && online.value.available && !online.value.online && (
+              <ActionForm action={onlineAction}><input type="hidden" name="id" value={a.id} /><Submit variant="ghost" name="op" value="online">Make this an online consultation</Submit></ActionForm>)}
+            {caps.has("manage_appointments") && upcoming && online.ok && online.value.online && (<>
+              <ActionForm action={onlineAction}><input type="hidden" name="id" value={a.id} /><Submit variant="ghost" name="op" value="send">Send the link on WhatsApp</Submit></ActionForm>
+              <ActionForm action={onlineAction}><input type="hidden" name="id" value={a.id} /><Submit variant="ghost" name="op" value="in_clinic">Change to in-clinic</Submit></ActionForm></>)}
+            {caps.has("write_clinical") && a.status !== "cancelled" && (
+              <ActionForm action={startVisitAction}><input type="hidden" name="patientId" value={a.patientId} /><input type="hidden" name="appointmentId" value={a.id} />
+                <Submit variant="ghost">Visit note</Submit></ActionForm>)}
+          </div>
+        </section>
+      )}
       {caps.has("manage_appointments") && upcoming && (
         <div className="grid2">
           <ActionForm action={moveAction} className="card">

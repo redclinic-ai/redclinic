@@ -39,6 +39,7 @@ export default async function PatientPage({ params, searchParams }: { params: Pr
       <PageHeader title={p.name} back={{ href: "/patients", label: "Patients" }}
         subtitle={<><strong>{p.code}</strong>{[p.phone, p.ageYears != null ? `${p.ageYears} yrs` : null, p.gender].filter(Boolean).map((x) => ` · ${x}`)}</>}
         actions={<>
+          {caps.has("view_patient_history") && <Link className="btn btn-ghost" href={`/patients/${id}/record`}>Medical record</Link>}
           {caps.has("edit_patient") && <Link className="btn btn-ghost" href={`/patients/${id}/edit`}>Edit</Link>}
           {caps.has("manage_appointments") && <Link className="btn btn-primary" href={`/appointments/new?patient=${id}`}>Book appointment</Link>}
         </>} />
@@ -147,6 +148,8 @@ export default async function PatientPage({ params, searchParams }: { params: Pr
                   <li key={d.id}>
                     {d.hasFile ? <a href={`/api/documents/${d.id}/open`} target="_blank" rel="noopener">{d.originalFilename ?? d.docType}</a> : <strong>Note</strong>}
                     <span className="muted small"> · {d.docType} · {fmtDate(d.uploadedAt)}{d.uploadedBy ? ` · ${d.uploadedBy}` : ""}</span>
+                    {d.hasFile && caps.has("view_patient_history") && /\.(pdf|jpe?g|png)$/i.test(d.originalFilename ?? "") && (
+                      <> · <Link href={`/patients/${id}/documents/${d.id}`}>Read into record</Link></>)}
                     {d.description && <div className="small pre">{d.description}</div>}
                   </li>
                 ))}

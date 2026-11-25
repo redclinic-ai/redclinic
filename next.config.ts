@@ -5,8 +5,11 @@ const isProd = process.env.NODE_ENV === "production";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   output: "standalone",
-  // pg is a server-only dependency; keep it out of the bundler.
-  serverExternalPackages: ["pg"],
+  // pg is a server-only dependency; the document readers load worker files and language data from node_modules.
+  serverExternalPackages: ["pg", "tesseract.js", "pdfjs-dist"],
+  outputFileTracingIncludes: {
+    "/**": ["./node_modules/@tesseract.js-data/{eng,hin,kan}/4.0.0_best_int/*", "./node_modules/tesseract.js-core/**", "./node_modules/tesseract.js/src/**", "./node_modules/pdfjs-dist/legacy/build/**"],
+  },
   // documents up to 15 MB are uploaded through server actions
   experimental: { serverActions: { bodySizeLimit: "16mb" } },
   async headers() {

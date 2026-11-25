@@ -47,6 +47,14 @@ export const TEMPLATES = {
       kn: "{clinic} ಗೆ ಭೇಟಿ ನೀಡಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು, {name}. ನಿಮಗೆ ತೃಪ್ತಿಯಾಗಿದ್ದರೆ, ಒಂದು ಚಿಕ್ಕ Google ವಿಮರ್ಶೆ ಇತರರಿಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ: {review}. ಈ ಸಂದೇಶಗಳನ್ನು ನಿಲ್ಲಿಸಲು STOP ಕಳುಹಿಸಿ.",
     },
   },
+  online_consult_link: {
+    label: "Online consultation link", category: "utility", replies: "any reply goes to staff",
+    text: {
+      en: "Hello {name}, your online consultation with {clinic} is on {when}. At that time, open this link on your phone to join the video call: {link}",
+      hi: "नमस्ते {name}, {clinic} के साथ आपका ऑनलाइन परामर्श {when} को है। उस समय वीडियो कॉल से जुड़ने के लिए यह लिंक खोलें: {link}",
+      kn: "ನಮಸ್ಕಾರ {name}, {clinic} ಜೊತೆ ನಿಮ್ಮ ಆನ್‌ಲೈನ್ ಸಮಾಲೋಚನೆ {when} ರಂದು ಇದೆ. ಆ ಸಮಯದಲ್ಲಿ ವೀಡಿಯೊ ಕರೆಗೆ ಸೇರಲು ಈ ಲಿಂಕ್ ತೆರೆಯಿರಿ: {link}",
+    },
+  },
   lead_welcome: {
     label: "Welcome a new enquiry", category: "utility", replies: "any reply goes to staff",
     text: {

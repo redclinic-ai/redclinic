@@ -26,3 +26,16 @@ export async function moveAction(_: ActionState, f: FormData): Promise<ActionSta
   const r = await rescheduleAppointment(user, field(f, "id"), { date: field(f, "date"), time: field(f, "time"), doctorId: field(f, "doctorId") || undefined });
   return finish(r, { redirect: (id) => `/appointments/${id}?ok=moved`, revalidate: ["/appointments", "/home"] });
 }
+
+export async function onlineAction(_: ActionState, f: FormData): Promise<ActionState> {
+  const user = await requireUser();
+  const id = field(f, "id");
+  const op = field(f, "op");
+  const { makeOnline, makeInClinic, sendJoinLink } = await import("@/lib/telehealth/service");
+  if (op === "send") {
+    const r = await sendJoinLink(user, id);
+    return r.ok ? { message: r.value, ok: Date.now() } : { error: r.error };
+  }
+  const r = op === "online" ? await makeOnline(user, id) : await makeInClinic(user, id);
+  return finish<unknown>(r, { redirect: `/appointments/${id}?ok=saved`, revalidate: [`/appointments/${id}`] });
+}

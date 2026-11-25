@@ -11,7 +11,7 @@ export interface Capability { code: string; description: string; allowed: boolea
 
 /** Capabilities a clinic admin can hand out, in a fixed order, grouped for the screen. */
 export const CAPABILITY_GROUPS: { title: string; codes: string[] }[] = [
-  { title: "Patients", codes: ["view_patients", "edit_patient", "view_patient_history", "record_consent", "merge_patients", "import_patients", "export_data"] },
+  { title: "Patients", codes: ["view_patients", "edit_patient", "view_patient_history", "write_clinical", "record_consent", "merge_patients", "import_patients", "export_data"] },
   { title: "Documents", codes: ["upload_document", "view_documents"] },
   { title: "Appointments and calls", codes: ["manage_appointments", "view_calls", "view_call_transcripts"] },
   { title: "Needs attention and approvals", codes: ["manage_attention", "view_approvals", "approve_actions"] },
