@@ -43,14 +43,21 @@ const makeDue = (wfId: string) => owner.query("UPDATE workflow_runs SET next_due
 const enableAgents = (clinicId: string) => owner.query("UPDATE nepa_agents SET enabled = true WHERE clinic_id = $1", [clinicId]);
 
 describe("packs and clinic copies", () => {
-  it("a dental clinic gets Core and Dental workflows (switched on, never automatic); another specialty gets Core only", async () => {
+  it("each speciality gets Core plus its own pack (switched on, never automatic); a clinic without a pack gets Core only", async () => {
     const d = await setup("dental");
     const derm = await setup("dermatology");
     // optional packs (WhatsApp, lead ads, reviews) are installed switched off; they are tested in their own files
     const notWa = (w: { templateKey: string | null }) => !w.templateKey?.startsWith("wa_") && !["lead_followup", "review_request"].includes(w.templateKey ?? "");
     const dk = ok(await listWorkflows(d.admin)).filter((w) => w.format === 2 && notWa(w)).map((w) => w.templateKey).sort();
     expect(dk).toEqual(["appointment_confirmation", "braces_adjustment", "enquiry_followup", "no_show_recovery", "post_procedure_checkin", "rct_next_visit", "routine_recall"]);
-    expect(ok(await listWorkflows(derm.admin)).filter(notWa).map((w) => w.templateKey).sort()).toEqual(["appointment_confirmation", "enquiry_followup", "no_show_recovery", "routine_recall"]);
+    expect(ok(await listWorkflows(derm.admin)).filter(notWa).map((w) => w.templateKey).sort()).toEqual(
+      ["appointment_confirmation", "derm_acne_review", "derm_procedure_checkin", "derm_session_series", "enquiry_followup", "no_show_recovery", "routine_recall"]);
+    const { signupClinic } = await import("@/lib/auth/service");
+    const ent = await signupClinic({ clinicName: "Ear Care", clinicType: "ent", city: "Pune", phone: "+91 98000 00001", adminName: "Dr E", adminEmail: `ent-${Date.now()}@example.test`, password: "correct horse battery", acceptTerms: true }, null);
+    if (!ent.ok) throw new Error(ent.error);
+    const entKeys = (await owner.query("SELECT template_key FROM clinic_workflows WHERE clinic_id = $1 AND pack_key = 'core'", [ent.value.clinicId])).rows.length;
+    expect(entKeys).toBe(4);
+    expect((await owner.query("SELECT count(*)::int n FROM clinic_workflows WHERE clinic_id = $1 AND pack_key NOT IN ('core','whatsapp','leads','reviews')", [ent.value.clinicId])).rows[0].n).toBe(0);
     expect(ok(await listWorkflows(d.admin)).filter((w) => w.format === 2 && notWa(w)).every((w) => w.enabled && !w.automatic)).toBe(true);
     expect(ok(await listWorkflows(d.admin)).filter((w) => !notWa(w)).every((w) => !w.enabled)).toBe(true);
     const conf = await wfByKey(d.admin, "appointment_confirmation");
