@@ -141,7 +141,7 @@ export async function applyBillingEvent(e: BillingEvent) {
           // a failure starts the grace period once; it never extends one already running
           if (sub.status !== "grace") await c.query("UPDATE subscriptions SET status='grace', grace_until=now() + make_interval(days => $2), updated_at=now() WHERE id=$1", [sub.id, GRACE_DAYS]);
           const until = (await c.query("SELECT grace_until FROM subscriptions WHERE id = $1", [sub.id])).rows[0].grace_until as Date;
-          await c.query(`INSERT INTO attention_items (clinic_id, kind, reason, urgency) VALUES ($1,'billing',$2,2) ON CONFLICT DO NOTHING`,
+          await c.query("SELECT rc_add_billing_attention($1, $2)",
             [inv.clinic_id, `Payment for invoice ${inv.number} failed. RedClinic keeps working until ${until.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short" })}; please pay before then.`]);
         }
         break;

@@ -5,6 +5,7 @@ import { checked, field, finish, requireUser } from "@/lib/action-helpers";
 import type { ActionState } from "@/components/action-form";
 import { applyBillingEvent, assignPlan, savePlan, type BillingEventType } from "@/lib/billing/service";
 import { assignNumber, setClinicStatus, setFeature } from "@/lib/admin/service";
+import { requestAccess } from "@/lib/privacy/service";
 
 export async function clinicAction(_: ActionState, f: FormData): Promise<ActionState> {
   const user = await requireUser();
@@ -18,6 +19,13 @@ export async function clinicAction(_: ActionState, f: FormData): Promise<ActionS
     : op === "number" ? await assignNumber(user, id, { receptionistNumber: field(f, "receptionistNumber"), verified: checked(f, "verified") })
     : { ok: false as const, error: "Unknown action." };
   return finish(r, { redirect: `${back}?ok=saved`, revalidate: ["/admin"] });
+}
+
+export async function accessRequestAction(_: ActionState, f: FormData): Promise<ActionState> {
+  const user = await requireUser();
+  const id = field(f, "clinicId");
+  const r = await requestAccess(user, id, { reason: field(f, "reason"), hours: field(f, "hours") });
+  return finish(r, { redirect: `/admin/clinics/${id}?ok=requested`, revalidate: [`/admin/clinics/${id}`] });
 }
 
 /** Simulated payment events (there is no live gateway). Same code path a verified gateway webhook uses. */

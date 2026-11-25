@@ -6,6 +6,7 @@ import type { ActionState } from "@/components/action-form";
 import { DAYS, deleteFaq, saveConsentWording, saveFaq, saveService, updateClinicProfile } from "@/lib/clinic/service";
 import { deactivateUser, inviteStaff } from "@/lib/auth/service";
 import { setStaffCapabilities } from "@/lib/staff/service";
+import { decideGrant, saveDataPolicy } from "@/lib/privacy/service";
 
 export async function saveProfileAction(_: ActionState, f: FormData): Promise<ActionState> {
   const user = await requireUser();
@@ -61,4 +62,20 @@ export async function permissionsAction(_: ActionState, f: FormData): Promise<Ac
   }
   const r = await setStaffCapabilities(user, id, f.getAll("cap").map(String));
   return finish(r, { message: "Permissions saved. They apply straight away.", revalidate: ["/settings/staff"] });
+}
+
+export async function saveDataPolicyAction(_: ActionState, f: FormData): Promise<ActionState> {
+  const user = await requireUser();
+  const r = await saveDataPolicy(user, {
+    superAccess: field(f, "superAccess"), recordingDays: field(f, "recordingDays"), transcriptDays: field(f, "transcriptDays"),
+    assistantLogDays: field(f, "assistantLogDays"), telephonyEventDays: field(f, "telephonyEventDays"),
+  });
+  return finish(r, { message: "Privacy settings saved.", revalidate: ["/settings/privacy"] });
+}
+
+export async function decideGrantAction(_: ActionState, f: FormData): Promise<ActionState> {
+  const user = await requireUser();
+  const decision = field(f, "decision") as "approve" | "deny" | "revoke";
+  const r = await decideGrant(user, field(f, "id"), decision);
+  return finish(r, { redirect: `/settings/privacy?ok=${decision === "approve" ? "approved" : decision === "deny" ? "denied" : "revoked"}`, revalidate: ["/settings/privacy"] });
 }

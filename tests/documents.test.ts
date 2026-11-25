@@ -72,7 +72,7 @@ describe("upload", () => {
     const patientId = await newPatient(admin);
     const real = getStorage();
     const { setStorage } = await import("@/lib/storage");
-    setStorage({ driver: "broken", put: async () => { throw new Error("disk full"); }, get: real.get.bind(real), signedUrl: real.signedUrl.bind(real) });
+    setStorage({ driver: "broken", put: async () => { throw new Error("disk full"); }, get: real.get.bind(real), remove: real.remove.bind(real), signedUrl: real.signedUrl.bind(real) });
     await expect(uploadDocument(admin, { patientId, docType: "image", file: { name: "x.png", bytes: PNG } })).rejects.toThrow(/disk full/);
     setStorage(real);
     expect(await listDocuments(admin, patientId)).toHaveLength(0);

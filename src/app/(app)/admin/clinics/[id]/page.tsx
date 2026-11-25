@@ -6,7 +6,7 @@ import { listPlans, rupees } from "@/lib/billing/service";
 import { Badge, Flash, fmtDate, fmtDateTime, PageHeader, Simulated } from "@/components/ui";
 import { ActionForm, Submit } from "@/components/action-form";
 import { Input, Select } from "@/components/form";
-import { clinicAction, simulatePaymentAction } from "../../actions";
+import { accessRequestAction, clinicAction, simulatePaymentAction } from "../../actions";
 
 export const metadata = { title: "Clinic · RedClinic admin" };
 const ROLE: Record<string, string> = { clinic_admin: "Clinic admin", doctor: "Doctor", receptionist: "Receptionist", clinic_manager: "Clinic manager" };
@@ -100,6 +100,26 @@ export default async function AdminClinic({ params, searchParams }: { params: Pr
         )}
         <p className="field-hint">No payment gateway is connected. These buttons send the same signed events a real gateway will send.</p>
       </section>
+      <section className="card">
+        <h2 className="h2">Patient data access</h2>
+        <p>{d.access.mode === "full"
+          ? "This clinic lets RedClinic open its patient data when needed. Every visit is recorded in its audit log."
+          : d.access.open ? "This clinic shares patient data on request, and has approved access that is open now."
+          : "This clinic shares patient data with RedClinic only on request. Ask the clinic admin for access below."}</p>
+        {d.access.grants.length > 0 && (
+          <ul className="mini-list">{d.access.grants.map((g) => (
+            <li key={g.id}>{fmtDateTime(g.createdAt)} · {g.hours} h · <Badge status={g.active ? "approved" : g.status} label={g.active ? "Open now" : g.status} /> <div className="muted small">{g.reason}{g.expiresAt && g.status === "approved" ? ` · until ${fmtDateTime(g.expiresAt)}` : ""}</div></li>
+          ))}</ul>
+        )}
+        {d.access.mode === "request" && !d.access.open && !d.access.grants.some((g) => g.status === "requested") && (
+          <ActionForm action={accessRequestAction}>
+            {hidden}
+            <Input label="Why do you need access?" name="reason" required hint="The clinic admin sees this exactly as you write it." />
+            <Select label="For how long" name="hours" options={[["4", "4 hours"], ["24", "24 hours"], ["72", "3 days"]]} defaultValue="24" />
+            <Submit>Ask the clinic for access</Submit>
+          </ActionForm>
+        )}
+      </section>
       <div className="grid2">
         <section className="card">
           <h2 className="h2">Staff</h2>
@@ -107,9 +127,10 @@ export default async function AdminClinic({ params, searchParams }: { params: Pr
         </section>
         <section className="card">
           <h2 className="h2">Recent calls</h2>
-          {d.calls.length === 0 ? <p className="muted">No calls yet.</p> : (
+          {!d.access.open ? <p className="muted">Hidden: this clinic shares patient data with RedClinic only on request.</p>
+            : d.calls.length === 0 ? <p className="muted">No calls yet.</p> : (
             <ul className="mini-list">{d.calls.map((c) => (
-              <li key={c.id}><Link href={`/calls/${c.id}`}>{fmtDateTime(c.startedAt)} · {c.direction}</Link> {c.simulated && <Simulated />} <Badge status={c.status} /><div className="muted small">{c.summary}</div></li>
+              <li key={c.id}>{fmtDateTime(c.startedAt)} · {c.direction} {c.simulated && <Simulated />} <Badge status={c.status} /><div className="muted small">{c.summary}</div></li>
             ))}</ul>
           )}
           <p className="small"><Link href={`/admin/audit?clinic=${id}`}>Audit log for this clinic</Link></p>

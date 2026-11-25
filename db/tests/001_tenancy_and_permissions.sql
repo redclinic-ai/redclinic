@@ -86,7 +86,7 @@ ROLLBACK;
 
 BEGIN;
 SELECT rct.as_user(rct.id('su'), NULL, true);
-SELECT rct.check('super admin sees all patients', rct.count('SELECT count(*) FROM patients') = 2);
+SELECT rct.check('super admin without a clinic in context sees no patient data (V2)', rct.count('SELECT count(*) FROM patients') = 0);
 SELECT rct.check('super admin sees all clinics', rct.count('SELECT count(*) FROM clinics') = 2);
 SELECT rct.allowed('super admin can suspend a clinic', format($q$UPDATE clinics SET status='suspended' WHERE id=%L$q$, rct.id('ca')));
 ROLLBACK;
@@ -290,6 +290,33 @@ SELECT rct.check('all tables with clinic_id have RLS enabled',
   (SELECT string_agg(c.table_name, ', ') FROM information_schema.columns c
    JOIN pg_class k ON k.relname = c.table_name AND k.relnamespace = 'public'::regnamespace
    WHERE c.table_schema='public' AND c.column_name='clinic_id' AND k.relkind='r' AND NOT k.relrowsecurity));
+
+-- ---------- V2: clinic-scoped super admin access and "by request" mode (migration 018) ----------
+BEGIN;
+SELECT rct.as_user(rct.id('su'), rct.id('ca'), true);
+SELECT rct.check('super admin in clinic A context sees only clinic A patients (full mode)', rct.count('SELECT count(*) FROM patients') = 1);
+RESET ROLE;
+INSERT INTO clinic_data_policy (clinic_id, super_access) VALUES (rct.id('ca'), 'request');
+SELECT rct.as_user(rct.id('su'), rct.id('ca'), true);
+SELECT rct.check('in request mode the super admin sees no patients without a grant', rct.count('SELECT count(*) FROM patients') = 0);
+SELECT rct.check('in request mode the super admin still sees the clinic itself', rct.count(format('SELECT count(*) FROM clinics WHERE id=%L', rct.id('ca'))) = 1);
+SELECT rct.refused('super admin cannot approve its own access request', format($q$INSERT INTO super_access_grants (clinic_id, requested_by, reason, hours, status) VALUES (%L,%L,'need to debug a call',24,'approved')$q$, rct.id('ca'), rct.id('su')));
+SELECT rct.allowed('super admin can request access', format($q$INSERT INTO super_access_grants (clinic_id, requested_by, reason, hours) VALUES (%L,%L,'need to debug a call',24)$q$, rct.id('ca'), rct.id('su')));
+SELECT rct.refused('super admin cannot switch a clinic back to full access', $q$UPDATE clinic_data_policy SET super_access='full'$q$);
+SELECT rct.refused('super admin cannot approve a request', $q$UPDATE super_access_grants SET status='approved', expires_at=now()+interval '1 day'$q$);
+SELECT rct.as_user(rct.id('ra'), rct.id('ca'));
+SELECT rct.refused('receptionist cannot approve a request', $q$UPDATE super_access_grants SET status='approved', expires_at=now()+interval '1 day'$q$);
+SELECT rct.as_user(rct.id('aa'), rct.id('ca'));
+SELECT rct.allowed('clinic admin approves the request', $q$UPDATE super_access_grants SET status='approved', decided_at=now(), expires_at=now()+interval '1 day'$q$);
+SELECT rct.as_user(rct.id('su'), rct.id('ca'), true);
+SELECT rct.check('with an approved grant the super admin sees clinic A patients', rct.count('SELECT count(*) FROM patients') = 1);
+SELECT rct.as_user(rct.id('su'), rct.id('cb'), true);
+SELECT rct.check('clinic B (full mode) shows only its own patients', rct.count('SELECT count(*) FROM patients') = 1);
+RESET ROLE;
+UPDATE super_access_grants SET expires_at = now() - interval '1 minute';
+SELECT rct.as_user(rct.id('su'), rct.id('ca'), true);
+SELECT rct.check('an expired grant gives no access', rct.count('SELECT count(*) FROM patients') = 0);
+ROLLBACK;
 
 -- ---------- report ----------
 -- (counted by scripts/test-db.sh from the RESULT notices)

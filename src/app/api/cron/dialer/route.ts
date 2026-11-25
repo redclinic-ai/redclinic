@@ -7,6 +7,7 @@ import { runDialer } from "@/lib/calls/service";
 import { workflowTick } from "@/lib/workflows/engine";
 import { billingTick } from "@/lib/billing/service";
 import { reportError } from "@/lib/monitoring";
+import { runRetention } from "@/lib/privacy/service";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,5 +28,7 @@ export async function POST(req: NextRequest) {
       placed += (await runDialer(id)).length;
     } catch (e) { failed++; reportError(e, { route: "cron jobs", clinic: id }); }
   }
-  return NextResponse.json({ clinics: ids.length, placed, failed, billingChanges: billing });
+  let purged = 0;
+  try { purged = (await runRetention()).length; } catch (e) { reportError(e, { route: "cron retention" }); }
+  return NextResponse.json({ clinics: ids.length, placed, failed, billingChanges: billing, retentionRuns: purged });
 }

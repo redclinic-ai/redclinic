@@ -5,6 +5,7 @@ import type { PoolClient } from "pg";
 import type { SignedInUser } from "../auth/service";
 import { act, audit, UserError } from "../authz";
 import { entitlements } from "../billing/service";
+import { superAccessState } from "../privacy/service";
 
 function requireSuper(actor: SignedInUser) {
   if (!actor.isSuperAdmin) throw new UserError("Only RedClinic can do this.");
@@ -46,13 +47,14 @@ export async function clinicDetail(actor: SignedInUser, clinicId: string) {
     const staff = (await c.query("SELECT id, display_name, email, role, status FROM users WHERE clinic_id = $1 ORDER BY role, display_name", [clinicId])).rows;
     const features = new Map((await c.query("SELECT feature, enabled FROM clinic_features WHERE clinic_id = $1", [clinicId])).rows.map((f) => [f.feature, f.enabled]));
     const phone = (await c.query("SELECT * FROM clinic_phone_numbers WHERE clinic_id = $1 AND status <> 'disabled' ORDER BY created_at DESC LIMIT 1", [clinicId])).rows[0] ?? null;
-    const calls = (await c.query(
-      `SELECT x.id, x.started_at, x.direction, x.status, x.summary, x.is_simulated, x.duration_seconds FROM calls x WHERE x.clinic_id = $1 ORDER BY x.started_at DESC LIMIT 20`, [clinicId])).rows;
-    const counts = (await c.query(
-      `SELECT (SELECT count(*) FROM calls WHERE clinic_id=$1 AND NOT is_simulated)::int AS calls,
-              (SELECT count(*) FROM appointments WHERE clinic_id=$1)::int AS appointments,
-              (SELECT count(*) FROM call_transcripts WHERE clinic_id=$1)::int AS transcript_lines,
-              (SELECT count(*) FROM patients WHERE clinic_id=$1 AND merged_into IS NULL)::int AS patients`, [clinicId])).rows[0];
+    // Patient data (calls) is read with the clinic in context: the clinic's data policy decides (migration 018).
+    const { access, calls } = await inClinic(c, actor, clinicId, async () => {
+      const access = await superAccessState(c, clinicId);
+      const calls = access.open ? (await c.query(
+        `SELECT x.id, x.started_at, x.direction, x.status, x.summary, x.is_simulated, x.duration_seconds FROM calls x WHERE x.clinic_id = $1 ORDER BY x.started_at DESC LIMIT 20`, [clinicId])).rows : [];
+      return { access, calls };
+    });
+    const counts = (await c.query("SELECT * FROM rc_admin_clinic_counts($1)", [clinicId])).rows[0];
     const invoices = (await c.query("SELECT number, status, total_paise, issued_at, is_simulated FROM invoices WHERE clinic_id = $1 ORDER BY issued_at DESC LIMIT 20", [clinicId])).rows;
     const ent = await inClinic(c, actor, clinicId, () => entitlements(c));
     const terms = (await c.query("SELECT terms_version, accepted_at FROM terms_acceptances WHERE clinic_id = $1 ORDER BY accepted_at DESC LIMIT 1", [clinicId])).rows[0] ?? null;
@@ -63,7 +65,7 @@ export async function clinicDetail(actor: SignedInUser, clinicId: string) {
       features: FEATURE_SWITCHES.map((f) => ({ ...f, enabled: features.get(f.key) ?? true })),
       phone: phone ? { clinicNumber: phone.clinic_number, receptionistNumber: phone.receptionist_number, fallback: phone.fallback_number, status: phone.status, mode: phone.forwarding_mode } : null,
       calls: calls.map((x) => ({ id: x.id, startedAt: x.started_at, direction: x.direction, status: x.status, summary: x.summary, simulated: x.is_simulated, seconds: x.duration_seconds })),
-      counts, invoices: invoices.map((i) => ({ ...i, total_paise: Number(i.total_paise) })), entitlements: ent, terms,
+      counts, access, invoices: invoices.map((i) => ({ ...i, total_paise: Number(i.total_paise) })), entitlements: ent, terms,
     };
   });
 }

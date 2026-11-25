@@ -4,7 +4,7 @@
 // (AWS S3, Cloudflare R2, Supabase Storage) is added when hosting is chosen (KNOWN_ISSUES K8).
 
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { mkdir, readFile, writeFile, stat } from "node:fs/promises";
+import { mkdir, readFile, writeFile, stat, rm } from "node:fs/promises";
 import path from "node:path";
 import { appBaseUrl } from "../env";
 
@@ -13,6 +13,8 @@ export interface StorageAdapter {
   /** Stores bytes under a key. Never overwrites an existing key. */
   put(key: string, bytes: Buffer, contentType: string): Promise<void>;
   get(key: string): Promise<Buffer>;
+  /** Deletes a stored object (retention rules). Missing keys are ignored. */
+  remove(key: string): Promise<void>;
   /** A link that works for `ttlSeconds` only. */
   signedUrl(key: string, ttlSeconds: number, downloadName: string, contentType: string): string;
 }
@@ -57,6 +59,10 @@ export class LocalStorageAdapter implements StorageAdapter {
 
   async get(key: string): Promise<Buffer> {
     return readFile(this.file(key));
+  }
+
+  async remove(key: string): Promise<void> {
+    await rm(this.file(key), { force: true });
   }
 
   async exists(key: string): Promise<boolean> {
