@@ -27,7 +27,7 @@ If both fail (no internet), the answers stay on the phone, the visitor sees a re
    - Base directory: `waitlist` (build command and publish folder come from `netlify.toml`).
    - Or from a computer: `cd waitlist && npm install && npx netlify-cli deploy --prod`.
 2. **Site configuration → Environment variables:** add `ADMIN_KEY` = a long random password (used for the CSV download link).
-3. **Forms → Enable form detection**, then redeploy once. Under Forms → Notifications, add an email notification to hello@redclinic.in.
+3. **Forms → Enable form detection**, then redeploy once. Under Forms → Notifications, add an email notification to hello.redclinic@gmail.com.
 4. **Domain management → Add domain** `redclinicwaitlist.navapilot.com`.
    At GoDaddy (navapilot.com DNS) add: `CNAME  redclinicwaitlist  →  <your-site-name>.netlify.app`. Netlify issues HTTPS automatically.
 
