@@ -269,7 +269,7 @@
   // Resolves with { ok, reference } once at least one store has it; rejects if both fail.
   function deliver(p) {
     return new Promise(function (resolve, reject) {
-      var settled = 0, done = false, invalid = null, reference = '';
+      var settled = 0, done = false, invalid = null, reference = '', fnFailed = false, formsOk = false;
       function finish() {
         if (++settled < 2 || done) return;
         done = true;
@@ -278,9 +278,11 @@
       sendToFunction(p).then(function (r) {
         if (r.ok) { reference = r.reference; if (!done) { done = true; resolve({ ok: true, reference: reference }); } }
         else { invalid = r.invalid; finish(); }
-      }, finish);
+      }, function () { fnFailed = true; if (formsOk && !done) { done = true; resolve({ ok: true, reference: '' }); } else finish(); });
       // Give the function a moment to return a reference before accepting the backup alone.
       sendToNetlifyForms(p).then(function () {
+        formsOk = true;
+        if (fnFailed && !done) { done = true; resolve({ ok: true, reference: '' }); return; }
         setTimeout(function () { if (!done) { done = true; resolve({ ok: true, reference: reference }); } }, 2500);
       }, finish);
     });
