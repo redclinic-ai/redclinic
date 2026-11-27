@@ -1,0 +1,15 @@
+{
+  "name": "redclinic-pilot-waitlist",
+  "private": true,
+  "version": "1.0.0",
+  "description": "RedClinic founding clinic pilot application (redclinicwaitlist.navapilot.com).",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.12"
+  }
+}

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Apply for the RedClinic founding clinic pilot</title>
+<meta name="description" content="RedClinic is opening its pilot to 11 founding clinics. Apply in under a minute.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="RedClinic founding clinic pilot">
+<meta property="og:description" content="11 founding clinic seats remaining. Apply in under a minute.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://redclinicwaitlist.navapilot.com/">
+<link rel="icon" href="/assets/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/icon-180.png">
+<link rel="preload" href="/assets/figtree-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<main class="app" data-app>
+
+  <header class="top" data-top>
+    <button class="back" type="button" data-back aria-label="Go back" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="progress" role="progressbar" aria-label="Progress" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" data-progress>
+      <span></span><span></span><span></span>
+    </div>
+    <p class="step-count" data-count>1 of 3</p>
+  </header>
+
+  <form class="flow" name="pilot-application" method="POST" data-netlify="true" netlify-honeypot="rc_hp" action="/" novalidate data-form>
+    <input type="hidden" name="form-name" value="pilot-application">
+    <input type="hidden" name="outcomes" value="">
+    <p class="hp" aria-hidden="true"><label>Leave this empty <input name="rc_hp" tabindex="-1" autocomplete="off"></label></p>
+
+    <!-- Step 1 -->
+    <section class="step" data-step="1" aria-labelledby="q1">
+      <p class="seats" data-seats><span class="pulse" aria-hidden="true"></span><b data-seat-count>11</b> founding clinic seats remaining</p>
+      <h1 id="q1">Are you a doctor or a clinic owner?</h1>
+      <p class="sub">The RedClinic pilot is open to clinics only.</p>
+      <div class="choices" role="radiogroup" aria-labelledby="q1">
+        <label class="choice">
+          <input type="radio" name="role" value="doctor">
+          <span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3v5a4 4 0 0 0 8 0V3"/><path d="M10 12v3a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="11" r="2"/></svg></span>
+          <span class="choice-text">I'm a doctor</span>
+          <span class="choice-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="role" value="owner">
+          <span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V8l8-5 8 5v13"/><path d="M12 10v6M9 13h6"/><path d="M2 21h20"/></svg></span>
+          <span class="choice-text">I own a clinic</span>
+          <span class="choice-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </label>
+        <label class="choice choice-quiet">
+          <input type="radio" name="role" value="none">
+          <span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg></span>
+          <span class="choice-text">None of these</span>
+          <span class="choice-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </label>
+      </div>
+      <p class="error" data-error="role" role="alert" hidden></p>
+    </section>
+
+    <!-- Not for you -->
+    <section class="step step-center" data-step="none" aria-labelledby="qn" hidden>
+      <div class="badge-neutral" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg></div>
+      <h1 id="qn">This form is not for you</h1>
+      <p class="sub">It's only for doctors and clinic owners. Taking you to NavaPilot in <b data-countdown>5</b>&nbsp;seconds.</p>
+      <div class="ring" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="18"/></svg></div>
+      <div class="actions-col">
+        <a class="btn btn-ink" href="https://navapilot.com" data-go-nava>Go to navapilot.com</a>
+        <button class="btn-text" type="button" data-change-answer>I'm a doctor or clinic owner</button>
+      </div>
+    </section>
+
+    <!-- Step 2 -->
+    <section class="step" data-step="2" aria-labelledby="q2" hidden>
+      <h1 id="q2">Your details</h1>
+      <p class="sub">So our team can reach you if your clinic is selected.</p>
+      <div class="fields">
+        <div class="field">
+          <label for="f-name">Your name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" autocapitalize="words" maxlength="80" placeholder="Dr. Ananya Rao" required>
+          <p class="error" data-error="name" role="alert" hidden></p>
+        </div>
+        <div class="field">
+          <label for="f-phone">Contact number</label>
+          <div class="phone">
+            <span aria-hidden="true">+91</span>
+            <input id="f-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="11" placeholder="98765 43210" required>
+          </div>
+          <p class="error" data-error="phone" role="alert" hidden></p>
+        </div>
+        <div class="field">
+          <label for="f-clinic">Clinic name</label>
+          <input id="f-clinic" name="clinic" type="text" autocomplete="organization" autocapitalize="words" maxlength="120" placeholder="Smile Care Dental" required>
+          <p class="error" data-error="clinic" role="alert" hidden></p>
+        </div>
+      </div>
+      <div class="bar">
+        <button class="btn btn-red btn-block" type="button" data-next>Continue</button>
+      </div>
+    </section>
+
+    <!-- Step 3 -->
+    <section class="step" data-step="3" aria-labelledby="q3" hidden>
+      <h1 id="q3">What do you want RedClinic to do?</h1>
+      <p class="sub">Choose everything that would help your clinic. <button class="btn-text btn-inline" type="button" data-select-all>Select all</button></p>
+      <fieldset class="chips" aria-labelledby="q3">
+        <label class="chip"><input type="checkbox" value="booking"><span><em>Appointment booking</em></span></label>
+        <label class="chip"><input type="checkbox" value="reminders"><span><em>Appointment reminders</em></span></label>
+        <label class="chip"><input type="checkbox" value="followups"><span><em>Patient <i class="nw">follow-ups</i></em></span></label>
+        <label class="chip"><input type="checkbox" value="noshow"><span><em><i class="nw">No-show</i> recovery</em></span></label>
+        <label class="chip"><input type="checkbox" value="treatment"><span><em>Treatment <i class="nw">follow-ups</i></em></span></label>
+        <label class="chip"><input type="checkbox" value="enquiries"><span><em>Patient enquiry handling</em></span></label>
+        <label class="chip"><input type="checkbox" value="leads"><span><em>Lead management</em></span></label>
+        <label class="chip"><input type="checkbox" value="tasks"><span><em>Daily task coordination</em></span></label>
+        <label class="chip"><input type="checkbox" value="records"><span><em>Patient record organization</em></span></label>
+        <label class="chip"><input type="checkbox" value="assistant"><span><em>AI clinic assistant</em></span></label>
+      </fieldset>
+      <p class="error" data-error="outcomes" role="alert" hidden></p>
+      <p class="error" data-error="form" role="alert" hidden></p>
+      <div class="bar">
+        <button class="btn btn-red btn-block" type="submit" data-submit>
+          <span class="btn-label">Submit Application</span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+        <p class="fine" data-picked aria-live="polite">Nothing selected yet</p>
+      </div>
+    </section>
+
+    <!-- Done -->
+    <section class="step step-center step-done" data-step="done" aria-labelledby="qd" hidden>
+      <img class="logo" src="/assets/logo.svg" alt="RedClinic" width="176" height="40">
+      <div class="tick" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg></div>
+      <h1 id="qd" tabindex="-1">Application received.</h1>
+      <p class="sub">If your clinic is selected for the pilot, our team will contact you.</p>
+      <dl class="receipt" data-receipt hidden>
+        <div><dt>Clinic</dt><dd data-r-clinic></dd></div>
+        <div><dt>Reference</dt><dd data-r-ref></dd></div>
+      </dl>
+      <p class="seats seats-done"><span class="pulse" aria-hidden="true"></span><b>11</b> founding clinic seats remaining</p>
+      <button class="btn-text" type="button" data-another>Apply for another clinic</button>
+    </section>
+  </form>
+</main>
+<noscript><p class="noscript">Please turn on JavaScript to apply, or email hello@redclinic.in.</p></noscript>
+<script src="/app.js" defer></script>
+</body>
+</html>
